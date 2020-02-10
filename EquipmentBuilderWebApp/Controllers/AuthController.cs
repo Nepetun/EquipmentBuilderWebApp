@@ -8,6 +8,8 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using EquipmentBuilder.API.Models;
+using EquipmentBuilder.API.Data.Interfaces;
 
 namespace EquipmentBuilder.API.Controllers
 {
@@ -15,6 +17,7 @@ namespace EquipmentBuilder.API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+        
         private readonly IAuthRepository _repo;
         private readonly IConfiguration _config;
 
@@ -33,7 +36,7 @@ namespace EquipmentBuilder.API.Controllers
             if (await _repo.UserExists(userForRegisterDto.UserName))
                 return BadRequest("Username already exists");
 
-            var userToCreate = new User
+            var userToCreate = new Users
             {
                 UserName = userForRegisterDto.UserName
             };

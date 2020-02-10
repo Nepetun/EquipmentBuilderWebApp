@@ -1,13 +1,14 @@
-﻿using System.Threading.Tasks;
-using EquipmentBuilder.API.Models;
+﻿using EquipmentBuilder.API.Models;
+using System.Threading.Tasks;
 
-namespace EquipmentBuilder.API.Data
+namespace EquipmentBuilder.API.Data.Interfaces
 {
     public interface IAuthRepository
     {
-        Task<User> Register(User user, string password);
+        
+        Task<Users> Register(Users user, string password);
 
-        Task<User> Login(string userName, string password);
+        Task<Users> Login(string userName, string password);
 
         Task<bool> UserExists(string userName);
     }

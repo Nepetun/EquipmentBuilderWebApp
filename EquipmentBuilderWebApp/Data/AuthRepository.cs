@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using EquipmentBuilder.API.Context;
+using EquipmentBuilder.API.Data.Interfaces;
 using EquipmentBuilder.API.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,13 +9,14 @@ namespace EquipmentBuilder.API.Data
 {
     public class AuthRepository : IAuthRepository
     {
+        
         public readonly DataContext _context;
         public AuthRepository(DataContext context)
         {
             _context = context;
         }
 
-        public async Task<User> Login(string userName, string password)
+        public async Task<Users> Login(string userName, string password)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == userName);
 
@@ -47,7 +50,7 @@ namespace EquipmentBuilder.API.Data
             return true;
         }
 
-        public async Task<User> Register(User user, string password)
+        public async Task<Users> Register(Users user, string password)
         {
             //
             byte[] passwordHash, passwordSalt;
