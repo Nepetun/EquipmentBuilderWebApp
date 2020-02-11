@@ -32,4 +32,9 @@ login(model: any) {
   );
 }
 
+register(model: any) {
+  // metoda ma za zadanie wywołać post na api z modelem - czyli loginem i haslem
+  return this.http.post(this.baseUrl + 'register' , model);
+}
+
 }
