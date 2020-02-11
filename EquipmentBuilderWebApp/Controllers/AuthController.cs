@@ -51,6 +51,7 @@ namespace EquipmentBuilder.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
+            //throw new Exception("test - exception was thrown");
             //35 film 
             var userFromRepo = await _repo.Login(userForLoginDto.UserName.ToLower(), userForLoginDto.Password);
 

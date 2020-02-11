@@ -1,14 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using EquipmentBuilder.API.Context;
 using EquipmentBuilder.API.Data;
 using EquipmentBuilder.API.Data.Interfaces;
+using EquipmentBuilderWebApp.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -38,9 +42,9 @@ namespace EquipmentBuilderWebApp
             });
             services.AddControllers();
             services.AddCors(); //pozwala na uzycie middleware 
-            //services.AddSingleton(); //nie bardzo je¿eli chodzi o równoleg³e rz¹dania
-            //services.AddTransient();// dla lekkich - ci¹gle tworzy nowe obiekty przy rz¹daniu          
-            services.AddScoped<IAuthRepository, AuthRepository>(); //dla kazdego rz¹dania tworzy nowy obiekt, ale je¿eli z tego samego ip to nie tworzy
+            //services.AddSingleton(); //nie bardzo jeï¿½eli chodzi o rï¿½wnolegï¿½e rzï¿½dania
+            //services.AddTransient();// dla lekkich - ciï¿½gle tworzy nowe obiekty przy rzï¿½daniu          
+            services.AddScoped<IAuthRepository, AuthRepository>(); //dla kazdego rzï¿½dania tworzy nowy obiekt, ale jeï¿½eli z tego samego ip to nie tworzy
             //gorny zapis oznacza ze wstrzykujemy interfejs IAuthRepository a po przecinku jego konkretna implementacje
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -63,7 +67,22 @@ namespace EquipmentBuilderWebApp
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                //dodanie globlnego exception handlera w produckcyjnym trybie
+                app.UseExceptionHandler(builder => {
+                    builder.Run( async context => {
+                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
+                        var error = context.Features.Get<IExceptionHandlerFeature>();
+                        if(error != null)
+                        {
+                            context.Response.AddAppError(error.Error.Message);
+                            await context.Response.WriteAsync(error.Error.Message);
+                        }
+                    });
+                });
+            }
             //app.UseHttpsRedirection();
 
             app.UseRouting();
