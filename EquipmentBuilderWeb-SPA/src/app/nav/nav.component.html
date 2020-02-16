@@ -1,24 +1,22 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">EquipmentBuilder</a>
+  <div class="container">
+    <a class="navbar-brand" href="#">EquipmentBuilder</a>
 
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Moje ekwipunki-temp</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Stwórz ekwipunek-temp</a>
-      </li>  
-      <li class="nav-item">
-        <a class="nav-link" (click)="logout()">Wyloguj-temp</a>
-      </li> 
+    <ul *ngIf="loggedIn()" class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Moje ekwipunki-temp </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Stwórz ekwipunek-temp</a>
+        </li>         
     </ul>
 
-    <div *ngIf="loggedIn()" class="dropdown">
-      <a class="dropdown-toggle text-light">
-        Witaj użytkowniku
+    <div *ngIf="loggedIn()" class="dropdown" dropdown>
+      <a class="dropdown-toggle text-light" dropdownToggle>
+        Witaj {{authService.decodedToken?.unique_name | titlecase}} 
       </a>
 
-      <div class="dropdown-menu">
+      <div class="dropdown-menu mt-3" *dropdownMenu>
         <a class="dropdown-item" href="#"> 
           <i class="fa fa-user"></i>
           Edytuj profil
@@ -26,7 +24,7 @@
         <a class="dropdown-item" href="#">Moje ekwipunki</a>
         <a class="dropdown-item" href="#">Stwórz ekwipunek</a>
         <div class="dropdown-diver"></div>
-        <a class="dropdown-item" href="#">
+        <a class="dropdown-item" (click)="logout()">
           <i class="fa fa-sign-out"></i>
           Wyloguj
         </a>
@@ -40,4 +38,6 @@
       placeholder="Hasło" required [(ngModel)]="model.password">
       <button [disabled]="!loginForm.valid" class="btn btn-success my-2 my-sm-0" type="submit">Zatwierdź</button>
     </form>
+  </div>
+  
 </nav>

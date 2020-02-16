@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { logging } from 'protractor';
 import { AuthService } from '../_services/auth.service';
 import { AlertifyService } from '../_services/alertify.service';
+import { tokenName } from '@angular/compiler';
 
 @Component({
   selector: 'app-nav',
@@ -11,7 +12,7 @@ import { AlertifyService } from '../_services/alertify.service';
 export class NavComponent implements OnInit {
  model: any = {};
 
-  constructor(private authService: AuthService, private alertify: AlertifyService) { }
+  constructor(public authService: AuthService, private alertify: AlertifyService) { }
 
   ngOnInit() {
   }
@@ -19,7 +20,7 @@ export class NavComponent implements OnInit {
   login() {
     // ze wzgledu na to ze metoda login jest observable uzywamy subscribe
     this.authService.login(this.model).subscribe(next => {
-        this.alertify.success('logged in sucesfully');
+        this.alertify.success('Zalogowano pomyślnie');
       }, error => {
         this.alertify.error(error);
       }
@@ -27,11 +28,12 @@ export class NavComponent implements OnInit {
   }
 
   loggedIn() {
-    this.authService.loggedIn();
+    return this.authService.loggedIn();
+    // return !!token;
   }
 
   logout() {
     localStorage.removeItem('token');
-    this.alertify.message('logged out :c');
+    this.alertify.message('Wylogowano');
   }
 }
