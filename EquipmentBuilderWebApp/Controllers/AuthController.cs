@@ -34,7 +34,7 @@ namespace EquipmentBuilder.API.Controllers
             userForRegisterDto.UserName = userForRegisterDto.UserName.ToLower();
 
             if (await _repo.UserExists(userForRegisterDto.UserName))
-                return BadRequest("Username already exists");
+                return BadRequest("Użytkownik już istnieje");
 
             var userToCreate = new Users
             {

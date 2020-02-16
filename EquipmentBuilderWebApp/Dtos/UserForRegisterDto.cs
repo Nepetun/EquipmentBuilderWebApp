@@ -11,7 +11,7 @@ namespace EquipmentBuilder.API.Dtos
         [Required] //dzieki takiej adnotacji wymuszamy walidacje na wpisanie username
         public string UserName { get; set; }
         [Required]
-        [StringLength(8, MinimumLength = 4, ErrorMessage = "You must specify password between 4 and 8")]
+        [StringLength(8, MinimumLength = 4, ErrorMessage = "Hasło musi miec od 4 do 8 znaków")]
         public string Password { get; set; }
     }
 }
