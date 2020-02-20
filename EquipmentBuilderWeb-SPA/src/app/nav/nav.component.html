@@ -1,15 +1,15 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
   <div class="container">
-    <a class="navbar-brand" href="#">EquipmentBuilder</a>
+    <a class="navbar-brand" [routerLink]="['/home']" routerLinkActive="router-link-active" >Tworzenie ekwipunku</a>
 
-    <ul *ngIf="loggedIn()" class="navbar-nav mr-auto">
+    <!-- <ul *ngIf="loggedIn()" class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="#">Moje ekwipunki-temp </a>
+          <a class="nav-link" [routerLink]="['/myEquipments']">Moje ekwipunki-temp </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Stwórz ekwipunek-temp</a>
+          <a class="nav-link" [routerLink]="['/equipment']">Stwórz ekwipunek-temp</a>
         </li>         
-    </ul>
+    </ul> -->
 
     <div *ngIf="loggedIn()" class="dropdown" dropdown>
       <a class="dropdown-toggle text-light" dropdownToggle>
@@ -17,12 +17,15 @@
       </a>
 
       <div class="dropdown-menu mt-3" *dropdownMenu>
-        <a class="dropdown-item" href="#"> 
+        <a class="dropdown-item" [routerLink]="['/profileUser']" routerLinkActive="router-link-active" > 
           <i class="fa fa-user"></i>
           Edytuj profil
         </a>
-        <a class="dropdown-item" href="#">Moje ekwipunki</a>
-        <a class="dropdown-item" href="#">Stwórz ekwipunek</a>
+
+        <a class="dropdown-item" [routerLink]="['/myEquipments']" routerLinkActive="router-link-active">Moje ekwipunki</a>
+        <a class="dropdown-item" [routerLink]="['/equipment']" routerLinkActive="router-link-active">Stwórz ekwipunek</a>
+        <a class="dropdown-item" [routerLink]="['/allEquipments']" routerLinkActive="router-link-active">Lista wszystkich ekwpiunków</a>
+        <a class="dropdown-item" [routerLink]="['/groups']" routerLinkActive="router-link-active">Grupy</a>
         <div class="dropdown-diver"></div>
         <a class="dropdown-item" (click)="logout()">
           <i class="fa fa-sign-out"></i>

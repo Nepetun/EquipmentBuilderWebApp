@@ -13,7 +13,7 @@ using EquipmentBuilder.API.Data.Interfaces;
 
 namespace EquipmentBuilder.API.Controllers
 {
-    [Route("api/[controller]")] //finalnie da api/auth -- 4 pierwsze litery z nazwy kontrolera 
+    [Route("api/[controller]")] //finalnie da api/auth -- cała nazwa do słowa Controller
     [ApiController]
     public class AuthController : ControllerBase
     {
