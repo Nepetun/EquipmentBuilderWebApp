@@ -50,8 +50,8 @@ namespace EquipmentBuilder.API.Models
         [Column(TypeName = "decimal(6, 1)")]
         public decimal? CriticalChance { get; set; }
 
-        [ForeignKey(nameof(Id))]
+        [ForeignKey(nameof(HeroId))]
         [InverseProperty(nameof(Heroes.HeroeStats))]
-        public virtual Heroes IdNavigation { get; set; }
+        public virtual Heroes Hero { get; set; }
     }
 }

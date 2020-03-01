@@ -36,6 +36,7 @@ namespace EquipmentBuilderWebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddDbContext<DataContext>(x =>
             {
                 x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
@@ -45,7 +46,10 @@ namespace EquipmentBuilderWebApp
             //services.AddSingleton(); //nie bardzo je�eli chodzi o r�wnoleg�e rz�dania
             //services.AddTransient();// dla lekkich - ci�gle tworzy nowe obiekty przy rz�daniu          
             services.AddScoped<IAuthRepository, AuthRepository>(); //dla kazdego rz�dania tworzy nowy obiekt, ale je�eli z tego samego ip to nie tworzy
+            services.AddScoped<IEquipmentRepository, EquipmentRepository>();
+            
             //gorny zapis oznacza ze wstrzykujemy interfejs IAuthRepository a po przecinku jego konkretna implementacje
+            //NA CZAS TESTOW API
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -87,6 +91,7 @@ namespace EquipmentBuilderWebApp
 
             app.UseRouting();
 
+            //NA CZAS TESTOW API!!!
             app.UseAuthentication();
             app.UseAuthorization();
 

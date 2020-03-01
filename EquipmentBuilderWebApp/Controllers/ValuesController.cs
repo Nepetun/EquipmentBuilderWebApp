@@ -71,5 +71,6 @@ namespace EquipmentBuilder.API.Controllers
         public void Delete(int id)
         {
         }
+        
     }
 }

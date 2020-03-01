@@ -8,10 +8,23 @@ namespace EquipmentBuilder.API.Dtos
 {
     public class UserForRegisterDto
     {
-        [Required] //dzieki takiej adnotacji wymuszamy walidacje na wpisanie username
+        [Required(ErrorMessage = "Nazwa użytkownika jest wymagana")] //dzieki takiej adnotacji wymuszamy walidacje na wpisanie username
+        [StringLength(20, MinimumLength = 5, ErrorMessage = "Hasło musi miec od 5 do 20 znaków")]
         public string UserName { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Hasło jest wymagane")]
         [StringLength(8, MinimumLength = 4, ErrorMessage = "Hasło musi miec od 4 do 8 znaków")]
         public string Password { get; set; }
+
+        [Required(ErrorMessage = "Email jest wymagane")]
+        [StringLength(20, MinimumLength = 5, ErrorMessage = "Email musi miec od 5 do 20 znaków")]
+        public string Email { get; set; }
+        [StringLength(20, MinimumLength = 3, ErrorMessage = "Imie nie może przekraczać 20 znaków")]
+        public string FirstName { get; set; }
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Nazwisko nie może przekraczać 50 znaków")]
+        public string Surname { get; set; }
+
+        public DateTime DateOfBirth { get; set; }
+
     }
 }

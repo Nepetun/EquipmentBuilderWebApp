@@ -10,6 +10,8 @@ namespace EquipmentBuilder.API.Models
         public Heroes()
         {
             Equipments = new HashSet<Equipments>();
+            HeroeStats = new HashSet<HeroeStats>();
+            UserHeroesLvl = new HashSet<UserHeroesLvl>();
         }
 
         [Key]
@@ -17,9 +19,11 @@ namespace EquipmentBuilder.API.Models
         [StringLength(100)]
         public string HeroName { get; set; }
 
-        [InverseProperty("IdNavigation")]
-        public virtual HeroeStats HeroeStats { get; set; }
         [InverseProperty("Hero")]
         public virtual ICollection<Equipments> Equipments { get; set; }
+        [InverseProperty("Hero")]
+        public virtual ICollection<HeroeStats> HeroeStats { get; set; }
+        [InverseProperty("Hero")]
+        public virtual ICollection<UserHeroesLvl> UserHeroesLvl { get; set; }
     }
 }

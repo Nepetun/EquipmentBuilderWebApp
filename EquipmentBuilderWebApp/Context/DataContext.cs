@@ -16,24 +16,43 @@ namespace EquipmentBuilder.API.Context
         {
         }
 
+        public virtual DbSet<Comments> Comments { get; set; }
         public virtual DbSet<Equipments> Equipments { get; set; }
+        public virtual DbSet<EquipmentsToGroup> EquipmentsToGroup { get; set; }
+        public virtual DbSet<Groups> Groups { get; set; }
         public virtual DbSet<HeroeStats> HeroeStats { get; set; }
         public virtual DbSet<Heroes> Heroes { get; set; }
+        public virtual DbSet<Invitations> Invitations { get; set; }
         public virtual DbSet<ItemStats> ItemStats { get; set; }
         public virtual DbSet<Items> Items { get; set; }
+        public virtual DbSet<Likes> Likes { get; set; }
+        public virtual DbSet<UserHeroesLvl> UserHeroesLvl { get; set; }
+        public virtual DbSet<UserToGroups> UserToGroups { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            /*if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=ADMIN-KOMPUTER\\SQLEXPRESS;Database=EquipmentBuilderDB;Trusted_Connection=True;");
-            }*/
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Comments>(entity =>
+            {
+                entity.Property(e => e.Comment).IsUnicode(false);
+
+                entity.Property(e => e.Tmstmp).HasDefaultValueSql("(getdate())");
+
+                entity.HasOne(d => d.Equipment)
+                    .WithMany(p => p.Comments)
+                    .HasForeignKey(d => d.EquipmentId)
+                    .HasConstraintName("FK_EquipmentsComments_Id");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Comments)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_UsersComments_Id");
+            });
+
             modelBuilder.Entity<Equipments>(entity =>
             {
                 entity.Property(e => e.EqName).IsUnicode(false);
@@ -56,6 +75,7 @@ namespace EquipmentBuilder.API.Context
                 entity.HasOne(d => d.Hero)
                     .WithMany(p => p.Equipments)
                     .HasForeignKey(d => d.HeroId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Equipments_Heroes_Id");
 
                 entity.HasOne(d => d.SecondItem)
@@ -76,46 +96,149 @@ namespace EquipmentBuilder.API.Context
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Equipments)
                     .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Users_Id");
+            });
+
+            modelBuilder.Entity<EquipmentsToGroup>(entity =>
+            {
+                entity.HasOne(d => d.Equipment)
+                    .WithMany(p => p.EquipmentsToGroup)
+                    .HasForeignKey(d => d.EquipmentId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_EquipmentsToGroupEquipments_Id");
+
+                entity.HasOne(d => d.Group)
+                    .WithMany(p => p.EquipmentsToGroup)
+                    .HasForeignKey(d => d.GroupId)
+                    .HasConstraintName("FK_EquipmentsToGroupGroups_Id");
+            });
+
+            modelBuilder.Entity<Groups>(entity =>
+            {
+                entity.Property(e => e.GroupName).IsUnicode(false);
+
+                entity.HasOne(d => d.GroupAdmin)
+                    .WithMany(p => p.Groups)
+                    .HasForeignKey(d => d.GroupAdminId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_UsersGroup_Id");
             });
 
             modelBuilder.Entity<HeroeStats>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.HasOne(d => d.IdNavigation)
-                    .WithOne(p => p.HeroeStats)
-                    .HasForeignKey<HeroeStats>(d => d.Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                entity.HasOne(d => d.Hero)
+                    .WithMany(p => p.HeroeStats)
+                    .HasForeignKey(d => d.HeroId)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Heroes_Id");
             });
 
             modelBuilder.Entity<Heroes>(entity =>
             {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
                 entity.Property(e => e.HeroName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Invitations>(entity =>
+            {
+                entity.Property(e => e.Tmstmp).HasDefaultValueSql("(getdate())");
+
+                entity.HasOne(d => d.Group)
+                    .WithMany(p => p.Invitations)
+                    .HasForeignKey(d => d.GroupId)
+                    .HasConstraintName("FK_InvitationsGroup_Id");
+
+                entity.HasOne(d => d.UserAdresser)
+                    .WithMany(p => p.InvitationsUserAdresser)
+                    .HasForeignKey(d => d.UserAdresserId)
+                    .HasConstraintName("FK_InvitationsUsersAdresser_Id");
+
+                entity.HasOne(d => d.UserRecipient)
+                    .WithMany(p => p.InvitationsUserRecipient)
+                    .HasForeignKey(d => d.UserRecipientId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_InvitationsUsersRecipients_Id");
             });
 
             modelBuilder.Entity<ItemStats>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.Descriptions).IsUnicode(false);
 
                 entity.HasOne(d => d.IdNavigation)
                     .WithOne(p => p.ItemStats)
                     .HasForeignKey<ItemStats>(d => d.Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Items_Id");
             });
 
             modelBuilder.Entity<Items>(entity =>
             {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
                 entity.Property(e => e.ItemName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Likes>(entity =>
+            {
+                entity.Property(e => e.Tmstmp).HasDefaultValueSql("(getdate())");
+
+                entity.HasOne(d => d.Equipment)
+                    .WithMany(p => p.Likes)
+                    .HasForeignKey(d => d.EquipmentId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_LikesEquipments_Id");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Likes)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_LikesUsers_Id");
+            });
+
+            modelBuilder.Entity<UserHeroesLvl>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne(d => d.Hero)
+                    .WithMany(p => p.UserHeroesLvl)
+                    .HasForeignKey(d => d.HeroId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_UserHeroesLvlHeroes_Id");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserHeroesLvl)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_UserHeroesLvlUsers_Id");
+            });
+
+            modelBuilder.Entity<UserToGroups>(entity =>
+            {
+                entity.HasOne(d => d.Group)
+                    .WithMany(p => p.UserToGroups)
+                    .HasForeignKey(d => d.GroupId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_UserToGroupsGroups_Id");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserToGroups)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_UserToGroupsUsers_Id");
             });
 
             modelBuilder.Entity<Users>(entity =>
             {
+                entity.Property(e => e.Email).IsUnicode(false);
+
+                entity.Property(e => e.FirstName).IsUnicode(false);
+
                 entity.Property(e => e.IsAdmin).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Surname).IsUnicode(false);
 
                 entity.Property(e => e.UserName).IsUnicode(false);
             });

@@ -21,6 +21,7 @@ namespace EquipmentBuilder.API.Models
         public int Id { get; set; }
         [StringLength(200)]
         public string ItemName { get; set; }
+        public int? MinHeroLvl { get; set; }
 
         [InverseProperty("IdNavigation")]
         public virtual ItemStats ItemStats { get; set; }

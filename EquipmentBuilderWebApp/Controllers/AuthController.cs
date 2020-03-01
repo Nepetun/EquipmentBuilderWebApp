@@ -10,6 +10,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using EquipmentBuilder.API.Models;
 using EquipmentBuilder.API.Data.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EquipmentBuilder.API.Controllers
 {
@@ -27,6 +28,7 @@ namespace EquipmentBuilder.API.Controllers
             _config = config;
         }
 
+        [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {

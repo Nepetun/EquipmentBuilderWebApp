@@ -7,6 +7,13 @@ namespace EquipmentBuilder.API.Models
 {
     public partial class Equipments
     {
+        public Equipments()
+        {
+            Comments = new HashSet<Comments>();
+            EquipmentsToGroup = new HashSet<EquipmentsToGroup>();
+            Likes = new HashSet<Likes>();
+        }
+
         [Key]
         public int Id { get; set; }
         [StringLength(100)]
@@ -44,5 +51,11 @@ namespace EquipmentBuilder.API.Models
         [ForeignKey(nameof(UserId))]
         [InverseProperty(nameof(Users.Equipments))]
         public virtual Users User { get; set; }
+        [InverseProperty("Equipment")]
+        public virtual ICollection<Comments> Comments { get; set; }
+        [InverseProperty("Equipment")]
+        public virtual ICollection<EquipmentsToGroup> EquipmentsToGroup { get; set; }
+        [InverseProperty("Equipment")]
+        public virtual ICollection<Likes> Likes { get; set; }
     }
 }
