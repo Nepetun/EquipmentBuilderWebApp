@@ -10,10 +10,14 @@ namespace EquipmentBuilder.API.Data.Interfaces
     {
         Task<IEnumerable<Equipments>> ListMyEquipments(int userId);
 
+        Task<IEnumerable<Equipments>> ListSharedEquipments(int userId);
+
         Task<Equipments> AddEquipment(Equipments equipment);
 
         Task<bool> ValidateEquipmentName(string equipmentName, int userId);
 
         string DeleteEquipment(int equipmentId);
+
+        Task<bool> CheckThatUserHaveGroupsAndSharedEquipments(int userId);
     }
 }

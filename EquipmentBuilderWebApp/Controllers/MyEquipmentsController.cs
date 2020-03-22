@@ -77,5 +77,19 @@ namespace EquipmentBuilder.API.Controllers
             //return StatusCode(201);
         }
 
+
+        [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
+        [HttpGet("{userId}"),ActionName("GetSharedEquipments")]
+        public async Task<IEnumerable<Equipments>> GetSharedEquipments(int userId)
+        {
+            // if (await _repo.CheckThatUserHaveGroupsAndSharedEquipments(userId))
+            //   return BadRequest("Użytkownik nie posiada udostępnionych ekwpiunków");
+
+            var sharedEquipments = await _repo.ListSharedEquipments(userId);
+
+            return sharedEquipments;
+        }
+
+
     }
 }

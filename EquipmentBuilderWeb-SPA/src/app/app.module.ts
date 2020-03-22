@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -16,8 +16,10 @@ import { AllEquipmentsComponent } from './allEquipments/allEquipments.component'
 import { GroupsComponent } from './groups/groups.component';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
-import { MyEquipmentsComponent } from './myEquipments/myEquipments.component';
+import { MyEquipmentsComponent } from './my-equipments/my-equipments.component';
 import { ProfileUserComponent } from './profileUser/profileUser.component';
+import { MyEquipmentsModule } from './my-equipments/my-equipments.module';
+import { MaterialModule } from './material.module';
 
 @NgModule({
    declarations: [
@@ -28,16 +30,19 @@ import { ProfileUserComponent } from './profileUser/profileUser.component';
       EquipmentComponent,
       AllEquipmentsComponent,
       GroupsComponent,
-      MyEquipmentsComponent,
+      //MyEquipmentsComponent,
       ProfileUserComponent
-   ],
+      ],
    imports: [
       BrowserModule,
-      HttpClientModule,
       FormsModule,
-      BrowserAnimationsModule,
+      ReactiveFormsModule,
+      MaterialModule,
+      HttpClientModule,
+     // BrowserAnimationsModule,
       BsDropdownModule.forRoot(),
-      RouterModule.forRoot(appRoutes)
+      RouterModule.forRoot(appRoutes),
+      MyEquipmentsModule // import modułu odpowiedzialnego za wyświetlanie ekwipunku
    ],
    providers: [
       //AuthService,

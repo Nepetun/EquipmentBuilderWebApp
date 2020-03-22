@@ -41,7 +41,7 @@ namespace EquipmentBuilder.API.Data
             Equipments eq = _context.Equipments.FirstOrDefault(x => x.Id == equipmentId);
             if (eq == null)
                 return "brak danych do usunięcia";
-            
+
             _context.Equipments.Remove(eq);
             _context.SaveChangesAsync();
 
@@ -55,6 +55,56 @@ namespace EquipmentBuilder.API.Data
                 return true;
             return false;
         }
-        #endregion 
+        #endregion
+
+
+        /// <summary>
+        /// przegladnie udostepnionych ekwipunkow - zalezne od grup do ktorych nalezy uzytkownik 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Equipments>> ListSharedEquipments(int userId)
+        {
+            //pobranie grup uzytkownika
+            var userGroups = _context.UserToGroups.Where(x => x.UserId == userId).ToList();
+
+            if (userGroups.Count > 0)
+            {
+                List<Equipments> lstEquipments = new List<Equipments>();
+                //pobranie ekwipunkow udostępnionych dla grup użytkowników
+                foreach (UserToGroups groupId in _context.UserToGroups.Where(x => x.UserId == userId).ToList())
+                {
+                    foreach( EquipmentsToGroup eqToGroup in _context.EquipmentsToGroup.Where(x=>x.GroupId == groupId.GroupId).ToList())
+                    {
+                        if(await _context.Equipments.AnyAsync(x => x.Id == eqToGroup.EquipmentId))
+                        {
+                            Equipments sharedEquipment = await _context.Equipments.FirstOrDefaultAsync(x => x.Id == eqToGroup.EquipmentId);
+                            lstEquipments.Add(sharedEquipment);
+                        }                        
+                    }                   
+                }
+
+                return lstEquipments;
+            }
+            return new List<Equipments>();
+        }
+
+        public async Task<bool> CheckThatUserHaveGroupsAndSharedEquipments(int userId)
+        {
+            if (await _context.UserToGroups.AnyAsync(x => x.UserId == userId))
+            {
+                foreach (UserToGroups groupId in _context.UserToGroups.Where(x => x.UserId == userId).ToList())
+                {
+                    // jezeli uzytkownik nalezy przynajmniej do jednej grupy gdzie zostal wysharowany ekwipunek przez innnego gracza
+                    if (await _context.EquipmentsToGroup.AnyAsync(x => x.GroupId == groupId.GroupId))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+     
     }
 }

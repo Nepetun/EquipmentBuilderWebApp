@@ -1,4 +1,4 @@
-<form #registerForm="ngForm" (ngSubmit)="register()">
+<!-- <form #registerForm="ngForm" (ngSubmit)="register()">
   <h2 class="text-center text-primary">Rejestracja</h2>
   <hr>
 
@@ -15,4 +15,100 @@
     <button class="btn btn-default" type="button" (click)="cancel()">Anuluj</button>
   </div>
   
+</form> -->
+<form [formGroup]="profileInformation" (ngSubmit)="register()">
+  <h2 class="text-center text-primary">Rejestracja</h2>
+
+  <div class="containerFlex">
+    
+    <div class="containerItem">
+      <label>
+        Nazwa użytkownika:
+        <input
+          type="text"
+          formControlName="userName"
+          placeholder="Nazwa użytkownika"
+        />
+        <div *ngIf="userName.invalid && (userName.dirty || userName.touched)">
+          <div class="errorDiv">
+            <span *ngIf="userName.errors?.required">
+              Uzupelnij wartosc
+            </span>
+            <span *ngIf="userName.errors?.maxlength">
+              Przekroczono maksymalna długość 20 znaków
+            </span>
+          </div>
+        </div>
+      </label>
+    </div>
+
+    <div class="containerItem">
+      <label>
+        Hasło:
+        <input
+          type="text"
+          formControlName="password"
+          type="password"
+          placeholder="Hasło"
+        />
+        <div *ngIf="password.invalid && (password.dirty || password.touched)">
+          <div class="errorDiv">
+            <span *ngIf="password.errors?.required">
+              Uzupelnij wartosc
+            </span>
+            <span *ngIf="password.errors?.maxlength">
+              Przekroczono maksymalna długość 8 znaków
+            </span>
+            <span *ngIf="password.errors?.minLength">
+              Minimalna długość to 4 znaki
+            </span>
+          </div>
+        </div>
+      </label>
+    </div>
+
+    <div class="containerItem">
+      <label>
+        E-mail:
+        <input type="text" formControlName="email" placeholder="E-mail" />
+        <!-- <span *ngIf="profileInformation.email.valid"></span> -->
+      </label>
+    </div>
+
+    <div class="containerItem">
+      <label>
+        Imie:
+        <input type="text" formControlName="firstName" placeholder="Imie" />
+      </label>
+    </div>
+
+    <div class="containerItem">
+      <label>
+        Nazwisko:
+        <input type="text" formControlName="surname" placeholder="Nazwisko" />
+      </label>
+    </div>
+
+    <div class="containerItem">
+      <label>
+        Data urodzenia:
+        <input
+          matInput
+          [matDatePicker]="pickerdateOfBirth"
+          formControlName="dateOfBirth"
+          placeholder="Data urodzeń"
+        />
+        <mat-datapicker-toggle matSuffix [for]="pickerdateOfBirth">
+        </mat-datapicker-toggle>
+        <mat-datepicker #pickerdateOfBirth></mat-datepicker>
+      </label>
+    </div>
+  </div>
+
+  <div class="form-group text-center">
+    <button class="btn btn-success" type="submit">Zarejestruj</button>
+    <button class="btn btn-default" type="button" (click)="cancel()">
+      Anuluj
+    </button>
+  </div>
 </form>
