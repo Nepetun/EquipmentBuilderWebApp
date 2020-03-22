@@ -17,10 +17,16 @@
   
 </form> -->
 <form [formGroup]="profileInformation" (ngSubmit)="register()">
-  <h2 class="text-center text-primary">Rejestracja</h2>
+  <div *ngIf="!profileInformation.valid">
+    <div class="errorDiv">
+      <p *ngIf="profileInformation.hasError('requiredFieldsValidatorInvalid')">
+        Uzupelnij wszystkie pola
+      </p>
+    </div>
+  </div>
 
+  <h2 class="text-primary">Rejestracja</h2>
   <div class="containerFlex">
-    
     <div class="containerItem">
       <label>
         Nazwa użytkownika:
@@ -28,6 +34,8 @@
           type="text"
           formControlName="userName"
           placeholder="Nazwa użytkownika"
+          maxlength="20"
+          minlength="5"
         />
         <div *ngIf="userName.invalid && (userName.dirty || userName.touched)">
           <div class="errorDiv">
@@ -36,6 +44,9 @@
             </span>
             <span *ngIf="userName.errors?.maxlength">
               Przekroczono maksymalna długość 20 znaków
+            </span>
+            <span *ngIf="userName.errors?.minlength">
+              Minimum 5 znaków
             </span>
           </div>
         </div>
@@ -46,20 +57,21 @@
       <label>
         Hasło:
         <input
-          type="text"
           formControlName="password"
           type="password"
           placeholder="Hasło"
+          maxlength="8"
+          minlength="4"
         />
         <div *ngIf="password.invalid && (password.dirty || password.touched)">
           <div class="errorDiv">
             <span *ngIf="password.errors?.required">
-              Uzupelnij wartosc
+              Uzupelnij wartość
             </span>
             <span *ngIf="password.errors?.maxlength">
               Przekroczono maksymalna długość 8 znaków
             </span>
-            <span *ngIf="password.errors?.minLength">
+            <span *ngIf="password.errors?.minlength">
               Minimalna długość to 4 znaki
             </span>
           </div>
@@ -70,45 +82,133 @@
     <div class="containerItem">
       <label>
         E-mail:
-        <input type="text" formControlName="email" placeholder="E-mail" />
-        <!-- <span *ngIf="profileInformation.email.valid"></span> -->
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="E-mail"
+          maxlength="20"
+          email
+        />
+        <div *ngIf="email.dirty || email.touched">
+          <div class="errorDiv">
+            <span *ngIf="email.errors?.required">
+              Uzupelnij wartość
+            </span>
+            <span *ngIf="email.errors?.maxlength">
+              Przekroczono maksymalna długość 20 znaków
+            </span>
+            <span *ngIf="email.errors?.email">
+              Popraw zawartość
+            </span>
+          </div>
+        </div>
       </label>
     </div>
 
     <div class="containerItem">
       <label>
         Imie:
-        <input type="text" formControlName="firstName" placeholder="Imie" />
+        <input
+          type="text"
+          formControlName="firstName"
+          placeholder="Imie"
+          maxlength="20"
+        />
+        <div *ngIf="firstName.dirty || firstName.touched">
+          <div class="errorDiv">
+            <span *ngIf="firstName.errors?.required">
+              Uzupelnij wartość
+            </span>
+            <span *ngIf="firstName.errors?.maxlength">
+              Przekroczono maksymalna długość 20 znaków
+            </span>
+          </div>
+        </div>
       </label>
     </div>
 
     <div class="containerItem">
       <label>
         Nazwisko:
-        <input type="text" formControlName="surname" placeholder="Nazwisko" />
-      </label>
-    </div>
-
-    <div class="containerItem">
-      <label>
-        Data urodzenia:
         <input
-          matInput
-          [matDatePicker]="pickerdateOfBirth"
-          formControlName="dateOfBirth"
-          placeholder="Data urodzeń"
+          type="text"
+          formControlName="surname"
+          placeholder="Nazwisko"
+          maxlength="50"
         />
-        <mat-datapicker-toggle matSuffix [for]="pickerdateOfBirth">
-        </mat-datapicker-toggle>
-        <mat-datepicker #pickerdateOfBirth></mat-datepicker>
+        <div *ngIf="surname.dirty || surname.touched">
+          <div class="errorDiv">
+            <span *ngIf="surname.errors?.required">
+              Uzupelnij wartość
+            </span>
+            <span *ngIf="surname.errors?.maxlength">
+              Przekroczono maksymalna długość 50 znaków
+            </span>
+          </div>
+        </div>
       </label>
     </div>
-  </div>
 
-  <div class="form-group text-center">
-    <button class="btn btn-success" type="submit">Zarejestruj</button>
-    <button class="btn btn-default" type="button" (click)="cancel()">
-      Anuluj
-    </button>
+    <div class="containerItemDate">
+      <label> Data urodzenia: </label>
+      <input
+        class="form-control"
+        #datepickerYMD="bsDatepicker"
+        bsDatepicker
+        formControlName="dateOfBirth"
+        [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+      />
+      <!-- 
+        <bs-datepicker-inline [bsValue]="bsInlineValue"  [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"></bs-datepicker-inline> -->
+
+      <div *ngIf="dateOfBirth.dirty || dateOfBirth.touched">
+        <div class="errorDiv">
+          <span *ngIf="dateOfBirth.errors?.required">
+            Uzupelnij wartość
+          </span>
+          <span *ngIf="dateOfBirth.errors?.invalidDate">
+            Uzupelnij wartość
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="containerItem">
+      <label> Data urodzenia: </label>
+      <input matInput [matDatepicker]="picker" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker
+        #picker
+        startView="year"
+        [startAt]="startDate"
+      ></mat-datepicker>
+    </div> -->
+
+    <!-- <div class="containerItem">
+      <label> Data urodzenia: </label>
+      <input matInput [matDatepicker]="pickerdateOfBirth"  formControlName="dateOfBirth" readonly />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="pickerdateOfBirth"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #pickerdateOfBirth></mat-datepicker> 
+  
+    </div> -->
   </div>
+  <!-- <div class="form-group text-center">
+    <button class="btn btn-success" [disabled]="profileInformation.invalid" type="submit">Zarejestruj</button>
+    <button class="btn btn-default" type="button" (click)="cancel()">
+        Anuluj
+    </button>     !profileInformation.hasError('requiredFieldsValidatorInvalid')
+  </div> -->
+  <button
+    class="btn btn-success"
+    [disabled]="profileInformation.invalid"
+    type="submit"
+  >
+    Zarejestruj
+  </button>
+  <button class="btn btn-default" type="button" (click)="cancel()">
+    Anuluj
+  </button>
 </form>

@@ -40,8 +40,14 @@ namespace EquipmentBuilder.API.Controllers
 
             var userToCreate = new Users
             {
-                UserName = userForRegisterDto.UserName
+                UserName = userForRegisterDto.UserName,      
+                Email = userForRegisterDto.Email,
+                FirstName = userForRegisterDto.FirstName,
+                Surname = userForRegisterDto.Surname,
+                DateOfBirth = userForRegisterDto.DateOfBirth
             };
+
+
 
             var createdUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
 

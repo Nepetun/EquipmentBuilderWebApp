@@ -19,11 +19,13 @@ namespace EquipmentBuilder.API.Dtos
         [Required(ErrorMessage = "Email jest wymagane")]
         [StringLength(20, MinimumLength = 5, ErrorMessage = "Email musi miec od 5 do 20 znaków")]
         public string Email { get; set; }
+        [Required(ErrorMessage = "Imie jest wymagane")]
         [StringLength(20, MinimumLength = 3, ErrorMessage = "Imie nie może przekraczać 20 znaków")]
         public string FirstName { get; set; }
+        [Required(ErrorMessage = "Nazwisko jest wymagane")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Nazwisko nie może przekraczać 50 znaków")]
         public string Surname { get; set; }
-
+        [Required(ErrorMessage = "Data urodzenia jest wymagana")]
         public DateTime DateOfBirth { get; set; }
 
     }
