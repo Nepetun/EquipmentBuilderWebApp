@@ -1,4 +1,5 @@
-﻿using EquipmentBuilder.API.Models;
+﻿
+using EquipmentBuilder.API.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,15 @@ namespace EquipmentBuilder.API.Data.Interfaces
     {
         public Task<IEnumerable<Invitations>> GetRecieveInvitations(int userId);
         public Task<IEnumerable<Invitations>> GetSendedInvitations(int userId);
+
+        public Task<Invitations> SendInvitation(Invitations invitation);
+
+        public Task<bool> InvitationWasSend(int userId, int recipientUserId, int invitationGroupId);
+
+        public Task<Invitations> AcceptInvitation(int userId, int invitationId);
+
+
+        public Task<Invitations> RejectInvitation(int userId, int invitationId);
 
     }
 }

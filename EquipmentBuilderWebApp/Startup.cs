@@ -47,7 +47,10 @@ namespace EquipmentBuilderWebApp
             //services.AddTransient();// dla lekkich - ci�gle tworzy nowe obiekty przy rz�daniu          
             services.AddScoped<IAuthRepository, AuthRepository>(); //dla kazdego rz�dania tworzy nowy obiekt, ale je�eli z tego samego ip to nie tworzy
             services.AddScoped<IEquipmentRepository, EquipmentRepository>();
+            services.AddScoped<IInvitationRepository, InvitationRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IGroupRepository, GroupRepository>();
+
 
             //gorny zapis oznacza ze wstrzykujemy interfejs IAuthRepository a po przecinku jego konkretna implementacje
             //NA CZAS TESTOW API

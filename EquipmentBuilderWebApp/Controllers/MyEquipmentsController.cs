@@ -78,8 +78,8 @@ namespace EquipmentBuilder.API.Controllers
         }
 
 
-        [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
-        [HttpGet("{userId}"),ActionName("GetSharedEquipments")]
+        [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera  ,ActionName("GetSharedEquipments")
+        [HttpGet("{userId}/GetSharedEquipments")]
         public async Task<IEnumerable<Equipments>> GetSharedEquipments(int userId)
         {
             // if (await _repo.CheckThatUserHaveGroupsAndSharedEquipments(userId))
