@@ -22,9 +22,9 @@ namespace EquipmentBuilder.API.Controllers
             _repo = repo;
         }
 
-        [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
-        [HttpPost("{userId}/CreateGroup")]
-        public async Task<IActionResult> CreateGroup(GroupDto dtoGroup)
+        [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera {userId}
+        [HttpPost("CreateGroup")]
+        public async Task<IActionResult> CreateGroup([FromBody] GroupDto dtoGroup)
         {
 
             if (await _repo.GroupExists(dtoGroup.GroupName))
@@ -45,15 +45,43 @@ namespace EquipmentBuilder.API.Controllers
 
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera , ActionName("GetRecivedInvitations")]
-        [HttpGet("{userId}/GetUserGroups")]
-        public async Task<IEnumerable<Groups>> GetUserGroups(int userId)
+        [HttpGet("GetUserGroups")]
+        //public async Task<IEnumerable<Groups>> GetUserGroups([FromBody] int userId)  --TAKIE POWINNO BYC i usuneicie userId z linijki wyzej i tak kazdą inna przerobić
+        public async Task<IEnumerable<Groups>> GetUserGroups([FromBody] int userId)
         {
 
             var userGroups = await _repo.GetUserGroups(userId);
 
             return userGroups;
-        }    
+        }
 
+        [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera {userId}
+        [HttpPost("ModyfiyGroup")]
+        public async Task<IActionResult> ModifyGroup([FromBody] GroupDto dtoGroup)
+        {
+
+            if (await _repo.GroupExists(dtoGroup.GroupName))
+                return BadRequest("Grupa już istnieje");
+
+            var groupToModify = new Groups
+            {
+                GroupAdminId = dtoGroup.UserId,
+                GroupName = dtoGroup.GroupName,
+                Id = dtoGroup.GroupId
+            };
+
+            var modifyGroup = await _repo.ModifyGroup((int)groupToModify.GroupAdminId, groupToModify.GroupName, groupToModify.Id);
+
+            //zwrotka dla klienta gdzie został stworzony nowy obiekt
+            //return CreatedAtRoute();
+            return StatusCode(201);
+        }
+
+        [HttpDelete("DeleteGroup")]
+        public async Task<bool> DeleteGroup([FromBody] int gropId)
+        {
+            return await _repo.DeleteGroup(gropId);
+        }
     }
 
 }

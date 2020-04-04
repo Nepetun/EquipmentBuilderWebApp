@@ -11,5 +11,8 @@ namespace EquipmentBuilder.API.Data.Interfaces
         Task<Users> Login(string userName, string password);
 
         Task<bool> UserExists(string userName);
+
+        Task<bool> ModifyUserName(int userId, string userName);
+
     }
 }

@@ -21,8 +21,8 @@ namespace EquipmentBuilder.API.Controllers
         }
 
         [AllowAnonymous] //dzieki temu atrybutowi nie  musimy wysyłać tokenu do serwera 
-        [HttpGet("{userId}")]
-        public async Task<IEnumerable<Users>> GetAppUsers(int userId)
+        [HttpGet("GetAppUsers")]
+        public async Task<IEnumerable<Users>> GetAppUsers([FromBody]int userId)
         {
 
             var myEquipments = await _repo.GetUserList(userId);

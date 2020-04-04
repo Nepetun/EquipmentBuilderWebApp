@@ -23,8 +23,8 @@ namespace EquipmentBuilder.API.Controllers
         }
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera , ActionName("GetRecivedInvitations")]
-        [HttpGet("{userId}")]
-        public async Task<IEnumerable<Invitations>> GetRecivedInvitations(int userId)
+        [HttpGet("GetRecivedInvitations")]
+        public async Task<IEnumerable<Invitations>> GetRecivedInvitations([FromBody] int userId)
         {
 
             var myEquipments = await _repo.GetRecieveInvitations(userId);
@@ -33,8 +33,8 @@ namespace EquipmentBuilder.API.Controllers
         }
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera  , ActionName("GetSendInvitations")
-        [HttpGet("{userId}/GetSendInvitations")]
-        public async Task<IEnumerable<Invitations>> GetSendInvitations(int userId)
+        [HttpGet("GetSendInvitations")]
+        public async Task<IEnumerable<Invitations>> GetSendInvitations([FromBody] int userId)
         {
 
             var myEquipments = await _repo.GetSendedInvitations(userId);
@@ -44,13 +44,16 @@ namespace EquipmentBuilder.API.Controllers
 
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
-        [HttpPost("{userId}/SendInvitation")]
-        public async Task<IActionResult> SendIvnvitation(SendInvitationDto invitation)
+        [HttpPost("SendInvitation")]
+        public async Task<IActionResult> SendIvnvitation([FromBody] SendInvitationDto invitation)
         {
 
             if (await _repo.InvitationWasSend(invitation.UserId, invitation.RecipientUserId, invitation.InvitationGroupId))
                 return BadRequest("Zaproszenie zostało już wysłane");
             
+            if(await _repo.UserExistsInGroup(invitation.RecipientUserId, invitation.InvitationGroupId))
+                return BadRequest("Użytkownik należy już do grupy");
+
 
             var invitationToSend = new Invitations
             {
@@ -69,7 +72,24 @@ namespace EquipmentBuilder.API.Controllers
         }
 
 
-        /// TODO do zrobienia : 1) Akceptowanie zaproszeń + odrzucanie zaproszeń
+        [HttpPost("AcceptInvitation")]
+        public async Task<IActionResult> AcceptInvitation([FromBody] AcceptRejectRepositoryDto accept)
+        {
+            //osoba akceptująca wpada jako user Id
+            var accptedInvitation = await _repo.AcceptInvitation(accept.UserId, accept.InvitationId);
+
+            return StatusCode(201);
+        }
+
+        [HttpPost("RejectInvitation")]
+        public async Task<IActionResult> RejectInvitation([FromBody] AcceptRejectRepositoryDto reject)
+        {
+            //osoba odrzucajaca wpada jako user Id
+            var rejectedInvitation = await _repo.RejectInvitation(reject.UserId, reject.InvitationId);
+
+            return StatusCode(201);
+        }
+
 
     }
 }

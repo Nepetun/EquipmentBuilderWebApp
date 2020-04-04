@@ -15,7 +15,7 @@ namespace EquipmentBuilder.API.Data
 
         private readonly DataContext _context;
 
-        public  InvitationRepository(DataContext context)
+        public InvitationRepository(DataContext context)
         {
             _context = context;
         }
@@ -30,7 +30,7 @@ namespace EquipmentBuilder.API.Data
         public async Task<IEnumerable<Invitations>> GetSendedInvitations(int userId)
         {
             var reciveInvitation = await _context.Invitations.Where(x => x.UserAdresserId == userId).ToListAsync();
-           //recipient odbiorca
+            //recipient odbiorca
 
             return reciveInvitation;
         }
@@ -50,9 +50,17 @@ namespace EquipmentBuilder.API.Data
         }
 
 
-        public async Task<bool> InvitationWasSend(int userId, int recipientUserId, int invitationGroupId)
+        public async Task<bool> InvitationWasSend(int userId, int recipientUserId, int groupId)
         {
-            if( await _context.Invitations.AnyAsync(x=>x.UserAdresserId == userId && x.UserRecipientId == recipientUserId))           
+            if (await _context.Invitations.AnyAsync(x => x.UserAdresserId == userId && x.UserRecipientId == recipientUserId && x.GroupId==groupId))
+                return true;
+
+            return false;
+        }
+
+        public async Task<bool> UserExistsInGroup(int recipientUserId, int groupId)
+        {
+            if (await _context.UserToGroups.AnyAsync(x => x.UserId == recipientUserId && x.GroupId == groupId))             
                 return true;
 
             return false;
@@ -68,14 +76,16 @@ namespace EquipmentBuilder.API.Data
         {
             //await _context.Invitations.AddAsync(invitation);
 
-            var invitation = await _context.Invitations.FirstOrDefaultAsync(z => z.UserAdresserId == userId && z.Id == invitationId);
+            var invitation = await _context.Invitations.FirstOrDefaultAsync(z => z.UserRecipientId == userId && z.Id == invitationId);
 
-            var usrToGrp = await _context.UserToGroups.FirstOrDefaultAsync();
+            //var usrToGrp = await _context.UserToGroups.FirstOrDefaultAsync();
+            var usrToGrp = new UserToGroups()
+            {
+                GroupId = invitation.GroupId,
+                UserId = invitation.UserRecipientId
+            };
 
-            usrToGrp.GroupId = invitation.GroupId;
-            usrToGrp.UserId = invitation.UserRecipientId;
-
-
+            
             await _context.UserToGroups.AddAsync(usrToGrp);
 
             _context.Invitations.Remove(invitation);
@@ -93,7 +103,7 @@ namespace EquipmentBuilder.API.Data
         public async Task<Invitations> RejectInvitation(int userId, int invitationId)
         {
             //pobranie zaproszenia
-            var invitation = await _context.Invitations.FirstOrDefaultAsync(z => z.UserAdresserId == userId && z.Id == invitationId);
+            var invitation = await _context.Invitations.FirstOrDefaultAsync(z => z.UserRecipientId == userId && z.Id == invitationId);
 
             _context.Invitations.Remove(invitation);
 

@@ -1,6 +1,8 @@
 ﻿using EquipmentBuilder.API.Context;
 using EquipmentBuilder.API.Data.Interfaces;
+using EquipmentBuilder.API.Dtos;
 using EquipmentBuilder.API.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -79,7 +81,24 @@ namespace EquipmentBuilder.API.Data
                         if(await _context.Equipments.AnyAsync(x => x.Id == eqToGroup.EquipmentId))
                         {
                             Equipments sharedEquipment = await _context.Equipments.FirstOrDefaultAsync(x => x.Id == eqToGroup.EquipmentId);
-                            lstEquipments.Add(sharedEquipment);
+
+                            var eqWithoutShared = new Equipments()
+                            {
+                                Id = sharedEquipment.Id,
+                                EqName = sharedEquipment.EqName,
+                                FirtItemId = sharedEquipment.FirtItemId,
+                                SecondItemId = sharedEquipment.SecondItemId,
+                                ThirdItemId = sharedEquipment.ThirdItemId,
+                                FourthItemId = sharedEquipment.FourthItemId,
+                                FifthItemId = sharedEquipment.FifthItemId,
+                                SixthItemId = sharedEquipment.SixthItemId,
+                                HeroId = sharedEquipment.HeroId,
+                                Likes = sharedEquipment.Likes,
+                                Comments = sharedEquipment.Comments,
+                                UserId = sharedEquipment.UserId
+                            };
+
+                            lstEquipments.Add(eqWithoutShared);
                         }                        
                     }                   
                 }
@@ -89,6 +108,40 @@ namespace EquipmentBuilder.API.Data
             return new List<Equipments>();
         }
 
+
+        public async Task<Equipments> ShareEquipment(ShareEquipmentDto euqipmentToShare)
+        {
+            // wysharowanie ekwipunku
+            var eqToShare = await _context.Equipments.FirstOrDefaultAsync(x => x.Id == euqipmentToShare.EquipmentId);
+
+            var eqShared = new EquipmentsToGroup()
+            {
+                EquipmentId = euqipmentToShare.EquipmentId,
+                GroupId = euqipmentToShare.GroupId
+            };
+            
+            await _context.EquipmentsToGroup.AddAsync(eqShared);
+
+            await _context.SaveChangesAsync();
+
+            return eqToShare;
+        }
+
+
+        public async Task<bool> CheckThatEqWasShared(int equipmentId, int groupId)
+        {
+            if (await _context.EquipmentsToGroup.AnyAsync(x => x.EquipmentId == equipmentId && x.GroupId == groupId))
+                return true;
+
+            return false;
+        }
+
+
+        /// <summary>
+        /// sprawdzanie czy uzytkownik posiada wysharowane ekwipunki
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<bool> CheckThatUserHaveGroupsAndSharedEquipments(int userId)
         {
             if (await _context.UserToGroups.AnyAsync(x => x.UserId == userId))

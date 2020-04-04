@@ -94,5 +94,30 @@ namespace EquipmentBuilder.API.Controllers
                 token = tokenHandler.WriteToken(token)
             });
         }
+
+
+        [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
+        [HttpPost("ModifyUserName")]
+        public async Task<IActionResult> ModifyUser(UserToModifyNameDto userToModifyDto)
+        {
+            //nieuwzglenianie case sensitivity przy rejestracji
+            userToModifyDto.UserName = userToModifyDto.UserName.ToLower();
+
+            if (await _repo.UserExists(userToModifyDto.UserName))
+                return BadRequest("Użytkownik o takiej nazwie już istnieje");
+
+            var userToCreate = new Users
+            {
+                UserName = userToModifyDto.UserName              
+            };
+
+            var createdUser = await _repo.ModifyUserName(userToModifyDto.UserId,userToModifyDto.UserName);
+
+            //zwrotka dla klienta gdzie został stworzony nowy obiekt
+            //return CreatedAtRoute();
+            return StatusCode(201);
+        }
+
+
     }
 }

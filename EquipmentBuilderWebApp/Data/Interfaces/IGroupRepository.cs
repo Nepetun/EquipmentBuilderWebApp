@@ -14,5 +14,9 @@ namespace EquipmentBuilder.API.Data.Interfaces
         public Task<Groups> CreateGroup(Groups group);
         public Task<bool> GroupExists(string groupName);
 
+        public Task<bool> DeleteGroup(int groupId);
+
+        public Task<bool> ModifyGroup(int userId, string groupName, int groupId);
+
     }
 }

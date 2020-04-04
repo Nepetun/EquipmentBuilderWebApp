@@ -26,8 +26,8 @@ namespace EquipmentBuilder.API.Controllers
         }
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
-        [HttpGet("{userId}")]
-        public async Task<IEnumerable<Equipments>> GetEquipments(int userId)
+        [HttpGet("GetEquipments")] //("{userId}")
+        public async Task<IEnumerable<Equipments>> GetEquipments([FromBody] int userId)
         {
 
             var myEquipments = await _repo.ListMyEquipments(userId);
@@ -79,10 +79,10 @@ namespace EquipmentBuilder.API.Controllers
 
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera  ,ActionName("GetSharedEquipments")
-        [HttpGet("{userId}/GetSharedEquipments")]
-        public async Task<IEnumerable<Equipments>> GetSharedEquipments(int userId)
+        [HttpGet("GetSharedEquipments")]
+        public async Task<IEnumerable<Equipments>> GetSharedEquipments([FromBody] int userId)
         {
-            // if (await _repo.CheckThatUserHaveGroupsAndSharedEquipments(userId))
+            //if (await _repo.CheckThatUserHaveGroupsAndSharedEquipments(userId))
             //   return BadRequest("Użytkownik nie posiada udostępnionych ekwpiunków");
 
             var sharedEquipments = await _repo.ListSharedEquipments(userId);
@@ -90,6 +90,17 @@ namespace EquipmentBuilder.API.Controllers
             return sharedEquipments;
         }
 
+        [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera  ,ActionName("GetSharedEquipments")
+        [HttpPost("ShareEquipment")]
+        public async Task<IActionResult> ShareEquipment([FromBody] ShareEquipmentDto eqToShare)
+        {           
+            if (await _repo.CheckThatEqWasShared(eqToShare.EquipmentId, eqToShare.GroupId))
+                return BadRequest("Ekwipunek jest już udostpępniony dla tej grupy");
+
+            var eqShare = await _repo.ShareEquipment(eqToShare);
+
+            return StatusCode(201);
+        }
 
     }
 }

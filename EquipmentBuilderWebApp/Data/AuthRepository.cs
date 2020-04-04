@@ -84,6 +84,26 @@ namespace EquipmentBuilder.API.Data
 
             return false;
         }
-        
+
+        public async Task<bool> ModifyUserName(int userId, string userName)
+        {
+            var userToModify = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
+
+
+            userToModify.UserName = userName;
+
+            //byte[] passwordHash, passwordSalt;
+            //CreatePasswordHash(password, out passwordHash, out passwordSalt); //jezeli updatowane w metodzie dzieki out rowniez sa tutaj updatowane
+            //userToModify.PasswordHash = passwordHash;
+            //userToModify.PasswordSalt = passwordSalt;
+
+
+            _context.Users.Update(userToModify);
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
     }
 }

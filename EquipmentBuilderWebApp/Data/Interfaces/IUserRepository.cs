@@ -10,6 +10,5 @@ namespace EquipmentBuilder.API.Data.Interfaces
     {
         Task<IEnumerable<Users>> GetUserList(int userId); //pokazanie wszystkich użytkowników bez akutalnego użytkownika
 
-
     }
 }

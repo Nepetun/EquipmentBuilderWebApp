@@ -14,12 +14,14 @@ namespace EquipmentBuilder.API.Data.Interfaces
 
         public Task<Invitations> SendInvitation(Invitations invitation);
 
-        public Task<bool> InvitationWasSend(int userId, int recipientUserId, int invitationGroupId);
+        public Task<bool> InvitationWasSend(int userId, int recipientUserId, int groupId);
 
         public Task<Invitations> AcceptInvitation(int userId, int invitationId);
 
 
         public Task<Invitations> RejectInvitation(int userId, int invitationId);
+
+        public Task<bool> UserExistsInGroup(int recipientUserId, int groupId);
 
     }
 }

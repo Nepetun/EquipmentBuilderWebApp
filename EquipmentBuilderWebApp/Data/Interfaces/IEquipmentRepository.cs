@@ -1,4 +1,6 @@
-﻿using EquipmentBuilder.API.Models;
+﻿using EquipmentBuilder.API.Dtos;
+using EquipmentBuilder.API.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +21,9 @@ namespace EquipmentBuilder.API.Data.Interfaces
         string DeleteEquipment(int equipmentId);
 
         Task<bool> CheckThatUserHaveGroupsAndSharedEquipments(int userId);
+
+        Task<Equipments> ShareEquipment(ShareEquipmentDto equipmentToShare);
+
+        Task<bool> CheckThatEqWasShared(int equipmentId, int groupId);
     }
 }
