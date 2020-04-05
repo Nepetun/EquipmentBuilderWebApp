@@ -9,7 +9,7 @@ namespace EquipmentBuilder.API.Dtos
     public class UserForRegisterDto
     {
         [Required(ErrorMessage = "Nazwa użytkownika jest wymagana")] //dzieki takiej adnotacji wymuszamy walidacje na wpisanie username
-        [StringLength(20, MinimumLength = 5, ErrorMessage = "Hasło musi miec od 5 do 20 znaków")]
+        [StringLength(20, MinimumLength = 5, ErrorMessage = "Nazwa użytkownika musi miec od 5 do 20 znaków")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Hasło jest wymagane")]

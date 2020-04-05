@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data\UserRepository\" />
     <Folder Include="Models\" />
     <Folder Include="Context\" />
   </ItemGroup>

@@ -98,7 +98,7 @@ namespace EquipmentBuilder.API.Controllers
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
         [HttpPost("ModifyUserName")]
-        public async Task<IActionResult> ModifyUser(UserToModifyNameDto userToModifyDto)
+        public async Task<IActionResult> ModifyUserName([FromBody] UserToModifyNameDto userToModifyDto)
         {
             //nieuwzglenianie case sensitivity przy rejestracji
             userToModifyDto.UserName = userToModifyDto.UserName.ToLower();
@@ -118,6 +118,16 @@ namespace EquipmentBuilder.API.Controllers
             return StatusCode(201);
         }
 
+
+        [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
+        [HttpPost("ChangePassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] UserToModifyPasswordDto userToModifyDto)
+        {
+            var createdUser = await _repo.ChangePassword(userToModifyDto.UserId, userToModifyDto.Password);
+
+            return StatusCode(201);
+        }
+        
 
     }
 }
