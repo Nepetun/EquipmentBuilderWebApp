@@ -1,3 +1,61 @@
 <p>
-  equipment works!
+  Nadszedł czas stworzenia ekwipunku, zaczynajmy. Wybierz bohatera
 </p>
+<!-- <li *ngFor="let item of itemsArray">
+  {{ item.itemName }}
+</li> -->
+
+
+<form >
+  <label for="hero">Bohater:</label>
+  <select id="hero" class="form-control" [(ngModel)]="heroId"  name="hero">
+    <option *ngFor="let hero of heroesArray" [value]="hero.id">{{hero.heroName}}</option> 
+  </select>
+  <p> Wybrany bohater: {{heroId}} </p>
+</form>
+
+
+<form  class="was-validated" (ngSubmit)="saveEquipment()"> 
+  <input type="text" class="form-control is-valid" id="equipmentName" placeholder="Nazwa ekwipunku" required>
+  <div class="invalid-feedback">Nazwa jest wymagana</div>
+</form>
+
+<form >
+  <label for="firstItem">Przedmiot 1:</label>
+  <select id="firstItem" class="form-control" [(ngModel)]="firtItemId"  name="firstItem">
+    <option *ngFor="let item of itemsArray" [value]="item.id">{{item.itemName +' minimalny poziom: '+item.minHeroLvl}}</option> 
+  </select>
+  <p> 1 Wybrano przemiot: {{firtItemId}} </p>
+
+  <label for="secondItem">Przedmiot 2:</label>
+  <select id="secondItem" class="form-control" [(ngModel)]="secondItemId"  name="secondItem">
+    <option *ngFor="let item of itemsArray" [value]="item.id">{{item.itemName+' minimalny poziom: '+item.minHeroLvl}}</option> 
+  </select>
+  <p> 2 Wybrano przemiot: {{secondItemId}} </p>
+
+  <label for="thirdItem">Przedmiot 3:</label>
+  <select id="thirdItem" class="form-control" [(ngModel)]="thirdItemId"  name="thirdItem">
+    <option *ngFor="let item of itemsArray" [value]="item.id">{{item.itemName+' minimalny poziom: '+item.minHeroLvl}}</option> 
+  </select>
+  <p> 3 Wybrano przemiot: {{thirdItemId}} </p>
+
+  <label for="forthItem">Przedmiot 4:</label>
+  <select id="forthItem" class="form-control" [(ngModel)]="fourthItemId"  name="forthItem">
+    <option *ngFor="let item of itemsArray" [value]="item.id">{{item.itemName+' minimalny poziom: '+item.minHeroLvl}}</option> 
+  </select>
+  <p> 4 Wybrano przemiot: {{fourthItemId}} </p>
+
+  <label for="fifthItem">Przedmiot 5:</label>
+  <select id="fifthItem" class="form-control" [(ngModel)]="fifthItemId"  name="fifthItem">
+    <option *ngFor="let item of itemsArray" [value]="item.id">{{item.itemName+' minimalny poziom: '+item.minHeroLvl}}</option> 
+  </select>
+  <p> 5 Wybrano przemiot: {{fifthItemId}} </p>
+
+  <label for="sixthItem">Przedmiot 6:</label>
+  <select id="sixthItem" class="form-control" [(ngModel)]="sixthItemId"  name="sixthItem">
+    <option *ngFor="let item of itemsArray" [value]="item.id">{{item.itemName+' minimalny poziom: '+item.minHeroLvl}}</option> 
+  </select>
+  <p> 6 Wybrano przemiot: {{sixthItemId}} </p>
+
+</form>
+

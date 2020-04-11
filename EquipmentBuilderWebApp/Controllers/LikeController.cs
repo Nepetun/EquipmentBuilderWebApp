@@ -39,7 +39,7 @@ namespace EquipmentBuilder.API.Controllers
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera  , ActionName("GetSendInvitations")
         [HttpGet("GetCountOfLike")]
-        public async Task<int> GetCountOfLike([FromBody] int equipmentId)
+        public async Task<int> GetCountOfLike([FromQuery] int equipmentId)
         {
 
             var likeCount = await _repo.GetCountOfLike(equipmentId);

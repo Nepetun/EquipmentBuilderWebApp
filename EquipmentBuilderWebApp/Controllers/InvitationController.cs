@@ -24,7 +24,7 @@ namespace EquipmentBuilder.API.Controllers
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera , ActionName("GetRecivedInvitations")]
         [HttpGet("GetRecivedInvitations")]
-        public async Task<IEnumerable<Invitations>> GetRecivedInvitations([FromBody] int userId)
+        public async Task<IEnumerable<Invitations>> GetRecivedInvitations([FromQuery] int userId)
         {
 
             var myEquipments = await _repo.GetRecieveInvitations(userId);
@@ -34,7 +34,7 @@ namespace EquipmentBuilder.API.Controllers
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera  , ActionName("GetSendInvitations")
         [HttpGet("GetSendInvitations")]
-        public async Task<IEnumerable<Invitations>> GetSendInvitations([FromBody] int userId)
+        public async Task<IEnumerable<Invitations>> GetSendInvitations([FromQuery] int userId)
         {
 
             var myEquipments = await _repo.GetSendedInvitations(userId);
@@ -82,7 +82,7 @@ namespace EquipmentBuilder.API.Controllers
         }
 
         [HttpPost("RejectInvitation")]
-        public async Task<IActionResult> RejectInvitation([FromBody] AcceptRejectRepositoryDto reject)
+        public async Task<IActionResult> RejectInvitation([FromQuery] AcceptRejectRepositoryDto reject)
         {
             //osoba odrzucajaca wpada jako user Id
             var rejectedInvitation = await _repo.RejectInvitation(reject.UserId, reject.InvitationId);

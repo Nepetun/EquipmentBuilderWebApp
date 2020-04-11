@@ -27,7 +27,7 @@ namespace EquipmentBuilder.API.Controllers
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
         [HttpGet("GetEquipments")] //("{userId}")
-        public async Task<IEnumerable<Equipments>> GetEquipments([FromBody] int userId)
+        public async Task<IEnumerable<Equipments>> GetEquipments([FromQuery] int userId)
         {
 
             var myEquipments = await _repo.ListMyEquipments(userId);
@@ -80,7 +80,7 @@ namespace EquipmentBuilder.API.Controllers
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera  ,ActionName("GetSharedEquipments")
         [HttpGet("GetSharedEquipments")]
-        public async Task<IEnumerable<Equipments>> GetSharedEquipments([FromBody] int userId)
+        public async Task<IEnumerable<Equipments>> GetSharedEquipments([FromQuery] int userId)
         {
             //if (await _repo.CheckThatUserHaveGroupsAndSharedEquipments(userId))
             //   return BadRequest("Użytkownik nie posiada udostępnionych ekwpiunków");

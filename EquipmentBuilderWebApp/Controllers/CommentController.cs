@@ -39,7 +39,7 @@ namespace EquipmentBuilder.API.Controllers
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera  , ActionName("GetSendInvitations")
         [HttpGet("GetCommentsForEquipment")]
-        public async Task<IEnumerable<CommentToShowDto>> GetCommentsForEquipment([FromBody] int equipmentId)
+        public async Task<IEnumerable<CommentToShowDto>> GetCommentsForEquipment([FromQuery] int equipmentId)
         {
 
             var comments = await _repo.GetCommentsForEquipment(equipmentId);

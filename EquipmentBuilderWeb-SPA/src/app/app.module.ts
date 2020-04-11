@@ -12,7 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { ErrorInterceptorProvider } from './_services/error.interceptor';
 import { EquipmentComponent } from './equipment/equipment.component';
-import { AllEquipmentsComponent } from './allEquipments/allEquipments.component';
+// import { AllEquipmentsComponent } from './allEquipments/allEquipments.component';
 import { GroupsComponent } from './groups/groups.component';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
@@ -30,11 +30,11 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
       NavComponent,
       HomeComponent,
       RegisterComponent,
-      EquipmentComponent,
-      AllEquipmentsComponent,
+     /* EquipmentComponent,
+     // AllEquipmentsComponent,
       GroupsComponent,
       //MyEquipmentsComponent,
-      ProfileUserComponent
+      ProfileUserComponent*/
       ],
    imports: [
       BrowserModule,
@@ -45,8 +45,8 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
      // BrowserAnimationsModule,
       BsDropdownModule.forRoot(),
       BsDatepickerModule.forRoot(),
-      RouterModule.forRoot(appRoutes),
-      MyEquipmentsModule // import modułu odpowiedzialnego za wyświetlanie ekwipunku
+      RouterModule.forRoot(appRoutes)
+     // MyEquipmentsModule // import modułu odpowiedzialnego za wyświetlanie ekwipunku
    ],
    providers: [
       //AuthService,

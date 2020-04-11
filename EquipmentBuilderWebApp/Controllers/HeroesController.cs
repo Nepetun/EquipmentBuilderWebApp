@@ -1,4 +1,5 @@
 ﻿using EquipmentBuilder.API.Data.Interfaces;
+using EquipmentBuilder.API.Dtos;
 using EquipmentBuilder.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,25 +12,23 @@ namespace EquipmentBuilder.API.Controllers
 {
     [Route("api/[controller]")] //finalnie da api/auth -- cała nazwa do słowa Controller
     [ApiController]
-    public class UserController : ControllerBase
+    public class HeroesController : ControllerBase
     {
-        private readonly IUserRepository _repo;
+        private readonly IHeroesRepository _repo;
 
-        public UserController(IUserRepository repo)
+        public HeroesController(IHeroesRepository repo)
         {
             _repo = repo;
         }
 
-        [AllowAnonymous] //dzieki temu atrybutowi nie  musimy wysyłać tokenu do serwera 
-        [HttpGet("GetAppUsers")]
-        public async Task<IEnumerable<Users>> GetAppUsers([FromQuery]int userId)
+        [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera  , ActionName("GetSendInvitations")
+        [HttpGet("GetAllHeroes")]
+        public async Task<IEnumerable<HeroDto>> GetAllHeroes()
         {
 
-            var myEquipments = await _repo.GetUserList(userId);
+            var heroes = await _repo.GetAllHeroes();
 
-            return myEquipments;
+            return heroes;
         }
     }
-
-  
 }
