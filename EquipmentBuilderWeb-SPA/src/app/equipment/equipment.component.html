@@ -1,11 +1,8 @@
 <p>
   Nadszedł czas stworzenia ekwipunku, zaczynajmy. Wybierz bohatera
 </p>
-<!-- <li *ngFor="let item of itemsArray">
-  {{ item.itemName }}
-</li> -->
 
-
+<!-- 
 <form >
   <label for="hero">Bohater:</label>
   <select id="hero" class="form-control" [(ngModel)]="heroId"  name="hero">
@@ -14,9 +11,8 @@
   <p> Wybrany bohater: {{heroId}} </p>
 </form>
 
-
 <form  class="was-validated" (ngSubmit)="saveEquipment()"> 
-  <input type="text" class="form-control is-valid" id="equipmentName" placeholder="Nazwa ekwipunku" required>
+  <input type="text" class="form-control is-valid" id="equipmentName" [(ngModel)]="eqName" name="eqName" placeholder="Nazwa ekwipunku" required>
   <div class="invalid-feedback">Nazwa jest wymagana</div>
 </form>
 
@@ -57,5 +53,121 @@
   </select>
   <p> 6 Wybrano przemiot: {{sixthItemId}} </p>
 
-</form>
 
+  <button
+  class="btn btn-success"
+  [disabled]="eqInformation.invalid"
+  type="submit"
+  >
+  Zarejestruj
+  </button>
+
+</form> -->
+<form class="container" [formGroup]="eqInformation" (ngSubmit)="saveEquipment()">
+  <div class="containerFlex">
+    <div class="containerItem">
+      <label>Nazwa ekwipunku:
+      <input type="text" formControlName="equipmentName" maxlength="20" minlength="5"/>
+        <div *ngIf="equipmentName.invalid && (equipmentName.dirty || equipmentName.touched)">
+          <div class="errorDiv">
+            <span *ngIf="equipmentName.errors?.required">
+              Uzupelnij wartosc
+            </span>
+            <span *ngIf="equipmentName.errors?.maxlength">
+              Przekroczono maksymalna długość 20 znaków
+            </span>
+            <span *ngIf="equipmentName.errors?.minlength">
+              Minimum 5 znaków
+            </span>
+          </div>
+        </div>
+      </label>
+    </div>
+
+    <div class="containerItem">
+      <label for="hero">Bohater:
+        <select id="hero" formControlName="hero" class="form-control" [(ngModel)]="heroId"  name="hero">
+        <option *ngFor="let hero of heroesArray" [value]="hero.id">{{hero.heroName}}</option> 
+        </select>
+        <p> Wybrany bohater: {{heroId}} </p>
+        <div *ngIf="hero.invalid">
+          <div class="errorDiv">
+            <span *ngIf="hero.errors?.required">
+              Uzupelnij wartosc - bohater jest wymagany
+            </span>
+          </div>  
+        </div>
+      </label>
+    </div>
+
+    <div class="containerItem">
+      <label for="hero">Przedmiot nr 1:
+        <select id="firstItem"  formControlName="firstItem" class="form-control" [(ngModel)]="firtItemId"  name="firstItem">
+          <option *ngFor="let item of itemsArray" [value]="item.id">{{item.itemName +' minimalny poziom: '+item.minHeroLvl}}</option> 
+        </select>
+        <p> 1 Wybrano przemiot: {{firtItemId}} </p>
+        <div *ngIf="firstItem.invalid">
+          <div class="errorDiv">
+            <span *ngIf="firstItem.errors?.required">
+              Uzupelnij wartosc - Ekwipunek musi posiadać minimum przedmiot nr 1.
+            </span>
+          </div>  
+        </div>
+      </label>
+    </div>
+
+
+    <div class="containerItem">
+      <label for="secondItem">Przedmiot 2:
+      <select id="secondItem" formControlName="secondItem"  class="form-control" [(ngModel)]="secondItemId"  name="secondItem">
+        <option *ngFor="let item of itemsArray" [value]="item.id">{{item.itemName+' minimalny poziom: '+item.minHeroLvl}}</option> 
+      </select>
+      <p> 2 Wybrano przemiot: {{secondItemId}} </p>        
+      </label>
+    </div>
+
+    <div class="containerItem">
+      <label for="thirdItem">Przedmiot 3:
+      <select id="thirdItem" formControlName="thirdItem" class="form-control" [(ngModel)]="thirdItemId"  name="thirdItem">
+        <option *ngFor="let item of itemsArray" [value]="item.id">{{item.itemName+' minimalny poziom: '+item.minHeroLvl}}</option> 
+      </select>
+      <p> 3 Wybrano przemiot: {{thirdItemId}} </p>
+      </label>
+    </div>
+  
+    <div class="containerItem">
+      <label for="forthItem">Przedmiot 4:
+      <select id="forthItem" formControlName="forthItem" class="form-control" [(ngModel)]="fourthItemId"  name="forthItem">
+        <option *ngFor="let item of itemsArray" [value]="item.id">{{item.itemName+' minimalny poziom: '+item.minHeroLvl}}</option> 
+      </select>
+      <p> 4 Wybrano przemiot: {{fourthItemId}} </p>
+      </label>
+    </div>
+  
+    <div class="containerItem">
+      <label for="fifthItem">Przedmiot 5:
+      <select id="fifthItem" formControlName="fifthItem" class="form-control" [(ngModel)]="fifthItemId"  name="fifthItem">
+        <option *ngFor="let item of itemsArray" [value]="item.id">{{item.itemName+' minimalny poziom: '+item.minHeroLvl}}</option> 
+      </select>
+      <p> 5 Wybrano przemiot: {{fifthItemId}} </p>
+      </label>
+    </div>
+  
+    <div class="containerItem">
+      <label for="sixthItem">Przedmiot 6:
+      <select id="sixthItem" formControlName="sixthItem" class="form-control" [(ngModel)]="sixthItemId"  name="sixthItem">
+        <option *ngFor="let item of itemsArray" [value]="item.id">{{item.itemName+' minimalny poziom: '+item.minHeroLvl}}</option> 
+      </select>
+      <p> 6 Wybrano przemiot: {{sixthItemId}} </p>
+      </label>
+    </div>
+
+  </div>
+
+  <button class="btn btn-success" [disabled]="eqInformation.invalid" type="submit">
+    Zatwierdź
+  </button>
+  <button class="btn btn-default" type="button" (click)="cancel()">
+    Anuluj
+  </button>
+</form>

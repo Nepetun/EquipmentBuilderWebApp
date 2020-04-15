@@ -56,6 +56,7 @@ namespace EquipmentBuilderWebApp
 
             services.AddScoped<IItemsRepository, ItemsRepository>();
             services.AddScoped<IHeroesRepository, HeroesRepository>();
+            services.AddScoped<IStatisticsRepository, StatisticsRepository>();
 
             //gorny zapis oznacza ze wstrzykujemy interfejs IAuthRepository a po przecinku jego konkretna implementacje
             //NA CZAS TESTOW API

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'// który moduł może skorzystać z serwisu - dla nas jest to appmodule
 })
@@ -9,7 +10,7 @@ export class AuthService {
   baseUrl = 'http://localhost:5000/api/auth/';
   jwtHelper = new JwtHelperService();
   decodedToken: any;
-
+  
 constructor(private http: HttpClient) { }
 
 /* metoda logowania - tworzymy post tak jak za pomocą postmana
@@ -23,6 +24,8 @@ map bo klucz i wartosc
 jezeli user istnieje to ustawiamy localstorage na jego token
 */
 login(model: any) {
+
+
   return this.http.post(this.baseUrl + 'login' , model)
   .pipe(
     map((reponse: any) => {
@@ -31,10 +34,16 @@ login(model: any) {
         localStorage.setItem('token', user.token);
         this.decodedToken = this.jwtHelper.decodeToken(user.token);
         console.log(this.decodedToken);
+        localStorage.setItem('userId', this.decodedToken.nameid);
       }
     })
   );
 }
+
+getUserIdByUserName() {
+  return localStorage.getItem('userId');
+}
+
 
 register(model: any) {
   // metoda ma za zadanie wywołać post na api z modelem - czyli loginem i haslem

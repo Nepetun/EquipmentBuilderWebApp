@@ -14,6 +14,7 @@ import {MatSelectModule} from '@angular/material/select';
     CommonModule,
     // BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     MatSelectModule,
     EquipmentRouting
   ],

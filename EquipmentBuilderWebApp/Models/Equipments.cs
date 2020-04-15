@@ -12,6 +12,7 @@ namespace EquipmentBuilder.API.Models
             Comments = new HashSet<Comments>();
             EquipmentsToGroup = new HashSet<EquipmentsToGroup>();
             Likes = new HashSet<Likes>();
+            UserHeroesLvl = new HashSet<UserHeroesLvl>();
         }
 
         [Key]
@@ -57,5 +58,7 @@ namespace EquipmentBuilder.API.Models
         public virtual ICollection<EquipmentsToGroup> EquipmentsToGroup { get; set; }
         [InverseProperty("Equipment")]
         public virtual ICollection<Likes> Likes { get; set; }
+        [InverseProperty("Equipment")]
+        public virtual ICollection<UserHeroesLvl> UserHeroesLvl { get; set; }
     }
 }

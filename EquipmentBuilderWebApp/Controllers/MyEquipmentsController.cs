@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 namespace EquipmentBuilder.API.Controllers
 {
     [Route("api/[controller]")] //finalnie da api/auth -- cała nazwa do słowa Controller
-    [ApiController]
+    [ApiController] // "mówi" że Metody korzystają z FromBody lub z FromQeury
     public class MyEquipmentsController : ControllerBase //controller base nie wprowadza viewsow- te robimy w angularze
     {
         private readonly IEquipmentRepository _repo;

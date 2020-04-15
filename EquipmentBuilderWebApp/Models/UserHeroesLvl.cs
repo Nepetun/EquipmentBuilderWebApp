@@ -13,11 +13,19 @@ namespace EquipmentBuilder.API.Models
         public int? UserId { get; set; }
         public int? Lvl { get; set; }
 
+        public int? EquipmentId { get; set; }
+
         [ForeignKey(nameof(HeroId))]
         [InverseProperty(nameof(Heroes.UserHeroesLvl))]
         public virtual Heroes Hero { get; set; }
         [ForeignKey(nameof(UserId))]
         [InverseProperty(nameof(Users.UserHeroesLvl))]
         public virtual Users User { get; set; }
+
+
+        [ForeignKey(nameof(EquipmentId))]
+        [InverseProperty(nameof(Users.UserHeroesLvl))]
+        public virtual Equipments Equipment { get; set; }
+
     }
 }

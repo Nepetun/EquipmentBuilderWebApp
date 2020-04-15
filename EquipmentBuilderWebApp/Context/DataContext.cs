@@ -214,6 +214,11 @@ namespace EquipmentBuilder.API.Context
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_UserHeroesLvlUsers_Id");
+
+                entity.HasOne(d => d.Equipment)
+                   .WithMany(p => p.UserHeroesLvl)
+                   .HasForeignKey(d => d.EquipmentId)
+                   .HasConstraintName("FK_UserHeroesLvlEquipment_Id");
             });
 
             modelBuilder.Entity<UserToGroups>(entity =>

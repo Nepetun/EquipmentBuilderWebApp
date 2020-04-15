@@ -4,11 +4,12 @@ import { environment } from 'src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { IAddEquipment } from '../models/IAddEquipment';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MyEquipmentServiceService {
+export class MyEquipmentService {
 baseUrl: any = environment.apiUrl + '/MyEquipments';
 
 // private myEquipmentsSubject = new BehaviorSubject();
@@ -42,9 +43,15 @@ addEquipment(addedEq: IAddEquipment) {
     fifthItemId: eqCreated.fifthItemId,
     sixthItemId: eqCreated.sixthItemId
   })
-  .subscribe( addEq => {
-    console.log(addEq);
-  });
+  .pipe(
+    map((reponse: any) => {
+      const eq = reponse;
+    })
+  );
+  // .subscribe( addEq => {
+  //   console.log(addEq);
+  // });
+
 }
 
 }
