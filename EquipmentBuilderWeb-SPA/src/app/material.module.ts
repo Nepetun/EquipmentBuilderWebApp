@@ -77,7 +77,7 @@ import {MatTooltipModule } from '@angular/material/tooltip';
 @NgModule({
   exports: [
     CdkTableModule,
-    BrowserAnimationsModule,
+    // BrowserAnimationsModule,
     MatAutocompleteModule,
     MatButtonModule,
     MatButtonToggleModule,

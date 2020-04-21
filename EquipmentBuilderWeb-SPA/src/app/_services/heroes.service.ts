@@ -19,7 +19,7 @@ export class HeroesService {
   public loading$ = this.loadingSubject.asObservable();
 
   constructor(private http: HttpClient) { }
-
+/*
   loadHeroes() {
     this.loadingSubject.next(true);
 
@@ -29,7 +29,7 @@ export class HeroesService {
     .subscribe((res) => {
       this.heroesSubject.next(res);
     });
-  }
+  }*/
 
   getHeroes(): Observable<IHero[]> {
     let heroes: IHero[] = new Array<IHero>();

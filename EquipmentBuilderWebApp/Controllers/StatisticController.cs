@@ -23,7 +23,7 @@ namespace EquipmentBuilder.API.Controllers
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera  , ActionName("GetSendInvitations")
         [HttpGet("CalculateStatistics")]
-        public async Task<StatisticsDto> CalculateStatistics(EquipmentStatisticDto eq)
+        public async Task<StatisticsDto> CalculateStatistics([FromQuery] EquipmentStatisticDto eq)
         {
 
             var statistics = await _repo.CalculateStats(eq);

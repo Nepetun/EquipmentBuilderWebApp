@@ -1,3 +1,37 @@
-<p>
-  groups works!
-</p>
+
+<div class="container">
+  <div class="row align-items-start">
+    <div class="col">
+
+      <form class="container" [formGroup]="groupInformation" (ngSubmit)="saveGroup()">
+        <div class="containerFlex">
+
+          <div class="containerItem">
+            <label>Nazwa grupy:
+            <input type="text" formControlName="groupName" maxlength="20" minlength="5" class="form-control"/>
+              <div *ngIf="groupName.invalid && (groupName.dirty || groupName.touched)">
+                <div class="errorDiv">
+                  <span *ngIf="groupName.errors?.required">
+                    Uzupelnij wartosc
+                  </span>
+                  <span *ngIf="groupName.errors?.maxlength">
+                    Przekroczono maksymalna długość 20 znaków
+                  </span>
+                  <span *ngIf="groupName.errors?.minlength">
+                    Minimum 5 znaków
+                  </span>
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>  
+        <button class="btn btn-success" [disabled]="groupInformation.invalid" type="submit">
+          Zatwierdź
+        </button>
+        <button class="btn btn-default" type="button" (click)="cancel()">
+          Anuluj
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

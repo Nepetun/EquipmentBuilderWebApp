@@ -63,32 +63,32 @@ namespace EquipmentBuilder.API.Data
                 List<ItemStats> lstStats = new List<ItemStats>();
 
                 // pobranie statystyk przedmiotów
-                if(eqDto.FirtItemId != null)
+                if(eqDto.FirtItemId != null && eqDto.FirtItemId > 0)
                 {
                     ItemStats itemStat = await _context.ItemStats.FirstOrDefaultAsync(x => x.ItemId == eqDto.FirtItemId);
                     lstStats.Add(itemStat);
                 }
-                if (eqDto.SecondItemId != null)
+                if (eqDto.SecondItemId != null && eqDto.SecondItemId > 0)
                 {
                     ItemStats itemStat = await _context.ItemStats.FirstOrDefaultAsync(x => x.ItemId == eqDto.SecondItemId);
                     lstStats.Add(itemStat);
                 }
-                if (eqDto.ThirdItemId != null)
+                if (eqDto.ThirdItemId != null && eqDto.ThirdItemId > 0)
                 {
                     ItemStats itemStat = await _context.ItemStats.FirstOrDefaultAsync(x => x.ItemId == eqDto.ThirdItemId);
                     lstStats.Add(itemStat);
                 }
-                if (eqDto.FourthItemId != null)
+                if (eqDto.FourthItemId != null && eqDto.FourthItemId > 0)
                 {
                     ItemStats itemStat = await _context.ItemStats.FirstOrDefaultAsync(x => x.ItemId == eqDto.FourthItemId);
                     lstStats.Add(itemStat);
                 }
-                if (eqDto.FifthItemId != null)
+                if (eqDto.FifthItemId != null && eqDto.FifthItemId > 0)
                 {
                     ItemStats itemStat = await _context.ItemStats.FirstOrDefaultAsync(x => x.ItemId == eqDto.FifthItemId);
                     lstStats.Add(itemStat);
                 }
-                if (eqDto.SixthItemId != null)
+                if (eqDto.SixthItemId != null && eqDto.SixthItemId > 0)
                 {
                     ItemStats itemStat = await _context.ItemStats.FirstOrDefaultAsync(x => x.ItemId == eqDto.SixthItemId);
                     lstStats.Add(itemStat);

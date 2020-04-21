@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
-import { EquipmentComponent } from './equipment.component';
-import { ItemsService } from '../_services/items.service';
-import { EquipmentRouting } from './equipment-routing.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MaterialModule } from '../material.module';
 import {MatSelectModule} from '@angular/material/select';
+import { GroupService } from '../_services/group.service';
+import { GroupRoutingModule } from './group-routing.module';
+import { GroupsComponent } from './groups.component';
 
 @NgModule({
-  declarations: [EquipmentComponent],
+  declarations: [GroupsComponent],
   imports: [
     CommonModule,
     // BrowserModule,
@@ -17,8 +16,9 @@ import {MatSelectModule} from '@angular/material/select';
     ReactiveFormsModule,
     MatSelectModule,
     MaterialModule,
-    EquipmentRouting
+    GroupRoutingModule
   ],
-  providers: [{provide: ItemsService}]
+  providers: [{provide: GroupService}]
 })
-export class EquipmentModule { }
+export class GroupModule {
+}

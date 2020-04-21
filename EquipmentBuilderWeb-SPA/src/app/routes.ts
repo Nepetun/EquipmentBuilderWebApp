@@ -21,9 +21,10 @@ export const appRoutes: Routes = [
         runGuardsAndResolvers: 'always',
         canActivate: [AuthGuard],
         children: [
-            { path: 'groups', component: GroupsComponent },
+           // { path: 'groups', component: GroupsComponent },
            // { path: 'equipment', component: EquipmentComponent },
            { path: 'equipment', loadChildren: () => import('./equipment/equipment.module').then(m => m.EquipmentModule) },
+           { path: 'groups', loadChildren:() => import('./groups/group.module').then(m => m.GroupModule) },
            // { path: 'allEquipments', component: AllEquipmentsComponent },
            // { path: 'myEquipments', component: MyEquipmentsComponent },
             { path: 'profileUser', component: ProfileUserComponent },

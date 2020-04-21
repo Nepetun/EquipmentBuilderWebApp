@@ -22,6 +22,7 @@ import { MyEquipmentsModule } from './my-equipments/my-equipments.module';
 import { MaterialModule } from './material.module';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { MyGroupsComponent } from './my-groups/my-groups.component';
 
 
 @NgModule({
@@ -30,29 +31,31 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
       NavComponent,
       HomeComponent,
       RegisterComponent,
-     /* EquipmentComponent,
-     // AllEquipmentsComponent,
+      /*EquipmentComponent,
+      //AllEquipmentsComponent,
       GroupsComponent,
       //MyEquipmentsComponent,
       ProfileUserComponent*/
-      ],
+      MyGroupsComponent
+   ],
    imports: [
       BrowserModule,
+      BrowserAnimationsModule,
       FormsModule,
       ReactiveFormsModule,
       MaterialModule,
       HttpClientModule,
-     // BrowserAnimationsModule,
+      //BrowserAnimationsModule,
       BsDropdownModule.forRoot(),
       BsDatepickerModule.forRoot(),
       RouterModule.forRoot(appRoutes)
-     // MyEquipmentsModule // import modułu odpowiedzialnego za wyświetlanie ekwipunku
-   ],
-   providers: [
-      //AuthService,
-      ErrorInterceptorProvider,
-      {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
-   ],
+      // MyEquipmentsModule // import modułu odpowiedzialnego za wyświetlanie ekwipunku
+    ],
+    providers: [
+       //AuthService,
+       ErrorInterceptorProvider,
+       {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+    ],
    bootstrap: [
       AppComponent
    ]

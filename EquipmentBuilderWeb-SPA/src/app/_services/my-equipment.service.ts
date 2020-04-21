@@ -16,9 +16,9 @@ baseUrl: any = environment.apiUrl + '/MyEquipments';
 constructor(private http: HttpClient) { }
 
 addEquipment(addedEq: IAddEquipment) {
-  let params = new HttpParams();
+  //  let params = new HttpParams();
   let eqCreated: IAddEquipment = addedEq;
-
+/*
   if (eqCreated) {
     params = params.append('eqName', eqCreated.eqName);
     params = params.append('heroId', eqCreated.heroId.toString());
@@ -30,7 +30,7 @@ addEquipment(addedEq: IAddEquipment) {
     params = params.append('fifthItemId', eqCreated.fifthItemId.toString());
     params = params.append('sixthItemId', eqCreated.sixthItemId.toString());
   }
-
+*/
 
   return this.http.post<IAddEquipment>(this.baseUrl + '/addEquipment' , {
     eqName: eqCreated.eqName,
