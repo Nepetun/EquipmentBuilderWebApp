@@ -12,6 +12,7 @@ import { AlertifyService } from '../_services/alertify.service';
 import { IEquipmentToGetStatistics } from '../models/IEquipmentToGetStatistics';
 import { StatisticsService } from '../_services/statistics.service';
 import { IStatisticEquipment } from '../models/IStatisticEquipment';
+import { IHeroCalculateGold } from '../models/IHeroCalculateGold';
 
 @Component({
   selector: 'app-equipment',
@@ -22,7 +23,12 @@ import { IStatisticEquipment } from '../models/IStatisticEquipment';
 
 export class EquipmentComponent implements OnInit {
   public itemsArray: IItems[];
-  public statistic: IStatisticEquipment ={
+  public gold = 0;
+  public heroPickedWithLvl: IHeroCalculateGold = {
+    heroId: 0,
+    heroLvl: 1
+  }
+  public statistic: IStatisticEquipment = {
     hitPoints: 0,
       hitPointsRegen: 0,
       mana: 0,
@@ -193,6 +199,7 @@ export class EquipmentComponent implements OnInit {
     console.log(heroId);
     this.eqCreatedStatistic.heroId = heroId;
     console.log(this.eqCreatedStatistic.heroId);
+    this.getGold(); /*wyliczenie dostępnego złota na danym poziomie*/
     this.reloadStatistics();
     // po wyborze dac strzal do api z ekwipunkiem
   }
@@ -200,7 +207,9 @@ export class EquipmentComponent implements OnInit {
   lvlChange(heroLvl: number) {
     console.log(heroLvl);
     this.eqCreatedStatistic.heroLvl = heroLvl;
+    this.heroPickedWithLvl.heroLvl = heroLvl;
     this.reloadStatistics();
+    this.getGold(); /*wyliczenie dostępnego złota na danym poziomie*/
     console.log(this.eqCreatedStatistic.heroLvl);
   }
 
@@ -251,5 +260,16 @@ export class EquipmentComponent implements OnInit {
     this.statiscitcsEquipment.getStatistics(this.eqCreatedStatistic).subscribe((statistic) => {
       this.statistic = statistic;
     });
+  }
+
+  getGold() {
+    this.statiscitcsEquipment.getGold(this.heroPickedWithLvl).subscribe((gold) => {
+      this.gold = gold;
+    });
+  }
+
+
+  filterItemsOfType() {
+    return this.itemsArray.filter(x => x.minHeroLvl <= this.heroPickedWithLvl.heroLvl);
   }
 }

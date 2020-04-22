@@ -18,6 +18,19 @@ namespace EquipmentBuilder.API.Data
             _context = context;
         }
 
+        public async Task<int> CalculateGold(HeroPickedDto hero)
+        {
+            /*wyliczanie dostępnego złota na dany poziom bohatera
+             The average gold value gained per level is 532.91 (with math)
+             https://www.reddit.com/r/leagueoflegends/comments/5umxcv/the_average_gold_value_gained_per_level_is_53291/
+             */
+            int goldPerLvl = 532;
+
+            return goldPerLvl * hero.HeroLvl;
+        }
+
+
+
         /// <summary>
         /// metoda wylicza statystyki dla bohatera oraz jego ekwipunku
         /// </summary>

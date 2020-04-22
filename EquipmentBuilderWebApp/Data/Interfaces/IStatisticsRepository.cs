@@ -9,5 +9,6 @@ namespace EquipmentBuilder.API.Data.Interfaces
     public interface IStatisticsRepository
     { 
         Task<StatisticsDto> CalculateStats(EquipmentStatisticDto eqDto);
+        Task<int> CalculateGold(HeroPickedDto hero);
     }
 }

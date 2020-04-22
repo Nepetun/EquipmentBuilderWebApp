@@ -30,5 +30,15 @@ namespace EquipmentBuilder.API.Controllers
 
             return statistics;
         }
+
+        [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera  , ActionName("GetSendInvitations")
+        [HttpGet("CalculateGold")]
+        public async Task<int> CalculateGold([FromQuery] HeroPickedDto hero)
+        {
+
+            var statistics = await _repo.CalculateGold(hero);
+
+            return statistics;
+        }
     }
 }

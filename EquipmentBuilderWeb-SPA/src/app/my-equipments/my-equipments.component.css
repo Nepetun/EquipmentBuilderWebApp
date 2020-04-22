@@ -1,0 +1,10 @@
+/* .navSpecial{
+    background-color: rgba(49, 39, 194, 0.747);
+} */
+.navSpecial{
+    text-align: center;
+    font-weight: bold;
+}
+.button {
+    margin: 5px;
+}

@@ -5,6 +5,8 @@ import { IStatisticEquipment } from '../models/IStatisticEquipment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, catchError, finalize } from 'rxjs/operators';
 import { IEquipmentToGetStatistics } from '../models/IEquipmentToGetStatistics';
+import { IHero } from '../models/IHero';
+import { IHeroCalculateGold } from '../models/IHeroCalculateGold';
 
 @Injectable({
   providedIn: 'root'
@@ -108,4 +110,23 @@ export class StatisticsService {
     ));
   }
 
+  getGold(hero: IHeroCalculateGold) {
+    let gold: number;
+    let params = new HttpParams();
+
+    if (hero) {
+      params = params.append('heroLvl', hero.heroLvl.toString());
+      params = params.append('heroId', hero.heroId.toString());
+    }
+
+    return this.http.get<number>(this.baseUrl + '/CalculateGold', {
+      observe: 'response',
+      params
+    }).pipe(
+      map((response) => {
+        gold = response.body;
+        return gold;
+      }
+    ));
+  }
 }
