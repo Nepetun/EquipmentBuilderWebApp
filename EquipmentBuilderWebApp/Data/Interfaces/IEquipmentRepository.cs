@@ -1,4 +1,5 @@
-﻿using EquipmentBuilder.API.Dtos;
+﻿using EquipmentBuilder.API.Common;
+using EquipmentBuilder.API.Dtos;
 using EquipmentBuilder.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,7 +11,7 @@ namespace EquipmentBuilder.API.Data.Interfaces
 {
     public interface IEquipmentRepository
     {
-        Task<IEnumerable<Equipments>> ListMyEquipments(int userId);
+        Task<List<EquipmentListDto>> ListMyEquipments(PageParams pageParams ,int userId);
 
         Task<IEnumerable<Equipments>> ListSharedEquipments(int userId);
 

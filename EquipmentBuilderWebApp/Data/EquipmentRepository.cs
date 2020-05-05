@@ -1,4 +1,5 @@
-﻿using EquipmentBuilder.API.Context;
+﻿using EquipmentBuilder.API.Common;
+using EquipmentBuilder.API.Context;
 using EquipmentBuilder.API.Data.Interfaces;
 using EquipmentBuilder.API.Dtos;
 using EquipmentBuilder.API.Models;
@@ -21,10 +22,73 @@ namespace EquipmentBuilder.API.Data
         }
 
 
-        public async Task<IEnumerable<Equipments>> ListMyEquipments(int userId)
+        public async Task<List<EquipmentListDto>> ListMyEquipments(PageParams pageParams, int userId)
         {
-            var equipments = await _context.Equipments.Where(x => x.UserId == userId).ToListAsync();
-            return equipments;
+            List<EquipmentListDto> lstEquipments = new List<EquipmentListDto>();
+
+            //pobranie grup uzytkownika
+            var userGroups = _context.UserToGroups.Where(x => x.UserId == userId).ToList();
+            if (userGroups.Count > 0)
+            {
+                //pobranie ekwipunkow udostępnionych dla grup użytkowników
+                foreach (UserToGroups groupId in _context.UserToGroups.Where(x => x.UserId == userId).ToList())
+                {
+                    foreach (EquipmentsToGroup eqToGroup in _context.EquipmentsToGroup.Where(x => x.GroupId == groupId.GroupId).ToList())
+                    {
+                        if (await _context.Equipments.AnyAsync(x => x.Id == eqToGroup.EquipmentId))
+                        {
+                            Equipments sharedEquipment = await _context.Equipments.FirstOrDefaultAsync(x => x.Id == eqToGroup.EquipmentId);
+
+                            // pobranie nazwy bohatera dla ekwipunku
+                            var hero = await _context.Heroes.FirstOrDefaultAsync(x => x.Id == sharedEquipment.HeroId);
+                            // pobranie poziomu bohatera dla ekwipunku
+                            // var heroLvl = await _context.UserHeroesLvl.FirstOrDefaultAsync(x => x.EquipmentId == sharedEquipment.Id);
+                            // pobranie ilości lajków dla ekwipunku
+                            var counterOfLikes = await _context.Likes.CountAsync(x => x.EquipmentId == sharedEquipment.Id);
+
+                            var eqWithoutShared = new EquipmentListDto()
+                            {
+                                EqName = sharedEquipment.EqName,
+                                HeroName = hero.HeroName,
+                                HeroLvl =0, // (int)heroLvl.Lvl,
+                                CounterOfLikes = counterOfLikes
+                            };
+
+                            lstEquipments.Add(eqWithoutShared);
+                        }
+                    }
+                }
+            }
+           
+
+            foreach (Equipments eq in _context.Equipments.Where(x => x.UserId == userId).ToList())
+            {
+                if(!lstEquipments.Any(x=>x.EqName == eq.EqName))
+                {
+                    // pobranie nazwy bohatera dla ekwipunku
+                    var hero = await _context.Heroes.FirstOrDefaultAsync(x => x.Id == eq.HeroId);
+                    // pobranie poziomu bohatera dla ekwipunku
+                    // var heroLvl = await _context.UserHeroesLvl.FirstOrDefaultAsync(x => x.EquipmentId == eq.Id);
+                    // pobranie ilości lajków dla ekwipunku
+                    var counterOfLikes = await _context.Likes.CountAsync(x => x.EquipmentId == eq.Id);
+
+                    var eqWithoutShared = new EquipmentListDto()
+                    {
+                        EqName = eq.EqName,
+                        HeroName = hero.HeroName,
+                        HeroLvl =0, // (int)heroLvl.Lvl,
+                        CounterOfLikes = counterOfLikes
+                    };
+
+                    lstEquipments.Add(eqWithoutShared);
+                }
+            }
+
+            // dodanie ekwipunków samego użytkownika
+            //var equipments = _context.Equipments.Where(x => x.UserId == userId).AsQueryable(); // pobranie ekwipunków użytkownika
+           // return await PagedList<EquipmentListDto>.CreateAsync(querableEq, pageParams.PageNumber, pageParams.PageSize);
+            return await PagedList<EquipmentListDto>.Create(lstEquipments, pageParams.PageNumber, pageParams.PageSize);
+           // return querableEq;
         }
 
 

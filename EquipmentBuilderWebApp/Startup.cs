@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using EquipmentBuilder.API.Context;
 using EquipmentBuilder.API.Data;
 using EquipmentBuilder.API.Data.Interfaces;
@@ -43,6 +44,7 @@ namespace EquipmentBuilderWebApp
             });
             services.AddControllers();
             services.AddCors(); //pozwala na uzycie middleware 
+            services.AddAutoMapper(typeof(EquipmentRepository).Assembly); // dodanie automappera - w konstruktorze określamy, która klasa ma mieć "dane" dla mppera - które assemby ma mieć profile dla mappera
             //services.AddSingleton(); //nie bardzo je�eli chodzi o r�wnoleg�e rz�dania
             //services.AddTransient();// dla lekkich - ci�gle tworzy nowe obiekty przy rz�daniu          
             services.AddScoped<IAuthRepository, AuthRepository>(); //dla kazdego rz�dania tworzy nowy obiekt, ale je�eli z tego samego ip to nie tworzy

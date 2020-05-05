@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { IItems } from '../models/IItems';
+import { IItems } from '../../models/IItems';
 import {   FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { ItemsService } from '../_services/items.service';
-import { HeroesService } from '../_services/heroes.service';
-import { IHero } from '../models/IHero';
-import { IAddEquipment } from '../models/IAddEquipment';
-import { AuthService } from '../_services/auth.service';
+import { ItemsService } from '../../_services/items.service';
+import { HeroesService } from '../../_services/heroes.service';
+import { IHero } from '../../models/IHero';
+import { IAddEquipment } from '../../models/IAddEquipment';
+import { AuthService } from '../../_services/auth.service';
 import { Router } from '@angular/router';
-import { MyEquipmentService } from '../_services/my-equipment.service';
-import { AlertifyService } from '../_services/alertify.service';
-import { IEquipmentToGetStatistics } from '../models/IEquipmentToGetStatistics';
-import { StatisticsService } from '../_services/statistics.service';
-import { IStatisticEquipment } from '../models/IStatisticEquipment';
-import { IHeroCalculateGold } from '../models/IHeroCalculateGold';
+import { MyEquipmentService } from '../../_services/my-equipment.service';
+import { AlertifyService } from '../../_services/alertify.service';
+import { IEquipmentToGetStatistics } from '../../models/IEquipmentToGetStatistics';
+import { StatisticsService } from '../../_services/statistics.service';
+import { IStatisticEquipment } from '../../models/IStatisticEquipment';
+import { IHeroCalculateGold } from '../../models/IHeroCalculateGold';
 
 @Component({
   selector: 'app-equipment',
@@ -27,7 +27,7 @@ export class EquipmentComponent implements OnInit {
   public heroPickedWithLvl: IHeroCalculateGold = {
     heroId: 0,
     heroLvl: 1
-  }
+  };
   public statistic: IStatisticEquipment = {
     hitPoints: 0,
       hitPointsRegen: 0,
@@ -54,7 +54,7 @@ export class EquipmentComponent implements OnInit {
       additionalGoldPerTenSec: 0,
       description: '',
       totalCost: 0,
-  }
+  };
   public heroesArray: IHero[];
   public userId: number;
   public eqName: string;
@@ -192,7 +192,7 @@ export class EquipmentComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/myEquipments']);
   }
 
   heroChange(heroId: number) {

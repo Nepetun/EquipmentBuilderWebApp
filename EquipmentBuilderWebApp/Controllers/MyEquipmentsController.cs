@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using EquipmentBuilder.API.Common;
 using EquipmentBuilder.API.Context;
 using EquipmentBuilder.API.Data;
 using EquipmentBuilder.API.Data.Interfaces;
 using EquipmentBuilder.API.Dtos;
 using EquipmentBuilder.API.Models;
+using EquipmentBuilderWebApp.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,21 +22,34 @@ namespace EquipmentBuilder.API.Controllers
     {
         private readonly IEquipmentRepository _repo;
         //private readonly IConfiguration _config;
+        private readonly IMapper _mapper;
 
-        public MyEquipmentsController(IEquipmentRepository repo)
+        public MyEquipmentsController(IEquipmentRepository repo, IMapper mapper) // IMapper mapper;
         {
             _repo = repo;
+            _mapper = mapper;
         }
 
+
+        // Paging
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
         [HttpGet("GetEquipments")] //("{userId}")
-        public async Task<IEnumerable<Equipments>> GetEquipments([FromQuery] int userId)
+        public async Task<List<EquipmentListDto>> GetEquipments([FromQuery] PageParams pageParams,[FromQuery] int userId)
         {
 
-            var myEquipments = await _repo.ListMyEquipments(userId);
+            var myEquipments = await _repo.ListMyEquipments(pageParams, userId);
+
+            // Response.AddPagination(myEquipments.CurrentPage, myEquipments.PageSize, myEquipments.TotalCount, myEquipments.TotalPages);
 
             return myEquipments;
+            
+           // var eqToReturn = _mapper.Map<PagedList<EquipmentListDto>>(myEquipments);
+
+           // return eqToReturn;
         }
+
+
+
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
         [HttpPost("addEquipment")]//, ActionName("addEquipment")]

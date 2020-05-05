@@ -5,6 +5,7 @@ import { StatisticsService } from '../_services/statistics.service';
 import { AlertifyService } from '../_services/alertify.service';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { IEquipments } from '../models/IEquipments';
 
 @Component({
   selector: 'app-myEquipments',
@@ -12,7 +13,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./my-equipments.component.css']
 })
 export class MyEquipmentsComponent implements OnInit {
-
+  public userId: number;
+  equipments: IEquipments[];
 
   constructor(
     private authService: AuthService,
@@ -24,13 +26,30 @@ export class MyEquipmentsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.loadUserId();
+    this.equipmentService.getEquipments(this.userId, 1, 10).subscribe((eq) => {
+      this.equipments = eq.result;
+    });
+  }
+
+  loadUserId() {
+    let userIdString = this.authService.getUserIdByUserName();
+    this.userId = +userIdString;
+    console.log(this.userId);
   }
 
   createEquipment() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/equipment']);
   }
 
   editSelectedEquipment() {
-    this.router.navigate(['/editEquipment']);
+    this.router.navigate(['/equipmentEditor']);
   }
+
+  showPickedEquipment() {
+    this.router.navigate(['/equipmentReview']);
+  }
+
+
+  
 }

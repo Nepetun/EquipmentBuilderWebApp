@@ -11,7 +11,7 @@ import { AuthService } from './_services/auth.service';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { ErrorInterceptorProvider } from './_services/error.interceptor';
-import { EquipmentComponent } from './equipment/equipment.component';
+import { EquipmentComponent } from './my-equipments/equipment/equipment.component';
 // import { AllEquipmentsComponent } from './allEquipments/allEquipments.component';
 import { GroupsComponent } from './groups/groups.component';
 import { RouterModule } from '@angular/router';

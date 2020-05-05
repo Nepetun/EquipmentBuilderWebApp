@@ -25,7 +25,7 @@ export class NavComponent implements OnInit {
       }, error => {
         this.alertify.error(error);
       }, () => { // tutaj dziłanie  w przypadku completed z wykorzystaniem anonimowej funkcji
-          this.router.navigate(['/equipment']);
+          this.router.navigate(['/myEquipments']);
       }
     );
   }

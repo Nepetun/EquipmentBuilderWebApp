@@ -9,3 +9,12 @@ DOMYYSLNIE KOMPONENT DO ZARZADZANIA EKWIPUNKAMI
 </nav>
 <button type="button" class="btn btn-success"  (click)="createEquipment()">Stwórz ekwipunek</button>
 <button type="button" class="btn btn-success"  (click)="editSelectedEquipment()">Edycja</button>
+<button type="button" class="btn btn-success"  (click)="showPickedEquipment()">Przeglądaj ekwipunek</button>
+
+<!-- tutaj lista ekwipunków stworzonych przez uzytkownika + filtry i stronicowanie -->
+
+<ul>
+    <li *ngFor="let item of equipments">
+        Nazwa ekwipunku {{item.eqName}}
+    </li>
+</ul>
