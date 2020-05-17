@@ -1,3 +1,10 @@
+
+.pageDiv {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(110, 185, 255, 0.685);
+}
+
 .errorDiv {
     color: red;
     font-weight: bold;
@@ -7,10 +14,53 @@
     font-weight: bold;
 }
 
+textarea {
+    max-height: 250px;
+    min-height: 200px;
+    height: 200px;
+}
+
+.columnFlex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(110, 185, 255, 0.685);
+    align-items: stretch;
+    align-content: stretch;
+}
+
+.columnFlex :nth-child(1) {order: 0; }
+
+.columnFlexItem {
+    height: 100%;
+    width: 70%;
+    flex-direction: row;
+    flex-shrink: 10;
+    text-align: center;
+    margin: 10px;
+    /* background-color: yellow; */
+}
+
+.columnFlexItemEq {
+    height: 100%;
+    width: 20%;
+    flex-direction: row;
+    flex-shrink: 10;
+    text-align: center;
+    margin: 10px;
+    background-color: rgb(117, 192, 241);
+}
+
+
+
+
 .containerFlex {
     display: flex;
     flex-direction: column;
     width: 100%; 
+    height: 100%;
     /*
     height: 80%;
     width: 100%; 
@@ -19,8 +69,8 @@
     justify-content: space-around;
 */
 
-    /* align-content: stretch;
-    align-items: stretch; */
+    align-content: stretch;
+    align-items: stretch; 
 }
 
 
@@ -36,4 +86,30 @@
     margin: 0px;
     width: 100%;
     flex-direction: column;
+}
+
+
+
+.statisticFlex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(110, 185, 255, 0.685);
+    /* background-color: red; */
+    align-items: stretch;
+    align-content: stretch;
+}
+
+.statisticFlex :nth-child(1) {order: 0; }
+
+.statisticFlexItem {
+    height: 100%;
+    width: 30%;
+    flex-direction: row;
+    flex-shrink: 10;
+    text-align: center;
+    margin: 10px;
+    background-color: rgba(14, 152, 233, 0.493);
 }

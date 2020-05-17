@@ -15,6 +15,8 @@ namespace EquipmentBuilder.API.Dtos
         [Required(ErrorMessage = "Musisz wybrać bohatera")]
         public int? HeroId { get; set; }
 
+        public int HeroLvl { get; set; }
+
         [Required(ErrorMessage = "Coś poszło nie tak - nie przypisano użytkownika..")]
         public int UserId { get; set; }
         public int? FirtItemId { get; set; }
@@ -22,7 +24,9 @@ namespace EquipmentBuilder.API.Dtos
         public int? ThirdItemId { get; set; }
         public int? FourthItemId { get; set; }
         public int? FifthItemId { get; set; }
-        public int? SixthItemId { get; set; }       
+        public int? SixthItemId { get; set; }
+
+        public int EquipmentId { get; set; }
 
     }
 }

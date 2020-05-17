@@ -4,17 +4,67 @@ DOMYYSLNIE KOMPONENT DO ZARZADZANIA EKWIPUNKAMI
 - TWORZENIE EKWIPUNKU -> PO KLIKNIECIU STWORZ EKWIPUNEK
 - PRZEGLADANIE EKWIPUNKOW INNYCH UZYTKOWNIKOW - LUB EDYCJA/USUNIECIE JEZELI WYBRANY STWORZONY PRZEZ NAS  -->
 
-<nav class="navSpecial">  
-    <a class="navbar-brand" >Zarządzanie ekwipunkami</a>
-</nav>
-<button type="button" class="btn btn-success"  (click)="createEquipment()">Stwórz ekwipunek</button>
-<button type="button" class="btn btn-success"  (click)="editSelectedEquipment()">Edycja</button>
-<button type="button" class="btn btn-success"  (click)="showPickedEquipment()">Przeglądaj ekwipunek</button>
+<div class="pageDiv">
+    <nav class="navSpecial">  
+        <a class="navbar-brand" >Zarządzanie ekwipunkami</a>
+    </nav>
+    <button type="button" class="btn btn-success"  (click)="createEquipment()">Stwórz ekwipunek</button>
+    <button type="button" class="btn btn-success" [disabled]="!selectedEq" (click)="editSelectedEquipment()">Edycja</button>
+    <button type="button" class="btn btn-success" [disabled]="!selectedEq" (click)="showPickedEquipment()">Przeglądaj ekwipunek</button>
+ 
 
-<!-- tutaj lista ekwipunków stworzonych przez uzytkownika + filtry i stronicowanie -->
+        <div class="containerFlex" >
+            <div class="containerItem" *ngFor="let item of equipments; let i = index">
+                <mat-card (click)="higlightSelected(i,item.equipmentId)" [ngClass]="{'highlight' : i === selectedCardIndex, 'not-highlight' : i !== selectedCardIndex}">
+                    <!-- <mat-card-header>
+                        Użytkownik: {{item.userName}}
+                        <mat-card-title>
+                            Ekwipunek:   
+                            <div class="fontStyleBold">
+                                {{item.eqName}}
+                            </div>
+                           
+                        </mat-card-title> 
+                    </mat-card-header> -->
+                    <mat-card-content>
+                        Użytkownik: 
+                        <div class="fontStyleBold">
+                            {{item.userName}}
+                        </div>
+                    </mat-card-content>
+                    <mat-card-content>
+                        Ekwipunek:   
+                        <div class="fontStyleBold">
+                            {{item.eqName}}
+                        </div>
+                    </mat-card-content>
 
-<ul>
-    <li *ngFor="let item of equipments">
-        Nazwa ekwipunku {{item.eqName}}
-    </li>
-</ul>
+                    <mat-card-content>
+                        Bohater: 
+                        <div class="fontStyleBold">
+                            {{item.heroName}}
+                        </div>
+                    </mat-card-content>
+                    <mat-card-content>
+                        Poziom bohatera: 
+                        <div class="fontStyleBold">
+                            {{item.heroLvl}}   
+                        </div>
+                    </mat-card-content> 
+                    <mat-card-content>
+                        Ilość lajków: 
+                        <div class="fontStyleBold">
+                            {{item.counterOfLikes}}
+                        </div>
+                    </mat-card-content>
+         
+                    <!-- <mat-card-actions>
+                        <button mat-button>Polub</button>
+                        <button mat-button>Udostępnij</button>
+                    </mat-card-actions> -->
+                </mat-card>
+            
+            </div>
+        </div>
+
+    </div>

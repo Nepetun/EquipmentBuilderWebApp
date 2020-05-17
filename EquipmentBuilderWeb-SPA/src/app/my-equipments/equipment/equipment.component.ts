@@ -168,6 +168,7 @@ export class EquipmentComponent implements OnInit {
     let eqToCreate: IAddEquipment = {
       eqName: this.eqInformation.controls.equipmentName.value,
       heroId: +this.eqInformation.controls.hero.value,
+      heroLvl: +this.eqInformation.controls.heroLvl.value,
       userId: this.userId, // this.authService.userId,
       firtItemId: +this.eqInformation.controls.firstItem.value,
       secondItemId: +this.eqInformation.controls.secondItem.value,

@@ -7,6 +7,8 @@ import { IAddEquipment } from '../models/IAddEquipment';
 import { map, finalize } from 'rxjs/operators';
 import { IEquipments } from '../models/IEquipments';
 import { PaginatedResult } from '../models/pagination';
+import { EquipmentModule } from '../my-equipments/equipment/equipment.module';
+import { IEquipmentToGetStatistics } from '../models/IEquipmentToGetStatistics';
 
 @Injectable({
   providedIn: 'root'
@@ -17,13 +19,25 @@ baseUrl: any = environment.apiUrl + '/MyEquipments';
 // private myEquipmentsSubject = new BehaviorSubject();
 constructor(private http: HttpClient) { }
 
+private equipmentByIdSubject =  new BehaviorSubject<IEquipmentToGetStatistics>({
+  heroLvl: 0,
+  heroId: 0,
+  firtItemId: 0,
+  secondItemId: 0,
+  thirdItemId: 0,
+  fourthItemId: 0,
+  fifthItemId: 0,
+  sixthItemId: 0
+  });
 
 private equipmentsSubject = new BehaviorSubject<PaginatedResult<IEquipments[]>>({
   result: [{
+    equipmentId: 0,
     eqName: '',
     heroName: '',
     heroLvl: 0,
-    counterOfLikes: 0
+    counterOfLikes: 0,
+    userName: ''
   }],
   pagination: {
     currentPage: 0,
@@ -35,6 +49,45 @@ private equipmentsSubject = new BehaviorSubject<PaginatedResult<IEquipments[]>>(
 
 private loadingSubject = new BehaviorSubject<boolean>(false);
 public loading$ = this.loadingSubject.asObservable();
+
+private selectedEquipmentId = new BehaviorSubject<number>(-1);
+public selectedEquipmentId$ = this.selectedEquipmentId.asObservable();
+
+setSelectedEquipmentId(equipmentId: number) {
+  this.selectedEquipmentId.next(equipmentId);
+}
+
+loadEquipmentById(equipmentId: number) {
+  this.getEquipmentById(equipmentId).subscribe((res) => {
+    this.equipmentByIdSubject.next(res);
+  });
+}
+
+
+getEquipmentById(equipmentId: number): Observable<IAddEquipment> {
+  // let getEquipmentById: IEquipments {
+  //   equipmentId: 0,
+  //   eqName: '',
+  //   heroName: '',
+  //   heroLvl: 0,
+  //   counterOfLikes: 0,
+  //   userName: ''
+  // };
+  let params = new HttpParams();
+
+  if ( equipmentId != null ) {
+    params = params.append('equipmentId', equipmentId.toString());
+  }
+
+  return this.http.get<IAddEquipment>(this.baseUrl + '/GetEquipmentById', {
+    observe: 'response',
+    params
+  }).pipe(
+    map((response) => {
+      return response.body;
+    }
+  ));
+}
 
 loadItems(userId: number, page?, itemsPerPage?) {
   this.loadingSubject.next(true);
@@ -75,6 +128,7 @@ getEquipments(userId: number, page?, itemsPerPage?): Observable<PaginatedResult<
   ));
 }
 
+
 // getEquipments(): Observable<IEquipments[]> {
 //   return this.http.get<IEquipments[]>(this.baseUrl + '');
 // }
@@ -100,6 +154,7 @@ addEquipment(addedEq: IAddEquipment) {
   return this.http.post<IAddEquipment>(this.baseUrl + '/addEquipment' , {
     eqName: eqCreated.eqName,
     heroId: eqCreated.heroId,
+    heroLvl: eqCreated.heroLvl,
     userId: eqCreated.userId,
     firtItemId: eqCreated.firtItemId,
     secondItemId: eqCreated.secondItemId,
@@ -107,6 +162,35 @@ addEquipment(addedEq: IAddEquipment) {
     fourthItemId: eqCreated.fourthItemId,
     fifthItemId: eqCreated.fifthItemId,
     sixthItemId: eqCreated.sixthItemId
+  })
+  .pipe(
+    map((reponse: any) => {
+      const eq = reponse;
+    })
+  );
+  // .subscribe( addEq => {
+  //   console.log(addEq);
+  // });
+
+}
+
+
+updateEquipment(addedEq: IAddEquipment, pickedEquipmentId: number) {
+  //  let params = new HttpParams();
+  let eqCreated: IAddEquipment = addedEq;
+
+  return this.http.post<IAddEquipment>(this.baseUrl + '/updateEquipment' , {
+    eqName: eqCreated.eqName,
+    heroId: eqCreated.heroId,
+    heroLvl: eqCreated.heroLvl,
+    userId: eqCreated.userId,
+    firtItemId: eqCreated.firtItemId,
+    secondItemId: eqCreated.secondItemId,
+    thirdItemId: eqCreated.thirdItemId,
+    fourthItemId: eqCreated.fourthItemId,
+    fifthItemId: eqCreated.fifthItemId,
+    sixthItemId: eqCreated.sixthItemId,
+    equipmentId: pickedEquipmentId
   })
   .pipe(
     map((reponse: any) => {

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MyEquipmentsRoutingModule } from './my-equipments.routing.module';
 import { MyEquipmentsComponent } from './my-equipments.component';
+import { MaterialModule } from '../material.module';
 
 
 
@@ -9,7 +10,8 @@ import { MyEquipmentsComponent } from './my-equipments.component';
   declarations: [MyEquipmentsComponent],
   imports: [
     CommonModule,
-    MyEquipmentsRoutingModule
+    MyEquipmentsRoutingModule,
+    MaterialModule
   ]
 })
 export class MyEquipmentsModule { }

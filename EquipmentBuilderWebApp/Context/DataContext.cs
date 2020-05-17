@@ -201,7 +201,7 @@ namespace EquipmentBuilder.API.Context
 
             modelBuilder.Entity<UserHeroesLvl>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+               // entity.Property(e => e.Id).ValueGeneratedNever(); //zakomentowanie nie identity
 
                 entity.HasOne(d => d.Hero)
                     .WithMany(p => p.UserHeroesLvl)

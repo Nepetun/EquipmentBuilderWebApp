@@ -15,6 +15,9 @@ import { IEquipments } from '../models/IEquipments';
 export class MyEquipmentsComponent implements OnInit {
   public userId: number;
   equipments: IEquipments[];
+  selectedCardIndex = -1;
+  selectedEq = false;
+  equipmentId = -1;
 
   constructor(
     private authService: AuthService,
@@ -50,6 +53,15 @@ export class MyEquipmentsComponent implements OnInit {
     this.router.navigate(['/equipmentReview']);
   }
 
+  higlightSelected(index, equipmentId: number) {
+    this.selectedCardIndex = index;
+    this.equipmentId = equipmentId;
+    this.selectedEq = true;
+    this.setFocusedEquipmentId(equipmentId);
+  }
 
-  
+  setFocusedEquipmentId(id: number) {
+    this.equipmentService.setSelectedEquipmentId(id);
+  }
+
 }

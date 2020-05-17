@@ -42,16 +42,21 @@ namespace EquipmentBuilder.API.Data
                             // pobranie nazwy bohatera dla ekwipunku
                             var hero = await _context.Heroes.FirstOrDefaultAsync(x => x.Id == sharedEquipment.HeroId);
                             // pobranie poziomu bohatera dla ekwipunku
-                            // var heroLvl = await _context.UserHeroesLvl.FirstOrDefaultAsync(x => x.EquipmentId == sharedEquipment.Id);
+                            var heroLvl = await _context.UserHeroesLvl.FirstOrDefaultAsync(x => x.EquipmentId == sharedEquipment.Id);
                             // pobranie ilości lajków dla ekwipunku
                             var counterOfLikes = await _context.Likes.CountAsync(x => x.EquipmentId == sharedEquipment.Id);
 
+                            // pobranie nazwy użytkownika
+                            var userName = await _context.Users.FirstOrDefaultAsync(x => x.Id == sharedEquipment.UserId);
+
                             var eqWithoutShared = new EquipmentListDto()
                             {
+                                EquipmentId = sharedEquipment.Id,
                                 EqName = sharedEquipment.EqName,
                                 HeroName = hero.HeroName,
-                                HeroLvl =0, // (int)heroLvl.Lvl,
-                                CounterOfLikes = counterOfLikes
+                                HeroLvl = (int)heroLvl.Lvl,
+                                CounterOfLikes = counterOfLikes,
+                                UserName = userName.UserName
                             };
 
                             lstEquipments.Add(eqWithoutShared);
@@ -68,16 +73,21 @@ namespace EquipmentBuilder.API.Data
                     // pobranie nazwy bohatera dla ekwipunku
                     var hero = await _context.Heroes.FirstOrDefaultAsync(x => x.Id == eq.HeroId);
                     // pobranie poziomu bohatera dla ekwipunku
-                    // var heroLvl = await _context.UserHeroesLvl.FirstOrDefaultAsync(x => x.EquipmentId == eq.Id);
+                    var heroLvl = await _context.UserHeroesLvl.FirstOrDefaultAsync(x => x.EquipmentId == eq.Id);
                     // pobranie ilości lajków dla ekwipunku
                     var counterOfLikes = await _context.Likes.CountAsync(x => x.EquipmentId == eq.Id);
 
+                    // pobranie nazwy użytkownika
+                    var userName = await _context.Users.FirstOrDefaultAsync(x => x.Id == eq.UserId);
+
                     var eqWithoutShared = new EquipmentListDto()
                     {
+                        EquipmentId = eq.Id,
                         EqName = eq.EqName,
                         HeroName = hero.HeroName,
-                        HeroLvl =0, // (int)heroLvl.Lvl,
-                        CounterOfLikes = counterOfLikes
+                        HeroLvl =(int)heroLvl.Lvl,
+                        CounterOfLikes = counterOfLikes,
+                        UserName = userName.UserName
                     };
 
                     lstEquipments.Add(eqWithoutShared);
@@ -91,13 +101,49 @@ namespace EquipmentBuilder.API.Data
            // return querableEq;
         }
 
+        
+        public async Task<Equipments> UpdateEquipment(Equipments equipment, int heroLvl, int equipmentId)
+        {
+            equipment.Id = equipmentId;
 
-        public async Task<Equipments> AddEquipment(Equipments equipment)
+            _context.Equipments.Update(equipment);
+
+            var eqHeroLvlExisting = await _context.UserHeroesLvl.FirstOrDefaultAsync(x => x.EquipmentId == equipmentId);
+
+            eqHeroLvlExisting.HeroId = equipment.HeroId;
+            eqHeroLvlExisting.UserId = equipment.UserId;
+            eqHeroLvlExisting.Lvl = heroLvl;
+            eqHeroLvlExisting.EquipmentId = equipmentId;
+
+            _context.UserHeroesLvl.Update(eqHeroLvlExisting);
+
+            await _context.SaveChangesAsync();
+
+            return equipment;
+
+        }
+        public async Task<Equipments> AddEquipment(Equipments equipment, int heroLvl)
         {
             // generowanie zestawienia ekwipunku
             await _context.Equipments.AddAsync(equipment);
 
             await _context.SaveChangesAsync();
+
+            // generowanie ewkipunku do poziomu bohatera 
+            int id = equipment.Id;
+
+            var eqHeroLvl = new UserHeroesLvl
+            {
+                HeroId = equipment.HeroId,
+                UserId = equipment.UserId,
+                Lvl = heroLvl,
+                EquipmentId = id
+            };
+
+            await _context.UserHeroesLvl.AddAsync(eqHeroLvl);
+
+            await _context.SaveChangesAsync();
+
             return equipment;
 
         }
@@ -118,6 +164,13 @@ namespace EquipmentBuilder.API.Data
         public async Task<bool> ValidateEquipmentName(string equipmentName, int userId)
         {
             if (await _context.Equipments.AnyAsync(x => x.UserId == userId && x.EqName == equipmentName))
+                return true;
+            return false;
+        }
+
+        public async Task<bool> ValidateEquipmentNameForUpdate(string equipmentName, int userId, int equipmentId)
+        {
+            if (await _context.Equipments.AnyAsync(x => x.UserId == userId && x.EqName == equipmentName && x.Id != equipmentId))
                 return true;
             return false;
         }
@@ -222,6 +275,26 @@ namespace EquipmentBuilder.API.Data
             return true;
         }
 
-     
+        public async Task<EquipmentDto> GetEquipmentById(int equipmentId)
+        {
+            var eq = await _context.Equipments.FirstOrDefaultAsync(x => x.Id == equipmentId);
+            var herloLvl = await _context.UserHeroesLvl.FirstOrDefaultAsync(x => x.EquipmentId == eq.Id);
+
+            var eqToGet = new EquipmentDto
+            {
+                EqName = eq.EqName,
+                HeroId = eq.HeroId,
+                HeroLvl = (int)herloLvl.Lvl,
+                FirtItemId = eq.FirtItemId,
+                SecondItemId = eq.SecondItemId,
+                ThirdItemId = eq.ThirdItemId,
+                FourthItemId = eq.FourthItemId,
+                FifthItemId = eq.FifthItemId,
+                SixthItemId = eq.SixthItemId
+            };
+
+
+            return eqToGet;
+        }
     }
 }

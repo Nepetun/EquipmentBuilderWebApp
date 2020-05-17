@@ -13,11 +13,17 @@ namespace EquipmentBuilder.API.Data.Interfaces
     {
         Task<List<EquipmentListDto>> ListMyEquipments(PageParams pageParams ,int userId);
 
+        Task<EquipmentDto> GetEquipmentById(int equipmentId);
+
         Task<IEnumerable<Equipments>> ListSharedEquipments(int userId);
 
-        Task<Equipments> AddEquipment(Equipments equipment);
+        Task<Equipments> AddEquipment(Equipments equipment, int heroLvl);
+
+        Task<Equipments> UpdateEquipment(Equipments equipment, int heroLvl, int equipmentId);
 
         Task<bool> ValidateEquipmentName(string equipmentName, int userId);
+
+        Task<bool> ValidateEquipmentNameForUpdate(string equipmentName, int userId, int equipmentId);
 
         string DeleteEquipment(int equipmentId);
 

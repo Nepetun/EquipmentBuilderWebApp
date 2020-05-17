@@ -48,6 +48,23 @@ namespace EquipmentBuilder.API.Controllers
            // return eqToReturn;
         }
 
+        [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
+        [HttpGet("GetEquipmentById")] //("{userId}")
+        public async Task<EquipmentDto> GetEquipmentById([FromQuery] int equipmentId)
+        {
+
+            var equipment = await _repo.GetEquipmentById(equipmentId);
+
+            // Response.AddPagination(myEquipments.CurrentPage, myEquipments.PageSize, myEquipments.TotalCount, myEquipments.TotalPages);
+
+            return equipment;
+
+            // var eqToReturn = _mapper.Map<PagedList<EquipmentListDto>>(myEquipments);
+
+            // return eqToReturn;
+        }
+
+
 
 
 
@@ -74,7 +91,39 @@ namespace EquipmentBuilder.API.Controllers
                 SixthItemId = equipmentDto.SixthItemId
             };
 
-            var createdEquipment = await _repo.AddEquipment(eqToCreate);//,equipmentDto.UserId);
+            var createdEquipment = await _repo.AddEquipment(eqToCreate, equipmentDto.HeroLvl);//,equipmentDto.UserId);
+
+            //var createdUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
+
+            //zwrotka dla klienta gdzie został stworzony nowy obiekt
+            //return CreatedAtRoute();
+            return StatusCode(201);
+        }
+
+        [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
+        [HttpPost("updateEquipment")]//, ActionName("addEquipment")]
+        public async Task<IActionResult> UpdateEquipment([FromBody] EquipmentDto equipmentDto)
+        {
+            //nieuwzglenianie case sensitivity 
+            equipmentDto.EqName = equipmentDto.EqName.ToLower();
+
+            if (await _repo.ValidateEquipmentNameForUpdate(equipmentDto.EqName, equipmentDto.UserId, equipmentDto.EquipmentId))
+                return BadRequest("Inny z Twoich ekwipunków posiada już taką nazwę");
+
+            var eqToCreate = new Equipments
+            {
+                EqName = equipmentDto.EqName,
+                UserId = equipmentDto.UserId,
+                HeroId = equipmentDto.HeroId,
+                FirtItemId = equipmentDto.FirtItemId,
+                SecondItemId = equipmentDto.SecondItemId,
+                ThirdItemId = equipmentDto.ThirdItemId,
+                FourthItemId = equipmentDto.FourthItemId,
+                FifthItemId = equipmentDto.FifthItemId,
+                SixthItemId = equipmentDto.SixthItemId
+            };
+
+            var createdEquipment = await _repo.UpdateEquipment(eqToCreate, equipmentDto.HeroLvl, equipmentDto.EquipmentId);//,equipmentDto.UserId);
 
             //var createdUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
 
