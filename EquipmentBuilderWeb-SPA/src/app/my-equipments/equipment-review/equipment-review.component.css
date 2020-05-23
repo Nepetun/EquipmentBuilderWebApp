@@ -1,0 +1,160 @@
+
+.pageDiv {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(110, 185, 255, 0.685);
+}
+
+input {
+    margin-bottom: 10px;
+}
+
+.errorDiv {
+    color: red;
+    font-weight: bold;
+}
+
+.textSpecial {
+    font-weight: bold;
+}
+
+textarea {
+    max-height: 250px;
+    min-height: 200px;
+    height: 200px;
+    border-radius: 10px;
+}
+
+.textareaCustom {
+    max-height: 150px;
+    min-height: 100px;
+    height: 100px;
+    border-radius: 10px;
+}
+
+.columnFlex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(110, 185, 255, 0.685);
+    align-items: stretch;
+    align-content: stretch;
+}
+
+.columnFlex :nth-child(1) {order: 0; }
+
+.columnFlexItem {
+    height: 100%;
+    width: 70%;
+    flex-direction: row;
+    flex-shrink: 10;
+    text-align: center;
+    margin: 10px;
+    /* background-color: yellow; */
+}
+
+.columnFlexItemEq {
+    height: 100%;
+    width: 20%;
+    flex-direction: row;
+    flex-shrink: 10;
+    text-align: center;
+    margin: 10px;
+    background-color: rgb(117, 192, 241);
+}
+
+
+
+
+.containerFlex {
+    display: flex;
+    flex-direction: column;
+    width: 100%; 
+    height: 100%;
+    align-content: stretch;
+    align-items: stretch; 
+}
+
+
+.containerFlex :nth-child(1) { order:0 }
+
+.containerItem {
+    margin: 0px;
+    width: 100%;
+    flex-direction: column;
+}
+
+
+
+.statisticFlex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(110, 185, 255, 0.685);
+    /* background-color: red; */
+    align-items: stretch;
+    align-content: stretch;
+}
+
+.statisticFlex :nth-child(1) {order: 0; }
+
+.statisticFlexItem {
+    height: 100%;
+    width: 30%;
+    flex-direction: row;
+    flex-shrink: 10;
+    text-align: center;
+    margin: 10px;
+    background-color: rgba(14, 152, 233, 0.493);
+}
+
+
+.fontStyleBold {
+    font-weight: bold;
+}
+
+
+.commentFlex {
+    display: flex;
+    flex-direction: column;
+    width: 100%; 
+    height: 100%;
+    align-content: stretch;
+    align-items: stretch; 
+}
+
+
+.commentFlex :nth-child(1) { order:0 }
+
+.commentItem {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    flex-direction: column;
+    border: 2px solid rgba(9, 41, 184, 0.493);
+    padding: 10px;
+    border-radius: 25px;
+}
+
+
+.buttonComment {
+    align-items: center;
+    width: 200px;
+    margin: 5px;
+    background-color: rgb(35, 168, 17);
+}
+
+.buttonCard {
+    align-items: center;
+    width: 80px;
+    margin: 5px;
+    background-color: rgb(35, 168, 17);
+}
+
+.inlineButtons {
+    display:inline-block;
+}

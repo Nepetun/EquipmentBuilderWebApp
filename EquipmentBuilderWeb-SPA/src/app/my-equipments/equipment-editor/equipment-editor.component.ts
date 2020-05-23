@@ -137,7 +137,7 @@ export class EquipmentEditorComponent implements OnInit {
     });
 
     this.loadHeroes();
-    this.loadItems();
+    // this.loadItems();
     this.loadUserId();
 
     this.eqCreatedStatistic = {
@@ -154,6 +154,8 @@ export class EquipmentEditorComponent implements OnInit {
 
     // pobranie ekwipunku
     this.equipmentService.getEquipmentById(this.selectedEquipmentId).subscribe((eq) => {
+      this.heroPickedWithLvl.heroLvl = eq.heroLvl;
+      this.loadItems();
       this.eqToGet = eq;
       this.eqCreatedStatistic = eq;
       this.fifthItemId = eq.firtItemId;
@@ -164,7 +166,6 @@ export class EquipmentEditorComponent implements OnInit {
       this.sixthItemId = eq.sixthItemId;
       this.loadControlsFromEquipment();
       this.eqCreatedStatistic.heroLvl = eq.heroLvl;
-      this.heroPickedWithLvl.heroLvl = eq.heroLvl;
       this.getGold();
       this.reloadStatistics();
     });
@@ -314,7 +315,9 @@ export class EquipmentEditorComponent implements OnInit {
 
 
   filterItemsOfType() {
-    return this.itemsArray.filter(x => x.minHeroLvl <= this.heroPickedWithLvl.heroLvl);
+    if (this.itemsArray) {
+      return this.itemsArray.filter(x => x.minHeroLvl <= this.heroPickedWithLvl.heroLvl);
+    }
   }
 
 }

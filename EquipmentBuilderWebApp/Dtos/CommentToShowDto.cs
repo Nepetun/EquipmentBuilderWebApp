@@ -12,5 +12,8 @@ namespace EquipmentBuilder.API.Dtos
         public string CommentString { get; set; }
 
         public string UserName { get; set; }
+        public DateTime Tmstmp { get; set; }
+
+        public int CommentId { get; set; }
     }
 }

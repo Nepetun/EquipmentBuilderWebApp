@@ -24,7 +24,7 @@ namespace EquipmentBuilder.API.Data
         {
             List<CommentToShowDto> lst = new List<CommentToShowDto>();
 
-            var comments = await _context.Comments.Where(x => x.EquipmentId == equipmentId).ToListAsync();
+            var comments = await _context.Comments.Where(x => x.EquipmentId == equipmentId).OrderByDescending(x=> x.Tmstmp).ToListAsync();
 
 
 
@@ -34,9 +34,10 @@ namespace EquipmentBuilder.API.Data
                 CommentToShowDto comToShow = new CommentToShowDto();
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == com.UserId);
                 comToShow.UserName = user.UserName;
-                comToShow.EquipmentId = com.Id;
+                comToShow.EquipmentId = (int)com.EquipmentId;
                 comToShow.CommentString = com.Comment;
-
+                comToShow.Tmstmp = (DateTime)com.Tmstmp;
+                comToShow.CommentId = com.Id;
                 lst.Add(comToShow);
             }
             

@@ -48,7 +48,7 @@ namespace EquipmentBuilder.API.Controllers
         }
 
         [HttpDelete("DeleteLike")]
-        public async Task<bool> DeleteLike([FromBody] LikeDto like)
+        public async Task<bool> DeleteLike([FromQuery] LikeDto like)
         {
             return await _repo.RemoveLike(like.EquipmentId,like.UserId);
         }

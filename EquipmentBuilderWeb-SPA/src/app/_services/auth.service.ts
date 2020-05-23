@@ -35,6 +35,7 @@ login(model: any) {
         this.decodedToken = this.jwtHelper.decodeToken(user.token);
         console.log(this.decodedToken);
         localStorage.setItem('userId', this.decodedToken.nameid);
+        localStorage.setItem('userName', this.decodedToken.unique_name);
       }
     })
   );
@@ -44,6 +45,9 @@ getUserIdByUserName() {
   return localStorage.getItem('userId');
 }
 
+getUserName() {
+  return localStorage.getItem('userName');
+}
 
 register(model: any) {
   // metoda ma za zadanie wywołać post na api z modelem - czyli loginem i haslem

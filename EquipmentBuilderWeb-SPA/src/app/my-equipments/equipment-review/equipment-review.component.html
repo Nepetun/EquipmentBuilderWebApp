@@ -1,3 +1,352 @@
-<p>
-  equipment-review works!
-</p>
+<div class="pageDiv">
+  <div class="columnFlex">
+    <div class="columnFlexItemEq">
+      <form
+        class="container"
+        [formGroup]="eqInformation"
+      >
+        <div class="containerFlex">
+          <div class="containerItem">
+            <label
+              >Nazwa ekwipunku:
+              <input readonly
+                type="text"
+                formControlName="equipmentName"
+                maxlength="20"
+                minlength="5"
+                class="form-control"
+              />             
+            </label>
+          </div>
+
+          <div [ngSwitch]="heroId">
+            <div *ngSwitchCase="1">
+              <img mat-card-image src="assets/Caitlyn.jpg" alt="Zdjęcie Caitlyn">
+            </div>  
+            <!-- TUTAJ RESZTA BOHATEROW !!           -->
+          </div>
+
+          <div class="containerItem">
+            <label for="hero"
+              >Bohater:
+              <select
+                id="hero"
+                formControlName="hero"
+                class="form-control"
+                [(ngModel)]="heroId"
+                name="hero"
+              >
+                <option *ngFor="let hero of heroesArray" [value]="hero.id">{{
+                  hero.heroName
+                }}</option>
+              </select>            
+            </label>
+          </div>
+
+          <div class="containerItem">
+            <label for="heroLvl"
+              >Poziom bohatera:
+              <select [disabled]="true"
+                id="heroLvl"
+                formControlName="heroLvl"
+                class="form-control"
+                name="heroLvl"
+              >
+                <option *ngFor="let lvl of lvlArray" [value]="lvl">{{
+                  lvl
+                }}</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="containerItem">
+            <label for="hero"
+              >Przedmiot nr 1:
+              <select
+                id="firstItem"
+                formControlName="firstItem"
+                class="form-control"
+                [(ngModel)]="firtItemId"
+                name="firstItem"
+              >
+                <!-- <option *ngFor="let item of itemsArray" [value]="item.id">{{item.itemName +' minimalny poziom: '+item.minHeroLvl}}</option>  -->
+                <option
+                  *ngFor="let item of filterItemsOfType()"
+                  [value]="item.id"
+                  >{{
+                    item.itemName + " minimalny poziom: " + item.minHeroLvl
+                  }}</option
+                >
+              </select>            
+            </label>
+          </div>
+
+          <div class="containerItem" *ngIf="heroId">
+            <label for="secondItem"
+              >Przedmiot 2:
+              <select 
+                id="secondItem"
+                formControlName="secondItem"
+                class="form-control"
+                [(ngModel)]="secondItemId"
+                name="secondItem"
+              >
+                <option
+                  *ngFor="let item of filterItemsOfType()"
+                  [value]="item.id"
+                  >{{
+                    item.itemName + " minimalny poziom: " + item.minHeroLvl
+                  }}</option
+                >
+              </select>
+            </label>
+          </div>
+
+          <div class="containerItem" *ngIf="heroId">
+            <label for="thirdItem"
+              >Przedmiot 3:
+              <select 
+                id="thirdItem"
+                formControlName="thirdItem"
+                class="form-control"
+                [(ngModel)]="thirdItemId"
+                name="thirdItem"
+              >
+                <option
+                  *ngFor="let item of filterItemsOfType()"
+                  [value]="item.id"
+                  >{{
+                    item.itemName + " minimalny poziom: " + item.minHeroLvl
+                  }}</option
+                >
+              </select>
+            </label>
+          </div>
+
+          <div class="containerItem" *ngIf="heroId">
+            <label for="forthItem"
+              >Przedmiot 4:
+              <select 
+                id="forthItem"
+                formControlName="forthItem"
+                class="form-control"
+                [(ngModel)]="fourthItemId"
+                name="forthItem"
+              >
+                <option
+                  *ngFor="let item of filterItemsOfType()"
+                  [value]="item.id"
+                  >{{
+                    item.itemName + " minimalny poziom: " + item.minHeroLvl
+                  }}</option
+                >
+              </select>
+            </label>
+          </div>
+
+          <div class="containerItem" *ngIf="heroId">
+            <label for="fifthItem"
+              >Przedmiot 5:
+              <select 
+                id="fifthItem"
+                formControlName="fifthItem"
+                class="form-control"
+                [(ngModel)]="fifthItemId"
+                name="fifthItem"
+              >
+                <option
+                  *ngFor="let item of filterItemsOfType()"
+                  [value]="item.id"
+                  >{{
+                    item.itemName + " minimalny poziom: " + item.minHeroLvl
+                  }}</option
+                >
+              </select>
+            </label>
+          </div>
+
+          <div class="containerItem" *ngIf="heroId">
+            <label for="sixthItem"
+              >Przedmiot 6:
+              <select
+                id="sixthItem"
+                formControlName="sixthItem"
+                class="form-control"
+                [(ngModel)]="sixthItemId"
+                name="sixthItem"
+              >
+                <option
+                  *ngFor="let item of filterItemsOfType()"
+                  [value]="item.id"
+                  >{{
+                    item.itemName + " minimalny poziom: " + item.minHeroLvl
+                  }}</option
+                >
+              </select>
+            </label>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="columnFlexItem" *ngIf="heroId">
+      <div class="statisticFlex">
+        <div class="statisticFlexItem">Dostępne złoto : {{ gold }}</div>
+
+        <div class="statisticFlexItem">
+          Całkowity koszt : {{ statistic.totalCost }}
+        </div>
+        <div class="statisticFlexItem">
+          Punkty życia : {{ statistic.hitPoints }}
+        </div>
+        <div class="statisticFlexItem">
+          Punkty życia - regeneracja co 5 sek : {{ statistic.hitPointsRegen }}
+        </div>
+        <div class="statisticFlexItem">Mana : {{ statistic.mana }}</div>
+        <div class="statisticFlexItem">
+          Mana - regeneracja co 5 sek : {{ statistic.manaRegen }}
+        </div>
+
+        <div class="statisticFlexItem">
+          Zasięg : {{statistic.range}}
+        </div>
+        <div class="statisticFlexItem">
+          Obrażenia fizyczne : {{statistic.attackDamage}}
+        </div>
+        <div class="statisticFlexItem">
+          Szybkość ataku : {{statistic.attackSpeed}} 
+        </div>
+        <div class="statisticFlexItem">
+          Pancerz : {{statistic.armour}} 
+        </div>
+        <div class="statisticFlexItem">
+          Odporność na magie : {{statistic.magicResistance}}
+        </div>
+        <div class="statisticFlexItem">
+          Szybkość ruchu : {{statistic.movementSpeed}}
+        </div>
+        <div class="statisticFlexItem">
+          Moc : {{statistic.abillityPower}}
+        </div>
+        <div class="statisticFlexItem">
+          Skrócenie czasu odnowienia : {{statistic.cooldownReduction}}
+        </div>
+
+        <div class="statisticFlexItem">
+          Przebicie pancerza : {{statistic.armourPenetration}}
+        </div>
+        <div class="statisticFlexItem">
+          Przebicie pancerza % : {{statistic.armourPenetrationProc}}
+        </div>
+        <div class="statisticFlexItem">
+          Przebicie odporności na magie : {{statistic.magicPenetration}}
+        </div>
+        <div class="statisticFlexItem">
+          Przebicie odporności na magie % : {{statistic.magicPenetrationProc}}
+        </div>
+        <div class="statisticFlexItem">
+          Kradzież życia : {{statistic.lifeSteal}}
+        </div>
+        <div class="statisticFlexItem">
+          Wampiryzm zaklęć : {{statistic.apLifeSteal}}
+        </div>
+        <div class="statisticFlexItem">
+          Nieustępliwość : {{statistic.tenacity}}
+        </div>
+        <div class="statisticFlexItem">
+          Krytyczne uderzenie % : {{statistic.criticalChance}}
+        </div>
+        <div class="statisticFlexItem">
+          Wzmocnienie potionów : {{statistic.additionalPotionPower}}
+        </div>
+
+        <div class="statisticFlexItem">
+          Życie co cios : {{statistic.additionalHitPointsPerHit}}
+        </div>
+        <div class="statisticFlexItem">
+          Złoto co 10 sek : {{statistic.additionalGoldPerTenSec}}
+        </div>
+        <div class="statisticFlexItem">
+          Dodatkowe umiejętności : 
+            <textarea readonly class="form-control" id="textArea" rows="2"> {{statistic.description}} </textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Komentarze w cadviewsach a komentarz dod dodania w teaxtarea -->
+
+<div class="commentFlex">
+ 
+  <!-- <textarea class="textareaCustom" id="textArea" rows="1" #commentUser>
+    {{userComment}}
+  </textarea> -->
+  <form
+        class="container"
+        [formGroup]="commentForm"
+  >
+  <div class="fontStyleBold">
+        Komentarz:
+  </div>
+  <input 
+  type="text"
+  formControlName="commentUserInput"
+  maxlength="1000"
+  minlength="5"
+  class="form-control"
+  />       
+  </form>
+
+  <!-- Wymagane w celu widoczności ikon -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- <button mat-button><mat-icon>mic</mat-icon> Start Recording</button> -->
+
+  <div class="inlineButtons">
+    <button mat-button class="buttonComment" (click)="addComment()">
+      Dodaj komentarz
+      <mat-icon> comment</mat-icon>
+    </button>    
+
+    <button mat-button class="buttonComment" (click)="likeEquipment()">
+      Polub
+      <mat-icon>thumb_up</mat-icon>
+    </button>
+
+    <button mat-button class="buttonComment" (click)="unlikeEquipment()">
+      Polub
+      <mat-icon>thumb_down</mat-icon>
+    </button>
+  </div>
+
+ 
+
+
+ 
+
+    <div class="commentItem" *ngFor="let item of commentArray">
+        <mat-card>
+            <mat-card-header>                 
+                <mat-card-title>
+                    <div class="fontStyleBold">
+                      Użytkownik: {{item.userName}} - {{item.tmstmp | date:'yyyy-MM-dd HH:mm' }}
+                    </div>                   
+                </mat-card-title> 
+            </mat-card-header> 
+            <mat-card-content>                
+               {{item.commentString}}
+            </mat-card-content> 
+            <div *ngIf="item.userName == userName">
+            <mat-card-actions>
+              <button mat-button class="buttonCard" (click)="removeComment(item.commentId)">Usuń</button>
+            </mat-card-actions>
+            </div>
+        </mat-card>
+    
+    </div>
+</div>
+
+</div>
+
+
+
+
+

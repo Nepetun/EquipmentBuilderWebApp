@@ -23,7 +23,7 @@ namespace EquipmentBuilder.API.Controllers
         }
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
-        [HttpPost("AddComment")]
+        [HttpPost("addComment")]
         public async Task<IActionResult> AddComment([FromBody] CommentDto comment)
         {
             // jeżeli nie ma ekwipunku
@@ -48,7 +48,7 @@ namespace EquipmentBuilder.API.Controllers
         }
 
         [HttpDelete("DeleteComment")]
-        public async Task<bool> DeleteComment([FromBody] int commentId)
+        public async Task<bool> DeleteComment([FromQuery] int commentId)
         {
             return await _repo.DeleteComment(commentId);
         }

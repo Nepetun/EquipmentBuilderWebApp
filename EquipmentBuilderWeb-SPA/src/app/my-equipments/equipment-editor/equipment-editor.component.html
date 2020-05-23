@@ -38,7 +38,14 @@
             </label>
           </div>
 
-          <!-- DO USUNIECIA ngModel - nie korzysta sie juz z tego -->
+          <div [ngSwitch]="heroId">
+            <div *ngSwitchCase="1">
+              <img mat-card-image src="assets/Caitlyn.jpg" alt="Zdjęcie Caitlyn">
+            </div>  
+            <!-- TUTAJ RESZTA BOHATEROW !!           -->
+          </div>
+
+
           <div class="containerItem">
             <label for="hero"
               >Bohater:
