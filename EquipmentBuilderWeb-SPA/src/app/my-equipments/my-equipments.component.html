@@ -9,13 +9,13 @@ DOMYYSLNIE KOMPONENT DO ZARZADZANIA EKWIPUNKAMI
         <a class="navbar-brand" >Zarządzanie ekwipunkami</a>
     </nav>
     <button type="button" class="btn btn-success"  (click)="createEquipment()">Stwórz ekwipunek</button>
-    <button type="button" class="btn btn-success" [disabled]="!selectedEq" (click)="editSelectedEquipment()">Edycja</button>
+    <button type="button" class="btn btn-success" [disabled]="!selectedEq && !selectedMyEq" (click)="editSelectedEquipment()">Edycja</button>
     <button type="button" class="btn btn-success" [disabled]="!selectedEq" (click)="showPickedEquipment()">Przeglądaj ekwipunek</button>
  
 
         <div class="containerFlex" >
             <div class="containerItem" *ngFor="let item of equipments; let i = index">
-                <mat-card (click)="higlightSelected(i,item.equipmentId)" [ngClass]="{'highlight' : i === selectedCardIndex, 'not-highlight' : i !== selectedCardIndex}">
+                <mat-card (click)="higlightSelected(i,item.equipmentId, item.userName)" [ngClass]="{'highlight' : i === selectedCardIndex, 'not-highlight' : i !== selectedCardIndex}">
                     <!-- <mat-card-header>
                         Użytkownik: {{item.userName}}
                         <mat-card-title>

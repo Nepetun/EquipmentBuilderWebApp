@@ -29,35 +29,4 @@ export class LikeService {
        });
       }
 
-      deleteComment(commentId: number) {
-        // const options = {
-        //   headers: new HttpHeaders({
-        //     // 'Content-Type': 'application/json',
-        //   }),
-        //   body: {
-        //     commentId: 1
-        //   },
-        // };
-        let params = new HttpParams();
-    
-        if ( commentId != null) {
-          params = params.append('commentId', commentId.toString());
-        }
-    
-        // let httpParams = new HttpParams().set('commentId', commentId.toString());
-        // let options = { params: httpParams };
-    
-        return this.http.delete(this.baseUrl + '/DeleteComment', {
-          observe: 'response',
-          params
-        })
-        .pipe(
-          map((reponse: any) => {
-            const com = reponse;
-          })
-        ).subscribe( commentDeleted => {
-              console.log(commentDeleted);
-        });
-      }
-
 }

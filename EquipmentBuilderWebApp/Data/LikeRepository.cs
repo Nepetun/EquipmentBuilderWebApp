@@ -55,5 +55,13 @@ namespace EquipmentBuilder.API.Data
 
             return true;
         }
+
+        public async Task<bool> WasLiked(int equipmentId, int userId)
+        {
+            if (await _context.Likes.AnyAsync(x => x.EquipmentId == equipmentId && x.UserId == userId))
+                return true;
+
+            return false;
+        }
     }
 }

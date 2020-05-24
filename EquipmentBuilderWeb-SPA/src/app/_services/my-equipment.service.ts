@@ -203,4 +203,9 @@ updateEquipment(addedEq: IAddEquipment, pickedEquipmentId: number) {
 
 }
 
+// usuwanie ekwipunku
+deleteEquipment(equipmentId: number) {
+  //deleteEquipment
+}
+
 }

@@ -29,8 +29,14 @@ namespace EquipmentBuilder.API.Controllers
             if (!await _repo.EquipmentExists(like.EquipmentId))
                 return BadRequest("Ekwipunek nie istnieje :C");
                         
-
-            var addComment = await _repo.AddLike(like.EquipmentId, like.UserId);
+            if(await _repo.WasLiked(like.EquipmentId, like.UserId)) {
+                var removeLike = await _repo.RemoveLike(like.EquipmentId, like.UserId);
+            } 
+            else
+            {
+                var addLike = await _repo.AddLike(like.EquipmentId, like.UserId);
+            }
+            
 
             return StatusCode(201);
         }

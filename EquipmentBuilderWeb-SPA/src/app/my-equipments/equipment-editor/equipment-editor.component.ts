@@ -320,4 +320,10 @@ export class EquipmentEditorComponent implements OnInit {
     }
   }
 
+  // usuwanie ekwipunku - jeżeli jest nasz
+  removeEquipment() {
+    this.equipmentService.deleteEquipment(this.selectedEquipmentId);
+    this.router.navigate(['/myEquipments']);
+  }
+
 }

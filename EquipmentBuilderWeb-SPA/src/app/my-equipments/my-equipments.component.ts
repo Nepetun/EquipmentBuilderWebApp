@@ -17,6 +17,8 @@ export class MyEquipmentsComponent implements OnInit {
   equipments: IEquipments[];
   selectedCardIndex = -1;
   selectedEq = false;
+  selectedMyEq = false;
+  userName = '';
   equipmentId = -1;
 
   constructor(
@@ -30,6 +32,7 @@ export class MyEquipmentsComponent implements OnInit {
 
   ngOnInit() {
     this.loadUserId();
+    this.userName = this.authService.getUserName();
     this.equipmentService.getEquipments(this.userId, 1, 10).subscribe((eq) => {
       this.equipments = eq.result;
     });
@@ -53,10 +56,15 @@ export class MyEquipmentsComponent implements OnInit {
     this.router.navigate(['/equipmentReview']);
   }
 
-  higlightSelected(index, equipmentId: number) {
+  higlightSelected(index, equipmentId: number, userName: string) {
     this.selectedCardIndex = index;
     this.equipmentId = equipmentId;
     this.selectedEq = true;
+    if (userName === this.userName) {
+      this.selectedMyEq = true;
+    } else {
+      this.selectedMyEq = false;
+    }
     this.setFocusedEquipmentId(equipmentId);
   }
 

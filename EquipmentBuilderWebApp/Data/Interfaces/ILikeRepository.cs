@@ -12,5 +12,7 @@ namespace EquipmentBuilder.API.Data.Interfaces
         Task<bool> RemoveLike(int equipmentId, int userId);
         Task<int> GetCountOfLike(int equipmentId);
         Task<bool> EquipmentExists(int equipmentId);
+
+        Task<bool> WasLiked(int equipmentId, int userId);
     }
 }

@@ -297,11 +297,8 @@ export class EquipmentReviewComponent implements OnInit {
     this.commentService.getCommentForEquipmentById(this.selectedEquipmentId).subscribe((res) => {
       this.commentArray = res;
     });
-    this.alertify.success('Pomyślnie polubiono ekwipunek - po przeładowaniu danych, bedzie widoczny');
+    // this.alertify.success('Pomyślnie polubiono ekwipunek - po przeładowaniu danych, bedzie widoczny');
   }
 
-  unlikeEquipment() {
-
-  }
 
 }
