@@ -25,7 +25,7 @@ namespace EquipmentBuilder.API.Data.Interfaces
 
         Task<bool> ValidateEquipmentNameForUpdate(string equipmentName, int userId, int equipmentId);
 
-        string DeleteEquipment(int equipmentId);
+        Task<bool> DeleteEquipment(int equipmentId);
 
         Task<bool> CheckThatUserHaveGroupsAndSharedEquipments(int userId);
 

@@ -314,33 +314,36 @@
   </div>
 
  
+</div>
 
-
- 
-
-    <div class="commentItem" *ngFor="let item of commentArray">
-        <mat-card>
-            <mat-card-header>                 
-                <mat-card-title>
-                    <div class="fontStyleBold">
-                      Użytkownik: {{item.userName}} - {{item.tmstmp | date:'yyyy-MM-dd HH:mm' }}
-                    </div>                   
-                </mat-card-title> 
-            </mat-card-header> 
-            <mat-card-content>                
-               {{item.commentString}}
-            </mat-card-content> 
-            <div *ngIf="item.userName == userName">
-            <mat-card-actions>
-              <button mat-button class="buttonCard" (click)="removeComment(item.commentId)">Usuń</button>
-            </mat-card-actions>
-            </div>
-        </mat-card>
-    
+<div class="scrollableDiv">
+    <div class="commentFlex">
+      
+      <div class="commentItem" *ngFor="let item of commentArray">
+          <mat-card>
+              <mat-card-header>                 
+                  <mat-card-title>
+                      <div class="fontStyleBold">
+                        Użytkownik: {{item.userName}} - {{item.tmstmp | date:'yyyy-MM-dd HH:mm' }}
+                      </div>                   
+                  </mat-card-title> 
+              </mat-card-header> 
+              <mat-card-content>                
+                {{item.commentString}}
+              </mat-card-content> 
+              <div *ngIf="item.userName == userName">
+              <mat-card-actions>
+                <button mat-button class="buttonCard" (click)="removeComment(item.commentId)">Usuń</button>
+              </mat-card-actions>
+              </div>
+          </mat-card>
+      
+      </div>
     </div>
+  </div>
 </div>
 
-</div>
+<!-- </div> -->
 
 
 

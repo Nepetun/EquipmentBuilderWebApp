@@ -72,4 +72,13 @@ export class MyEquipmentsComponent implements OnInit {
     this.equipmentService.setSelectedEquipmentId(id);
   }
 
+
+  // usuwanie ekwipunku - jeżeli jest nasz
+  removeEquipment() {
+    this.equipmentService.deleteEquipment(this.equipmentId);
+    this.equipmentService.getEquipments(this.userId, 1, 10).subscribe((eq) => {
+      this.equipments = eq.result;
+    });
+    this.router.navigate(['/myEquipments']);
+  }
 }

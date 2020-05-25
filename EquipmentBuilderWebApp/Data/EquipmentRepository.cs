@@ -148,16 +148,59 @@ namespace EquipmentBuilder.API.Data
 
         }
 
-        public string DeleteEquipment(int equipmentId)
+        public async Task<bool> DeleteEquipment(int equipmentId)
         {
             Equipments eq = _context.Equipments.FirstOrDefault(x => x.Id == equipmentId);
             if (eq == null)
-                return "brak danych do usunięcia";
+                return false;
+            try
+            {
+                _context.Equipments.Remove(eq);
 
-            _context.Equipments.Remove(eq);
-            _context.SaveChangesAsync();
+            // kasowanie komentarzy dla ekwipunku
+            List<Comments> lstComments = new List<Comments>();
+            lstComments = await _context.Comments.Where(x => x.EquipmentId == equipmentId).ToListAsync();
+            foreach(Comments com in lstComments)
+            {
+                _context.Comments.Remove(com);
+            }
 
-            return "pomyślnie usunięto ekwipunek";
+            // kasowanie przypisania ekwipunku dla grup
+            List<EquipmentsToGroup> lstEqToGroup = new List<EquipmentsToGroup>();
+            lstEqToGroup = await _context.EquipmentsToGroup.Where(x => x.EquipmentId == equipmentId).ToListAsync();
+            foreach(EquipmentsToGroup etg in lstEqToGroup)
+            {
+                _context.EquipmentsToGroup.Remove(etg);
+            }
+
+            // kasowanie lajkow dla ekwipunku
+            List<Likes> lstLikes = new List<Likes>();
+            lstLikes = await _context.Likes.Where(x => x.EquipmentId == equipmentId).ToListAsync();
+            foreach(Likes lik in lstLikes)
+            {
+                _context.Likes.Remove(lik);
+            }
+
+            // kasowanie user hero lvl dla ekwipunku
+            List<UserHeroesLvl> lstHero = new List<UserHeroesLvl>();
+            lstHero = await _context.UserHeroesLvl.Where(x => x.EquipmentId == equipmentId).ToListAsync();
+            foreach(UserHeroesLvl uhl in lstHero)
+            {
+                _context.UserHeroesLvl.Remove(uhl);
+            }
+
+
+           
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            
+
+            return true;
         }
 
         #region walidacje

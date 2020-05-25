@@ -231,26 +231,21 @@
           </div>
         </div>
 
-        <div *ngIf="gold >= statistic.totalCost">
-          <button
-            class="btn btn-success"
-            [disabled]="eqInformation.invalid"
-            type="submit"
-          >
-            Zatwierdź
-          </button>
-        </div>
-        <div *ngIf="gold < statistic.totalCost">
-          <div class="alert alert-danger" role="alert">
-            Przekroczyłeś dostępną ilość złota - zmień przedmioty, lub zwiększ
-            poziom bohatera
+            <button *ngIf="gold >= statistic.totalCost"
+              class="btn btn-success mr-2"
+              [disabled]="eqInformation.invalid"
+              type="submit"
+            >
+              Zatwierdź
+            </button>
+          <div *ngIf="gold < statistic.totalCost">
+            <div class="alert alert-danger" role="alert">
+              Przekroczyłeś dostępną ilość złota - zmień przedmioty, lub zwiększ
+              poziom bohatera
+            </div>
           </div>
-        </div>
 
-
-        <button class="btn btn-default" type="button" (click)="removeEquipment()">
-          Usuń ekwipunek
-        </button>
+       
         <button class="btn btn-default" type="button" (click)="cancel()">
           Anuluj
         </button>

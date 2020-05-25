@@ -134,7 +134,7 @@ namespace EquipmentBuilder.API.Controllers
 
         // async Task<IActionResult> 
         [HttpDelete("deleteEquipment")]  
-        public string DeleteEquipment([FromQuery] int equipmentId)
+        public Task<bool> DeleteEquipment([FromQuery] int equipmentId)
         {
             //await _repo.DeleteEquipment(equipmentId);
             return _repo.DeleteEquipment(equipmentId);

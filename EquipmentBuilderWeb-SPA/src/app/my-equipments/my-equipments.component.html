@@ -11,7 +11,7 @@ DOMYYSLNIE KOMPONENT DO ZARZADZANIA EKWIPUNKAMI
     <button type="button" class="btn btn-success"  (click)="createEquipment()">Stwórz ekwipunek</button>
     <button type="button" class="btn btn-success" [disabled]="!selectedEq && !selectedMyEq" (click)="editSelectedEquipment()">Edycja</button>
     <button type="button" class="btn btn-success" [disabled]="!selectedEq" (click)="showPickedEquipment()">Przeglądaj ekwipunek</button>
- 
+    <button type="button" class="btn btn-success" [disabled]="!selectedEq && !selectedMyEq" (click)="removeEquipment()">Usuń ekwipunek</button>
 
         <div class="containerFlex" >
             <div class="containerItem" *ngFor="let item of equipments; let i = index">

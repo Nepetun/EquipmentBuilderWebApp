@@ -206,6 +206,23 @@ updateEquipment(addedEq: IAddEquipment, pickedEquipmentId: number) {
 // usuwanie ekwipunku
 deleteEquipment(equipmentId: number) {
   //deleteEquipment
+  let params = new HttpParams();
+
+  if ( equipmentId != null) {
+    params = params.append('equipmentId', equipmentId.toString());
+  }
+
+  return this.http.delete(this.baseUrl + '/deleteEquipment', {
+    observe: 'response',
+    params
+  })
+  .pipe(
+    map((reponse: any) => {
+      const eq = reponse;
+    })
+  ).subscribe( eqDeleted => {
+        console.log(eqDeleted);
+  });
 }
 
 }

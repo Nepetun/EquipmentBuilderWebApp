@@ -64,7 +64,6 @@ export class EquipmentEditorComponent implements OnInit {
   public fourthItemId: number;
   public fifthItemId: number;
   public sixthItemId: number;
-
   public selectedEquipmentId: number;
 
   public lvlArray: Array<number>;
@@ -320,10 +319,5 @@ export class EquipmentEditorComponent implements OnInit {
     }
   }
 
-  // usuwanie ekwipunku - jeżeli jest nasz
-  removeEquipment() {
-    this.equipmentService.deleteEquipment(this.selectedEquipmentId);
-    this.router.navigate(['/myEquipments']);
-  }
 
 }
