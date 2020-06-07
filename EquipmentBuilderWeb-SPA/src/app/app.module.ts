@@ -23,7 +23,7 @@ import { MaterialModule } from './material.module';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { MyGroupsComponent } from './my-groups/my-groups.component';
-
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 @NgModule({
    declarations: [
@@ -45,6 +45,7 @@ import { MyGroupsComponent } from './my-groups/my-groups.component';
       ReactiveFormsModule,
       MaterialModule,
       HttpClientModule,
+      PaginationModule.forRoot(),
       //BrowserAnimationsModule,
       BsDropdownModule.forRoot(),
       BsDatepickerModule.forRoot(),

@@ -22,7 +22,8 @@ namespace EquipmentBuilder.API.Data
         }
 
 
-        public async Task<List<EquipmentListDto>> ListMyEquipments(PageParams pageParams, int userId)
+        //public async Task<List<EquipmentListDto>> ListMyEquipments(PageParams pageParams, int userId)
+        public async Task<PagedList<EquipmentListDto>> ListMyEquipments(PageParams pageParams, int userId)
         {
             List<EquipmentListDto> lstEquipments = new List<EquipmentListDto>();
 

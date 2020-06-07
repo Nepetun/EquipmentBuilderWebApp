@@ -10,7 +10,7 @@ namespace EquipmentBuilder.API.Common
         private const int MaxPageSize = 10; // aktualnie pokazanie 10 obiektów na stornę
         public int PageNumber { get; set; } = 1;
 
-        private int pageSize = 5;
+        private int pageSize = 2;
         public int PageSize
         {
             get { return pageSize; }

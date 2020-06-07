@@ -11,7 +11,8 @@ namespace EquipmentBuilder.API.Data.Interfaces
 {
     public interface IEquipmentRepository
     {
-        Task<List<EquipmentListDto>> ListMyEquipments(PageParams pageParams ,int userId);
+        //Task<List<EquipmentListDto>> ListMyEquipments(PageParams pageParams ,int userId);
+        Task<PagedList<EquipmentListDto>> ListMyEquipments(PageParams pageParams, int userId);
 
         Task<EquipmentDto> GetEquipmentById(int equipmentId);
 

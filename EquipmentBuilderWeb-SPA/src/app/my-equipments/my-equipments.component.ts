@@ -6,6 +6,8 @@ import { AlertifyService } from '../_services/alertify.service';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IEquipments } from '../models/IEquipments';
+import { Pagination } from '../models/pagination';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-myEquipments',
@@ -20,6 +22,10 @@ export class MyEquipmentsComponent implements OnInit {
   selectedMyEq = false;
   userName = '';
   equipmentId = -1;
+  itemsPerPage = 2;
+  loading$: Observable<boolean>;
+  rotate = true;
+  public pagination: Pagination = { currentPage: 1, itemsPerPage: 2, totalItems: 3, totalPages: 2};
 
   constructor(
     private authService: AuthService,
@@ -33,9 +39,17 @@ export class MyEquipmentsComponent implements OnInit {
   ngOnInit() {
     this.loadUserId();
     this.userName = this.authService.getUserName();
-    this.equipmentService.getEquipments(this.userId, 1, 10).subscribe((eq) => {
-      this.equipments = eq.result;
+    this.loading$ = this.equipmentService.loading$;
+    this.equipmentService.loadEquipments(this.userId, this.pagination);
+    //this.equipmentService.loading$.subscribe((loading) => (this.loading = loading));
+
+    this.equipmentService.pagination$.subscribe((value) => (this.pagination = value));
+    this.equipmentService.equipments$.subscribe((eq) => (this.equipments = eq));
+
+    /*this.equipmentService.getEquipments(this.userId, this.pagination.currentPage, this.pagination.itemsPerPage).subscribe((eq) => {
+    this.equipments = eq.result;
     });
+    this.equipmentService.pagination$.subscribe((value) => (this.pagination = value));*/
   }
 
   loadUserId() {
@@ -76,9 +90,21 @@ export class MyEquipmentsComponent implements OnInit {
   // usuwanie ekwipunku - jeżeli jest nasz
   removeEquipment() {
     this.equipmentService.deleteEquipment(this.equipmentId);
-    this.equipmentService.getEquipments(this.userId, 1, 10).subscribe((eq) => {
+    this.equipmentService.pagination$.subscribe((value) => (this.pagination = value));
+
+    this.equipmentService.getEquipments(this.userId, this.pagination.currentPage, this.pagination.itemsPerPage).subscribe((eq) => {
       this.equipments = eq.result;
     });
     this.router.navigate(['/myEquipments']);
+  }
+
+
+  pageChanged(event: any) {
+    this.pagination.currentPage = Number(event.page);
+    this.equipmentService.pagination$.subscribe((value) => (this.pagination = value));
+
+    this.equipmentService.getEquipments(this.userId, this.pagination.currentPage, this.pagination.itemsPerPage).subscribe((eq) => {
+      this.equipments = eq.result;
+    });
   }
 }

@@ -6,7 +6,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { IAddEquipment } from '../models/IAddEquipment';
 import { map, finalize } from 'rxjs/operators';
 import { IEquipments } from '../models/IEquipments';
-import { PaginatedResult } from '../models/pagination';
+import { PaginatedResult, Pagination } from '../models/pagination';
 import { EquipmentModule } from '../my-equipments/equipment/equipment.module';
 import { IEquipmentToGetStatistics } from '../models/IEquipmentToGetStatistics';
 
@@ -47,8 +47,19 @@ private equipmentsSubject = new BehaviorSubject<PaginatedResult<IEquipments[]>>(
   }
 });
 
+private equipmentSubject2 = new BehaviorSubject<IEquipments[]>([]);
+
+private paginationSubject = new BehaviorSubject<Pagination>({
+  currentPage: 1,
+  itemsPerPage: 100,
+  totalItems: 100,
+  totalPages: 10
+});
+
 private loadingSubject = new BehaviorSubject<boolean>(false);
 public loading$ = this.loadingSubject.asObservable();
+public pagination$ = this.paginationSubject.asObservable();
+public equipments$ = this.equipmentSubject2.asObservable();
 
 private selectedEquipmentId = new BehaviorSubject<number>(-1);
 public selectedEquipmentId$ = this.selectedEquipmentId.asObservable();
@@ -89,14 +100,15 @@ getEquipmentById(equipmentId: number): Observable<IAddEquipment> {
   ));
 }
 
-loadItems(userId: number, page?, itemsPerPage?) {
+loadEquipments(userId: number, pagination: Pagination) {
   this.loadingSubject.next(true);
 
-  this.getEquipments(userId, page, itemsPerPage).pipe(
+  this.getEquipments(userId, pagination.currentPage, pagination.itemsPerPage).pipe(
     finalize(() => this.loadingSubject.next(false))
   )
   .subscribe((res) => {
-    this.equipmentsSubject.next(res);
+    this.equipmentSubject2.next(res.result);
+    this.paginationSubject.next(res.pagination);
   });
 }
 
@@ -107,7 +119,7 @@ getEquipments(userId: number, page?, itemsPerPage?): Observable<PaginatedResult<
 
   if ( page != null && itemsPerPage != null) {
     params = params.append('pageNumber', page);
-    params = params.append('pageSiez', itemsPerPage);
+    params = params.append('pageSize', itemsPerPage);
   }
 
   if ( userId != null ) {

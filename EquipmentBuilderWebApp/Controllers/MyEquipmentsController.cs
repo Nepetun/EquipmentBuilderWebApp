@@ -34,18 +34,19 @@ namespace EquipmentBuilder.API.Controllers
         // Paging
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
         [HttpGet("GetEquipments")] //("{userId}")
-        public async Task<List<EquipmentListDto>> GetEquipments([FromQuery] PageParams pageParams,[FromQuery] int userId)
+        // public async Task<List<EquipmentListDto>> GetEquipments([FromQuery] PageParams pageParams,[FromQuery] int userId)
+        public async Task<PagedList<EquipmentListDto>> GetEquipments([FromQuery] PageParams pageParams, [FromQuery] int userId)
         {
 
             var myEquipments = await _repo.ListMyEquipments(pageParams, userId);
+           
+            //Response.AddPagination(myEquipments.CurrentPage, myEquipments.PageSize, myEquipments.TotalCount, myEquipments.TotalPages);
 
-            // Response.AddPagination(myEquipments.CurrentPage, myEquipments.PageSize, myEquipments.TotalCount, myEquipments.TotalPages);
-
-            return myEquipments;
+            //return myEquipments;
             
-           // var eqToReturn = _mapper.Map<PagedList<EquipmentListDto>>(myEquipments);
-
-           // return eqToReturn;
+            // var eqToReturn = _mapper.Map<PagedList<EquipmentListDto>>(myEquipments);
+            Response.AddPagination(myEquipments.CurrentPage, myEquipments.PageSize, myEquipments.TotalCount, myEquipments.TotalPages);
+            return myEquipments;
         }
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 

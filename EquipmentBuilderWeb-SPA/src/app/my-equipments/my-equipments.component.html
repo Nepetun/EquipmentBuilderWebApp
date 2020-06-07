@@ -13,6 +13,31 @@ DOMYYSLNIE KOMPONENT DO ZARZADZANIA EKWIPUNKAMI
     <button type="button" class="btn btn-success" [disabled]="!selectedEq" (click)="showPickedEquipment()">Przeglądaj ekwipunek</button>
     <button type="button" class="btn btn-success" [disabled]="!selectedEq && !selectedMyEq" (click)="removeEquipment()">Usuń ekwipunek</button>
 
+    <div class="justify-content-center">
+        <pagination 
+        [boundaryLinks]="true" 
+        [itemsPerPage]="pagination.itemsPerPage"
+        [totalItems] ="pagination.totalItems"
+        [maxSize] = "2"       
+        [rotate] = "rotate"
+        [(ngModel)]="pagination.currentPage"
+        (pageChanged)="pageChanged($event)"
+        previousText="&lsaquo;"
+        nextText = "&rsaquo;"
+        firstText = "&laquo;"
+        lastText = "&raquo;"
+    >
+    </pagination>
+    </div>
+
+    <!-- {{pagination.itemsPerPage}}
+    {{pagination.totalItems}}
+    {{pagination.currentPage}} -->
+
+        <div *ngIf = "loading$ | async">
+            <mat-spinner></mat-spinner>
+        </div>
+
         <div class="containerFlex" >
             <div class="containerItem" *ngFor="let item of equipments; let i = index">
                 <mat-card (click)="higlightSelected(i,item.equipmentId, item.userName)" [ngClass]="{'highlight' : i === selectedCardIndex, 'not-highlight' : i !== selectedCardIndex}">

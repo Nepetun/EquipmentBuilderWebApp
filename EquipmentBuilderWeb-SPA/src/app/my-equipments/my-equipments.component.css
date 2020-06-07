@@ -70,3 +70,10 @@ button {
 .fontStyleBold {
     font-weight: bold;
 }
+
+
+.justify-content-center {
+  display: flex !important;
+  justify-content: center !important;
+  margin-top: 10px;
+}

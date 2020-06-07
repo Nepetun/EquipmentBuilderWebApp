@@ -15,6 +15,11 @@ namespace EquipmentBuilder.API.Common
 
         public int TotalCount { get; set; }
 
+        public PagedList()
+        {
+
+        }
+
         public PagedList(List<T> items, int count, int pageNumber, int pageSize)
         {
             TotalCount = count;
