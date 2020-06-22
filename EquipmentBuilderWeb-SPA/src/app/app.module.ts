@@ -13,7 +13,7 @@ import { RegisterComponent } from './register/register.component';
 import { ErrorInterceptorProvider } from './_services/error.interceptor';
 import { EquipmentComponent } from './my-equipments/equipment/equipment.component';
 // import { AllEquipmentsComponent } from './allEquipments/allEquipments.component';
-import { GroupsComponent } from './groups/groups.component';
+// import { GroupsComponent } from './groups/groups.component';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
 import { MyEquipmentsComponent } from './my-equipments/my-equipments.component';
@@ -24,6 +24,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { MyGroupsComponent } from './my-groups/my-groups.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { MyGroupsModule } from './my-groups/my-groups.module';
 
 @NgModule({
    declarations: [
@@ -36,7 +37,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
       GroupsComponent,
       //MyEquipmentsComponent,
       ProfileUserComponent*/
-      MyGroupsComponent
+      /*MyGroupsComponent*/
    ],
    imports: [
       BrowserModule,
@@ -49,7 +50,8 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
       //BrowserAnimationsModule,
       BsDropdownModule.forRoot(),
       BsDatepickerModule.forRoot(),
-      RouterModule.forRoot(appRoutes)
+      RouterModule.forRoot(appRoutes),
+      MyGroupsModule
       // MyEquipmentsModule // import modułu odpowiedzialnego za wyświetlanie ekwipunku
     ],
     providers: [

@@ -1,6 +1,9 @@
-﻿using EquipmentBuilder.API.Data.Interfaces;
+﻿using EquipmentBuilder.API.Common;
+using EquipmentBuilder.API.Common.Filters;
+using EquipmentBuilder.API.Data.Interfaces;
 using EquipmentBuilder.API.Dtos;
 using EquipmentBuilder.API.Models;
+using EquipmentBuilderWebApp.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -47,10 +50,12 @@ namespace EquipmentBuilder.API.Controllers
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera , ActionName("GetRecivedInvitations")]
         [HttpGet("GetUserGroups")]
         //public async Task<IEnumerable<Groups>> GetUserGroups([FromBody] int userId)  --TAKIE POWINNO BYC i usuneicie userId z linijki wyzej i tak kazdą inna przerobić
-        public async Task<IEnumerable<Groups>> GetUserGroups([FromQuery] int userId)
+        public async Task<PagedList<GroupListDto>> GetUserGroups([FromQuery] PageParams pageParams, [FromQuery] int userId, [FromQuery] GroupFilter filters)
         {
 
-            var userGroups = await _repo.GetUserGroups(userId);
+            var userGroups = await _repo.GetUserGroups(pageParams,userId, filters);
+
+            Response.AddPagination(userGroups.CurrentPage, userGroups.PageSize, userGroups.TotalCount, userGroups.TotalPages);
 
             return userGroups;
         }
@@ -78,7 +83,7 @@ namespace EquipmentBuilder.API.Controllers
         }
 
         [HttpDelete("DeleteGroup")]
-        public async Task<bool> DeleteGroup([FromBody] int gropId)
+        public async Task<bool> DeleteGroup([FromQuery] int gropId)
         {
             return await _repo.DeleteGroup(gropId);
         }

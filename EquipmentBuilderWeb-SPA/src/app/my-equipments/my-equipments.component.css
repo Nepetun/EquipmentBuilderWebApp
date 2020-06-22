@@ -77,3 +77,36 @@ button {
   justify-content: center !important;
   margin-top: 10px;
 }
+
+
+
+
+
+.containerFlexForm {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 20%;
+  /* justify-content: left; */
+  align-items: stretch;
+  align-content: stretch;
+   /*background-color: yellow; */
+}
+
+.containerFlexForm :nth-child(1) {order: 0; }
+
+.containerItemForm {
+  height: 20%;
+  width: 20%;
+  max-width: 200px;
+  flex-direction: row;
+  flex-shrink: 2;
+  text-align: center;
+  margin: 5px;
+  /*background-color: red; */
+}
+
+.alignButtonInFilter {
+  margin-left: 2px;
+}

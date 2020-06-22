@@ -13,6 +13,167 @@ DOMYYSLNIE KOMPONENT DO ZARZADZANIA EKWIPUNKAMI
     <button type="button" class="btn btn-success" [disabled]="!selectedEq" (click)="showPickedEquipment()">Przeglądaj ekwipunek</button>
     <button type="button" class="btn btn-success" [disabled]="!selectedEq && !selectedMyEq" (click)="removeEquipment()">Usuń ekwipunek</button>
 
+<!-- 
+    <form class="form-inline" novalidate>
+        <div class="form-group">
+          <label for="minAge">Age From</label>
+          <input type="number" class="form-control ml-1" style="width: 70px" id="minAge" name="minAge">
+        </div>
+      
+        <div class="form-group px-2">
+          <label for="maxAge">Age To</label>
+          <input type="number" class="form-control ml-1" style="width: 70px" id="maxAge" name="maxAge">
+        </div>
+      
+        <div class="form-group px-2">
+          <label for="gender">Show: </label>
+          <select class="form-control ml-1" style="width: 130px" id="gender" name="gender">
+            <option>
+      
+            </option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-left:10px">Filtruj</button>
+        <button type="button" class="btn btn-info" style="margin-left:10px">Resetuj filtry</button>
+      
+      </form> -->
+
+
+      <form
+        class="container"
+        [formGroup]="formFilter"
+        (ngSubmit)="reloadValues()"
+      >
+        <div class="containerFlexForm">
+          <div class="containerItemForm">
+            <label
+              >Nazwa Ekwipunku:
+              <input
+                type="text"
+                formControlName="equipmentName"
+                maxlength="20"
+                class="form-control"
+              />
+              <div
+                *ngIf="
+                formFilter.invalid &&
+                  (formFilter.dirty || formFilter.touched)
+                "
+              >
+                <div class="errorDiv">
+                  <span *ngIf="formFilter.errors?.maxlength">
+                    Przekroczono maksymalna długość 20 znaków
+                  </span>
+                </div>
+              </div>
+            </label>
+          </div>   
+
+          <div class="containerItemForm">
+            <label
+              >Nazwa Użytkownika:
+              <input
+                type="text"
+                formControlName="userName"
+                maxlength="20"
+                class="form-control"
+              />
+              <div
+                *ngIf="
+                formFilter.invalid &&
+                  (formFilter.dirty || formFilter.touched)
+                "
+              >
+                <div class="errorDiv">
+                  <span *ngIf="formFilter.errors?.maxlength">
+                    Przekroczono maksymalna długość 20 znaków
+                  </span>
+                </div>
+              </div>
+            </label>
+          </div>  
+
+          <div class="containerItemForm">
+            <label
+              >Nazwa Bohatera:
+              <input
+                type="text"
+                formControlName="heroName"
+                maxlength="20"
+                class="form-control"
+              />
+              <div
+                *ngIf="
+                formFilter.invalid &&
+                  (formFilter.dirty || formFilter.touched)
+                "
+              >
+                <div class="errorDiv">
+                  <span *ngIf="formFilter.errors?.maxlength">
+                    Przekroczono maksymalna długość 20 znaków
+                  </span>
+                </div>
+              </div>
+            </label>
+          </div>  
+
+          <div class="containerItemForm">
+            <label for="heroLvlFrom"
+              >Poziom bohatera od:
+              <select
+                id="heroLvlFrom"
+                formControlName="heroLvlFrom"
+                class="form-control"
+                name="heroLvlFrom"
+              >
+                <option *ngFor="let lvl of lvlArray" [value]="lvl">{{
+                  lvl
+                }}</option>
+              </select>
+            </label>
+          </div>   
+
+          <div class="containerItemForm">
+            <label for="heroLvlTo"
+              >Poziom bohatera do:
+              <select
+                id="heroLvlTo"
+                formControlName="heroLvlTo"
+                class="form-control"
+                name="heroLvlTo"
+              >
+                <!-- <option *ngFor="let lvl of lvlArray" [value]="lvl">{{
+                  lvl
+                }}</option> -->
+
+                <option
+                *ngFor="let lvl of filterLvlHigherThanLvlFrom()"
+                [value]="lvl"
+                >{{
+                  lvl
+                }}</option
+              >
+
+              </select>
+            </label>
+          </div>         
+          
+          
+        </div>
+        
+        <div class="alignButtonInFilter">
+            <button class="btn btn-info" type="button" (click) = "reloadValues()" >Filtruj</button>
+
+            <button class="btn btn-info" type="button" (click) = "resetFilter()">Resetuj filtry</button>
+        </div>
+ 
+       
+
+      </form>
+
+
+
+
     <div class="justify-content-center">
         <pagination 
         [boundaryLinks]="true" 
@@ -64,11 +225,25 @@ DOMYYSLNIE KOMPONENT DO ZARZADZANIA EKWIPUNKAMI
                         </div>
                     </mat-card-content>
 
+
+                    {{item.heroName}}
                     <div *ngIf="item.heroName === 'Caitlin'">
                         <img mat-card-image src="assets/Caitlyn.jpg" alt="Zdjęcie Caitlyn">
                     </div>
-                    
-
+                    <div *ngIf="item.heroName === 'Darius'">
+                      <img mat-card-image src="assets/Darius.jpg" alt="Zdjęcie Darius">
+                    </div>
+                    <div *ngIf="item.heroName === 'Varus'">
+                      <img mat-card-image src="assets/Varus.jpg" alt="Zdjęcie Varus">
+                    </div>
+                    <div *ngIf="item.heroName === 'Janna'">
+                      <img mat-card-image src="assets/Janna.jpg" alt="Zdjęcie Janna">
+                    </div>
+                    <div *ngIf="item.heroName === 'Ahrii'">
+                      <img mat-card-image src="assets/Ahrii.jpg" alt="Zdjęcie Ahrii">
+                    </div>
+          
+  
                     <mat-card-content>
                         Bohater: 
                         <div class="fontStyleBold">

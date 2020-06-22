@@ -1,5 +1,8 @@
-﻿using EquipmentBuilder.API.Context;
+﻿using EquipmentBuilder.API.Common;
+using EquipmentBuilder.API.Common.Filters;
+using EquipmentBuilder.API.Context;
 using EquipmentBuilder.API.Data.Interfaces;
+using EquipmentBuilder.API.Dtos;
 using EquipmentBuilder.API.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -27,11 +30,69 @@ namespace EquipmentBuilder.API.Data
             return group;
         }
 
-        public async Task<IEnumerable<Groups>> GetUserGroups(int userId)
+        public async Task<PagedList<GroupListDto>> GetUserGroups(PageParams pageParams, int userId, GroupFilter groupFilter)
         {
-            var userGroups = await _context.Groups.Where(x => x.GroupAdminId == userId).ToListAsync();
+            var userGroupsAdmin = await _context.Groups.Where(x => x.GroupAdminId == userId).ToListAsync();
+            // grupy użytkownika do których należy 
+            var userGroups = await _context.UserToGroups.Where(x => x.UserId == userId).ToListAsync();
 
-            return userGroups;
+            List<GroupListDto> lstGroups = new List<GroupListDto>();
+
+            // jeżeli uzytkownik jest administratorem danej grupy = założycielem
+            if (userGroupsAdmin.Count > 0)
+            {
+                foreach (Groups grp in userGroupsAdmin)
+                {
+                    var adminUserName = await _context.Users.FirstOrDefaultAsync(x => x.Id == grp.GroupAdminId);
+                    GroupListDto gto = new GroupListDto()
+                    {
+                        GroupAdminId = grp.GroupAdminId,
+                        GroupName = grp.GroupName,
+                        Id = grp.Id,
+                        UserId = userId,
+                        GroupAdminName = adminUserName.UserName
+                    };
+                    lstGroups.Add(gto);
+                }
+            }
+
+            // jeżeli użytkownik nalezy do której z grup 
+            if( userGroups.Count > 0)
+            {
+                foreach (UserToGroups utg in userGroups)
+                {
+                    if (await _context.Groups.AnyAsync(x => x.Id == utg.GroupId)) //pobranie grup
+                    {                       
+                        var grp = await _context.Groups.FirstOrDefaultAsync(x => x.Id == utg.GroupId);
+                        var adminUserName = await _context.Users.FirstOrDefaultAsync(x => x.Id == grp.GroupAdminId);
+                        GroupListDto gto = new GroupListDto()
+                        {
+                            GroupAdminId = grp.GroupAdminId,
+                            GroupName = grp.GroupName,
+                            Id = grp.Id,
+                            UserId = userId,
+                            GroupAdminName = adminUserName.UserName
+                        };
+                        lstGroups.Add(gto);
+                    }
+                }
+            }
+        
+            
+            if (groupFilter != null)
+            {
+                if (groupFilter.GroupNameLike != null)
+                {
+                    lstGroups = lstGroups.Where(x => x.GroupName.ToLower().Contains(groupFilter.GroupNameLike.ToLower())).ToList();
+                }
+
+                if (groupFilter.GroupAdminNameLike != null)
+                {
+                    lstGroups = lstGroups.Where(x => x.GroupAdminName.ToLower().Contains(groupFilter.GroupAdminNameLike.ToLower())).ToList();
+                }
+            }
+            
+            return await PagedList<GroupListDto>.Create(lstGroups, pageParams.PageNumber, pageParams.PageSize);
         }
 
         public async Task<bool> GroupExists(string groupName)

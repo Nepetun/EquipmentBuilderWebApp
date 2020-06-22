@@ -9,6 +9,7 @@ import { IEquipments } from '../models/IEquipments';
 import { PaginatedResult, Pagination } from '../models/pagination';
 import { EquipmentModule } from '../my-equipments/equipment/equipment.module';
 import { IEquipmentToGetStatistics } from '../models/IEquipmentToGetStatistics';
+import { IEquipmentFilter } from '../models/Filters/IEquipmentFilter';
 
 @Injectable({
   providedIn: 'root'
@@ -30,24 +31,8 @@ private equipmentByIdSubject =  new BehaviorSubject<IEquipmentToGetStatistics>({
   sixthItemId: 0
   });
 
-private equipmentsSubject = new BehaviorSubject<PaginatedResult<IEquipments[]>>({
-  result: [{
-    equipmentId: 0,
-    eqName: '',
-    heroName: '',
-    heroLvl: 0,
-    counterOfLikes: 0,
-    userName: ''
-  }],
-  pagination: {
-    currentPage: 0,
-    itemsPerPage: 10,
-    totalItems: 10,
-    totalPages: 1
-  }
-});
 
-private equipmentSubject2 = new BehaviorSubject<IEquipments[]>([]);
+private equipmentSubject = new BehaviorSubject<IEquipments[]>([]);
 
 private paginationSubject = new BehaviorSubject<Pagination>({
   currentPage: 1,
@@ -59,7 +44,7 @@ private paginationSubject = new BehaviorSubject<Pagination>({
 private loadingSubject = new BehaviorSubject<boolean>(false);
 public loading$ = this.loadingSubject.asObservable();
 public pagination$ = this.paginationSubject.asObservable();
-public equipments$ = this.equipmentSubject2.asObservable();
+public equipments$ = this.equipmentSubject.asObservable();
 
 private selectedEquipmentId = new BehaviorSubject<number>(-1);
 public selectedEquipmentId$ = this.selectedEquipmentId.asObservable();
@@ -100,19 +85,19 @@ getEquipmentById(equipmentId: number): Observable<IAddEquipment> {
   ));
 }
 
-loadEquipments(userId: number, pagination: Pagination) {
+loadEquipments(userId: number, pagination: Pagination, filters: IEquipmentFilter) {
   this.loadingSubject.next(true);
 
-  this.getEquipments(userId, pagination.currentPage, pagination.itemsPerPage).pipe(
+  this.getEquipments(userId, pagination.currentPage, pagination.itemsPerPage, filters).pipe(
     finalize(() => this.loadingSubject.next(false))
   )
   .subscribe((res) => {
-    this.equipmentSubject2.next(res.result);
+    this.equipmentSubject.next(res.result);
     this.paginationSubject.next(res.pagination);
   });
 }
 
-getEquipments(userId: number, page?, itemsPerPage?): Observable<PaginatedResult<IEquipments[]>> {
+getEquipments(userId: number, page?, itemsPerPage?, filters?): Observable<PaginatedResult<IEquipments[]>> {
 
   const paginatedResult: PaginatedResult<IEquipments[]> = new PaginatedResult<IEquipments[]>();
   let params = new HttpParams();
@@ -124,6 +109,31 @@ getEquipments(userId: number, page?, itemsPerPage?): Observable<PaginatedResult<
 
   if ( userId != null ) {
     params = params.append('userId', userId.toString());
+  }
+
+  if(filters) {
+    let filtersData : IEquipmentFilter = filters;
+
+    if (filtersData.equipmentNameLike){
+      params = params.append('equipmentNameLike', filtersData.equipmentNameLike);
+    } else {
+      params = params.append('equipmentNameLike', '');
+    }
+
+    if (filtersData.userNameLike) {
+      params = params.append('userNameLike', filtersData.userNameLike);
+    } else {
+      params = params.append('userNameLike', '');
+    }
+
+    if (filtersData.heroNameLike) {
+      params = params.append('heroNameLike', filtersData.heroNameLike);
+    } else {
+      params = params.append('heroNameLike', '');
+    }
+
+    params = params.append('heroLvlFrom', filtersData.heroLvlFrom.toString());
+    params = params.append('heroLvlTo', filtersData.heroLvlTo.toString());
   }
 
   return this.http.get<IEquipments[]>(this.baseUrl + '/GetEquipments', {

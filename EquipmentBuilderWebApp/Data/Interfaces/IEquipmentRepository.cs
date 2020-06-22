@@ -1,4 +1,5 @@
 ﻿using EquipmentBuilder.API.Common;
+using EquipmentBuilder.API.Common.Filters;
 using EquipmentBuilder.API.Dtos;
 using EquipmentBuilder.API.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,7 @@ namespace EquipmentBuilder.API.Data.Interfaces
     public interface IEquipmentRepository
     {
         //Task<List<EquipmentListDto>> ListMyEquipments(PageParams pageParams ,int userId);
-        Task<PagedList<EquipmentListDto>> ListMyEquipments(PageParams pageParams, int userId);
+        Task<PagedList<EquipmentListDto>> ListMyEquipments(PageParams pageParams, int userId, EquipmentFilter eqFilters);
 
         Task<EquipmentDto> GetEquipmentById(int equipmentId);
 

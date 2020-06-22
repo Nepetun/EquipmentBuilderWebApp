@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using EquipmentBuilder.API.Common;
+using EquipmentBuilder.API.Common.Filters;
 using EquipmentBuilder.API.Context;
 using EquipmentBuilder.API.Data;
 using EquipmentBuilder.API.Data.Interfaces;
@@ -35,10 +36,10 @@ namespace EquipmentBuilder.API.Controllers
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
         [HttpGet("GetEquipments")] //("{userId}")
         // public async Task<List<EquipmentListDto>> GetEquipments([FromQuery] PageParams pageParams,[FromQuery] int userId)
-        public async Task<PagedList<EquipmentListDto>> GetEquipments([FromQuery] PageParams pageParams, [FromQuery] int userId)
+        public async Task<PagedList<EquipmentListDto>> GetEquipments([FromQuery] PageParams pageParams, [FromQuery] int userId, [FromQuery] EquipmentFilter eqFilters)
         {
 
-            var myEquipments = await _repo.ListMyEquipments(pageParams, userId);
+            var myEquipments = await _repo.ListMyEquipments(pageParams, userId, eqFilters);
            
             //Response.AddPagination(myEquipments.CurrentPage, myEquipments.PageSize, myEquipments.TotalCount, myEquipments.TotalPages);
 

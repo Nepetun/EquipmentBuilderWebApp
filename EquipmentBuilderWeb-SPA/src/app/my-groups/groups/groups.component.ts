@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../_services/auth.service';
+import { AuthService } from '../../_services/auth.service';
 import { Router } from '@angular/router';
 import {   FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { AlertifyService } from '../_services/alertify.service';
-import { GroupService } from '../_services/group.service';
-import { IGroupCreate } from '../models/IGroupCreate';
+import { AlertifyService } from '../../_services/alertify.service';
+import { GroupService } from '../../_services/group.service';
+import { IGroupCreate } from '../../models/IGroupCreate';
 
 @Component({
   selector: 'app-groups',

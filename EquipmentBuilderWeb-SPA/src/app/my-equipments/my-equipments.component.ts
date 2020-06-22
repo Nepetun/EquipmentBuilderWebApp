@@ -3,11 +3,12 @@ import { AuthService } from '../_services/auth.service';
 import { MyEquipmentService } from '../_services/my-equipment.service';
 import { StatisticsService } from '../_services/statistics.service';
 import { AlertifyService } from '../_services/alertify.service';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IEquipments } from '../models/IEquipments';
 import { Pagination } from '../models/pagination';
 import { Observable } from 'rxjs';
+import { IEquipmentFilter } from '../models/Filters/IEquipmentFilter';
 
 @Component({
   selector: 'app-myEquipments',
@@ -25,7 +26,37 @@ export class MyEquipmentsComponent implements OnInit {
   itemsPerPage = 2;
   loading$: Observable<boolean>;
   rotate = true;
-  public pagination: Pagination = { currentPage: 1, itemsPerPage: 2, totalItems: 3, totalPages: 2};
+  public lvlArray: Array<number>;
+  public pagination: Pagination = { currentPage: 1, itemsPerPage: 3, totalItems: 3, totalPages: 2};
+  formFilter = this.fb.group(
+    {
+      heroName: [
+        '',
+        [Validators.maxLength(20)]
+      ],
+      equipmentName: [
+        '',
+        [Validators.maxLength(20)]
+      ],
+      heroLvlFrom: [
+        1
+      ],
+      heroLvlTo: [
+        18
+      ],
+      userName: [
+        '',
+        [Validators.maxLength(20)]
+      ]
+    });
+    equipmentFilter: IEquipmentFilter = {
+      equipmentNameLike: '',
+      userNameLike: '',
+      heroNameLike: '',
+      heroLvlFrom: 1,
+      heroLvlTo: 18
+    };
+
 
   constructor(
     private authService: AuthService,
@@ -37,19 +68,66 @@ export class MyEquipmentsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.lvlArray = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
     this.loadUserId();
     this.userName = this.authService.getUserName();
-    this.loading$ = this.equipmentService.loading$;
-    this.equipmentService.loadEquipments(this.userId, this.pagination);
-    //this.equipmentService.loading$.subscribe((loading) => (this.loading = loading));
 
+    this.loading$ = this.equipmentService.loading$;
+
+    this.reloadValues();
+    /*
+    this.equipmentService.loadEquipments(this.userId, this.pagination);
     this.equipmentService.pagination$.subscribe((value) => (this.pagination = value));
     this.equipmentService.equipments$.subscribe((eq) => (this.equipments = eq));
-
+*/
     /*this.equipmentService.getEquipments(this.userId, this.pagination.currentPage, this.pagination.itemsPerPage).subscribe((eq) => {
     this.equipments = eq.result;
     });
     this.equipmentService.pagination$.subscribe((value) => (this.pagination = value));*/
+  }
+
+  reloadValues() {
+    this.setFilterFromForm();
+    this.equipmentService.loadEquipments(this.userId, this.pagination, this.equipmentFilter);
+    this.equipmentService.pagination$.subscribe((value) => (this.pagination = value));
+    this.equipmentService.equipments$.subscribe((eq) => (this.equipments = eq));
+  }
+
+  setFilterFromForm() {
+    if (this.formFilter.controls.heroName) {
+      this.equipmentFilter.heroNameLike = this.formFilter.controls.heroName.value;
+    }
+    if (this.formFilter.controls.userName) {
+      this.equipmentFilter.userNameLike = this.formFilter.controls.userName.value;
+    }
+    if (this.formFilter.controls.equipmentName) {
+      this.equipmentFilter.equipmentNameLike = this.formFilter.controls.equipmentName.value;
+    }
+    this.equipmentFilter.heroLvlFrom = this.formFilter.controls.heroLvlFrom.value;
+    this.equipmentFilter.heroLvlTo = this.formFilter.controls.heroLvlTo.value;
+  }
+
+  resetFilter() {
+    this.equipmentFilter = {
+      equipmentNameLike: '',
+      userNameLike: '',
+      heroNameLike: '',
+      heroLvlFrom: 1,
+      heroLvlTo: 18
+    };
+    this.setFormFromFilter();
+  }
+
+  setFormFromFilter() {
+    this.formFilter.setValue(
+      {
+      heroName: this.equipmentFilter.heroNameLike,
+      equipmentName: this.equipmentFilter.equipmentNameLike,
+      heroLvlFrom: this.equipmentFilter.heroLvlFrom,
+      heroLvlTo: this.equipmentFilter.heroLvlTo,
+      userName: this.equipmentFilter.userNameLike
+      });
+
   }
 
   loadUserId() {
@@ -57,6 +135,13 @@ export class MyEquipmentsComponent implements OnInit {
     this.userId = +userIdString;
     console.log(this.userId);
   }
+
+  filterLvlHigherThanLvlFrom() {
+    if (this.lvlArray) {
+      return this.lvlArray.filter(x => x >= this.formFilter.controls.heroLvlFrom.value);
+    }
+  }
+
 
   createEquipment() {
     this.router.navigate(['/equipment']);

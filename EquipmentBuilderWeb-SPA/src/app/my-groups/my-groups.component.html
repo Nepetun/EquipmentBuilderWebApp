@@ -1,3 +1,116 @@
-<p>
-  my-groups works!
-</p>
+<div class="pageDiv">
+  <nav class="navSpecial">  
+      <a class="navbar-brand" >Zarządzanie grupami</a>
+  </nav>
+  <button type="button" class="btn btn-success"  (click)="createGroup()">Stwórz grupe</button>
+  <button type="button" class="btn btn-success" [disabled]="!selectedGroup && !selectedMyGroup" (click)="editSelectedGroup()">Edycja grupy</button>
+  <!-- <button type="button" class="btn btn-success" [disabled]="!selectedEq" (click)="showPickedEquipment()">Przeglądaj ekwipunek</button> -->
+  <!-- <button type="button" class="btn btn-success" [disabled]="!selectedEq && !selectedMyEq" (click)="removeEquipment()">Usuń grupe</button> -->
+
+     <form
+      class="container"
+      [formGroup]="formFilter"
+      (ngSubmit)="reloadValues()"
+    >
+      <div class="containerFlexForm">
+        <div class="containerItemForm">
+          <label
+            >Nazwa Administratora:
+            <input
+              type="text"
+              formControlName="groupAdminNameLike"
+              maxlength="20"
+              class="form-control"
+            />
+            <div
+              *ngIf="
+              formFilter.invalid &&
+                (formFilter.dirty || formFilter.touched)
+              "
+            >
+              <div class="errorDiv">
+                <span *ngIf="formFilter.errors?.maxlength">
+                  Przekroczono maksymalna długość 20 znaków
+                </span>
+              </div>
+            </div>
+          </label>
+        </div>   
+
+        <div class="containerItemForm">
+          <label
+            >Nazwa Grupy:
+            <input
+              type="text"
+              formControlName="groupNameLike"
+              maxlength="20"
+              class="form-control"
+            />
+            <div
+              *ngIf="
+              formFilter.invalid &&
+                (formFilter.dirty || formFilter.touched)
+              "
+            >
+              <div class="errorDiv">
+                <span *ngIf="formFilter.errors?.maxlength">
+                  Przekroczono maksymalna długość 20 znaków
+                </span>
+              </div>
+            </div>
+          </label>
+        </div>             
+      </div>      
+      <div class="alignButtonInFilter">
+          <button class="btn btn-info" type="button" (click) = "reloadValues()" >Filtruj</button>
+
+          <button class="btn btn-info" type="button" (click) = "resetFilter()">Resetuj filtry</button>
+      </div>   
+    </form>
+
+
+
+
+  <div class="justify-content-center">
+      <pagination 
+      [boundaryLinks]="true" 
+      [itemsPerPage]="pagination.itemsPerPage"
+      [totalItems] ="pagination.totalItems"
+      [maxSize] = "2"       
+      [rotate] = "rotate"
+      [(ngModel)]="pagination.currentPage"
+      (pageChanged)="pageChanged($event)"
+      previousText="&lsaquo;"
+      nextText = "&rsaquo;"
+      firstText = "&laquo;"
+      lastText = "&raquo;"
+  >
+  </pagination>
+  </div>
+
+      <div *ngIf = "loading$ | async">
+          <mat-spinner></mat-spinner>
+      </div>
+
+      <div class="containerFlex" >
+          <div class="containerItem" *ngFor="let item of groups; let i = index">
+              <mat-card (click)="higlightSelected(i,item.id, item.groupAdminName)" [ngClass]="{'highlight' : i === selectedCardIndex, 'not-highlight' : i !== selectedCardIndex}">
+                
+                <mat-card-content>
+                  Administrator grupy: 
+                  <div class="fontStyleBold">
+                      {{item.groupAdminName}}
+                  </div>
+                </mat-card-content>
+                <mat-card-content>
+                  Nazwa grupy:   
+                  <div class="fontStyleBold">
+                      {{item.groupName}}
+                  </div>
+                </mat-card-content>
+                <img mat-card-image src="assets/Group3.png" alt="Zdjęcie Grupy">  
+              </mat-card>
+          </div>
+      </div>
+
+  </div>
