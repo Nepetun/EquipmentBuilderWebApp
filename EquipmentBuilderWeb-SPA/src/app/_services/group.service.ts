@@ -8,6 +8,8 @@ import { IGroups } from '../models/IGroups';
 import { Pagination, PaginatedResult } from '../models/pagination';
 import { group } from 'console';
 import { IGroupFilter } from '../models/Filters/IGroupFilter';
+import { IUser } from '../models/IUser';
+import { IGroupModify } from '../models/IGroupModify';
 
 @Injectable({
   providedIn: 'root'
@@ -17,16 +19,13 @@ export class GroupService {
 
   constructor(private http: HttpClient) { }
 
-  // private groupByIdSubject =  new BehaviorSubject<IGroupsDetail>({
-  //   heroLvl: 0,
-  //   heroId: 0,
-  //   firtItemId: 0,
-  //   secondItemId: 0,
-  //   thirdItemId: 0,
-  //   fourthItemId: 0,
-  //   fifthItemId: 0,
-  //   sixthItemId: 0
-  //   });
+  private groupByIdSubject = new BehaviorSubject<IGroupModify>({
+    groupId: 0,
+    groupName: '',
+    userId: 0
+  });
+
+  private userToGroupSubject = new BehaviorSubject<IUser[]>([]);
 
   private groupSubject = new BehaviorSubject<IGroups[]>([]);
 
@@ -49,30 +48,30 @@ export class GroupService {
     this.selectedGroupId.next(groupId);
   }
 
-  // loadGroupById(groupId: number) {
-  //   this.getEquipmentById(groupId).subscribe((res) => {
-  //     this.groupByIdSubject.next(res);
-  //   });
-  // }
+   loadGroupById(groupId: number) {
+     this.getGroupById(groupId).subscribe((res) => {
+       this.groupByIdSubject.next(res);
+     });
+  }
 
 
-  // getGroupById(group: number): Observable<IAddEquipment> {
+  getGroupById(group: number): Observable<IGroupModify> {
 
-  //   let params = new HttpParams();
+    let params = new HttpParams();
 
-  //   if ( equipmentId != null ) {
-  //     params = params.append('equipmentId', equipmentId.toString());
-  //   }
+    if ( group != null ) {
+      params = params.append('groupId', group.toString());
+    }
 
-  //   return this.http.get<IAddEquipment>(this.baseUrl + '/GetEquipmentById', {
-  //     observe: 'response',
-  //     params
-  //   }).pipe(
-  //     map((response) => {
-  //       return response.body;
-  //     }
-  //   ));
-  // }
+    return this.http.get<IGroupModify>(this.baseUrl + '/GetGroupById', {
+      observe: 'response',
+      params
+    }).pipe(
+      map((response) => {
+        return response.body;
+      }
+    ));
+  }
 
   loadGroups(userId: number, pagination: Pagination, filters: IGroupFilter) {
     this.loadingSubject.next(true);
@@ -150,5 +149,48 @@ export class GroupService {
     // });
 
   }
+
+
+updateGroup(modifyGroup: IGroupModify) {
+  //  let params = new HttpParams();
+  let groupModify: IGroupModify = modifyGroup;
+
+  return this.http.post<IGroupModify>(this.baseUrl + '/ModyfiyGroup' , {
+    userId: groupModify.userId,
+    groupName: groupModify.groupName,
+    groupId: groupModify.groupId
+  })
+  .pipe(
+    map((reponse: any) => {
+      const grp = reponse;
+    })
+  );
+  // .subscribe( addEq => {
+  //   console.log(addEq);
+  // });
+
+}
+
+// usuwanie grupy
+deleteGroup(groupId: number) {
+  let params = new HttpParams();
+
+  if ( groupId != null) {
+    params = params.append('groupId', groupId.toString());
+  }
+
+  return this.http.delete(this.baseUrl + '/DeleteGroup', {
+    observe: 'response',
+    params
+  })
+  .pipe(
+    map((reponse: any) => {
+      const grp = reponse;
+    })
+  ).subscribe( groupDeleted => {
+        console.log(groupDeleted);
+  });
+}
+
 
 }

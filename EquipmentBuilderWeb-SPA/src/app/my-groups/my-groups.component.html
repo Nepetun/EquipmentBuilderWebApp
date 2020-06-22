@@ -4,8 +4,10 @@
   </nav>
   <button type="button" class="btn btn-success"  (click)="createGroup()">Stwórz grupe</button>
   <button type="button" class="btn btn-success" [disabled]="!selectedGroup && !selectedMyGroup" (click)="editSelectedGroup()">Edycja grupy</button>
-  <!-- <button type="button" class="btn btn-success" [disabled]="!selectedEq" (click)="showPickedEquipment()">Przeglądaj ekwipunek</button> -->
-  <!-- <button type="button" class="btn btn-success" [disabled]="!selectedEq && !selectedMyEq" (click)="removeEquipment()">Usuń grupe</button> -->
+  <button type="button" class="btn btn-success" [disabled]="!selectedGroup && !selectedMyGroup" (click)="removeGroup()">Usuń grupe</button>
+  <button type="button" class="btn btn-success" [disabled]="!selectedGroup && !selectedMyGroup" (click)="manageUsers()">Zarządzaj użytkownikami grupy</button>
+  <button type="button" class="btn btn-success" (click)="reviewGroupUsers()">Przeglądaj użytkowników grupy</button>
+
 
      <form
       class="container"

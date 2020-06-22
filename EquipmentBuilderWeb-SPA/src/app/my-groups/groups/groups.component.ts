@@ -57,7 +57,7 @@ export class GroupsComponent implements OnInit {
     this.groupService.createGroup(groupToCreate).subscribe(
       () => {
         this.alertify.success('ukończono tworzenie grupy');
-        this.router.navigate(['/myGroups']); // TODO tutaj dać przekierowanie na grupy użytkonwika
+        this.router.navigate(['/myGroups']);
       },
       errror => {
         this.alertify.error(errror);
@@ -67,7 +67,7 @@ export class GroupsComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/myGroups']);
   }
 
 }

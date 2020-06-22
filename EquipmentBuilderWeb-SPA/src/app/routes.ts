@@ -13,6 +13,7 @@ import { MyGroupsComponent } from './my-groups/my-groups.component';
 export const appRoutes: Routes = [
     { path: '', component: HomeComponent},
     { path: 'home', component: HomeComponent},
+    { path: '',  component: HomeComponent, pathMatch: 'full'},
     {
         path: '', // ze względu na to, że path = '' routowanie będzie szło bezpośrednio do kolejnych path -
         // jak byśmy dali np 'x' to było by szukanie xgroups
@@ -32,8 +33,12 @@ export const appRoutes: Routes = [
 
             // { path: 'myGroups', loadChildren: () => import('./my-groups/my-groups.module').then(m => m.MyGroupsModule) }
             { path: 'myGroups' , component: MyGroupsComponent},
-            { path: 'groups', loadChildren: () => import('./my-groups/groups/group.module').then(m => m.GroupModule) }
+            { path: 'groups', loadChildren: () => import('./my-groups/groups/group.module').then(m => m.GroupModule) },
+            { path: 'groupEditor', loadChildren: () => import('./my-groups/group-editor/group-editor.module').then(m => m.GroupEditorModule) },
+
+            { path: 'manageUsers', loadChildren: () => import('./my-groups/group-user-management/group-user-management.module').then(m => m.GroupUserManagementModule) },
+            { path: 'groupPreview', loadChildren: () => import('./my-groups/group-user-preview/group-user-preview.module').then(m => m.GroupUserPreviewModule) }
         ]
     },
-    { path: '**' , redirectTo: '', pathMatch: 'full'},
+    { path: '**' , redirectTo: 'home', pathMatch: 'full'},
 ];

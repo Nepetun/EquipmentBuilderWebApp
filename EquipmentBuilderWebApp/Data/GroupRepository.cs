@@ -30,6 +30,20 @@ namespace EquipmentBuilder.API.Data
             return group;
         }
 
+        public async Task<GroupDto> GetGroupById(int groupId)
+        {
+            var grp = await _context.Groups.FirstOrDefaultAsync(x => x.Id == groupId);
+
+            var group = new GroupDto
+            {
+                UserId = 0,
+                GroupId = grp.Id,
+                GroupName = grp.GroupName
+            };
+
+            return group;
+        }
+
         public async Task<PagedList<GroupListDto>> GetUserGroups(PageParams pageParams, int userId, GroupFilter groupFilter)
         {
             var userGroupsAdmin = await _context.Groups.Where(x => x.GroupAdminId == userId).ToListAsync();
@@ -93,6 +107,61 @@ namespace EquipmentBuilder.API.Data
             }
             
             return await PagedList<GroupListDto>.Create(lstGroups, pageParams.PageNumber, pageParams.PageSize);
+        }
+
+        public async Task<PagedList<UserToModifyNameDto>> GetUsersForApplication(PageParams pageParams, int groupId, GroupUsersFilter groupUserFilters)
+        {
+
+            // pobranie użytkowników grupy
+            var groupUsers = await _context.UserToGroups.Where(x => x.GroupId == groupId).ToListAsync();
+
+            // pobranie zaproszeń do użytkowników dla danej grupy
+            var invitedUsers = await _context.Invitations.Where(x => x.GroupId == groupId).ToListAsync();
+
+            // wszyscy uzytkownicy aplikacji 
+            var appUsers = await _context.Users.ToListAsync();
+
+            // lista użytkowników, którzy nie należą do grupy i którzy nie zostali zaproszeni
+            List<UserToModifyNameDto> lstUsers = new List<UserToModifyNameDto>();
+
+
+            // jeżeli grupa ma jakiś użytkowników
+            if (appUsers.Count > 0)
+            {
+                foreach (Users usr in appUsers)
+                {
+                    // jeżeli zaproszenie zostało wysłane pomijamy uzytkownika
+                    if (invitedUsers.Any(x => x.UserAdresserId == usr.Id))
+                    {
+                        continue;
+                    }
+
+                    // jeżeli użytkownik należy już do grupy
+                    if (groupUsers.Any(x => x.UserId == usr.Id))
+                    {
+                        continue;
+                    }
+
+                    // jeżeli nie nalezy do grupy ani jezeli nie zostalo wyslane zaproszenie pokazujemy 
+                    UserToModifyNameDto utmnu = new UserToModifyNameDto()
+                    {
+                        UserId = usr.Id,
+                        UserName = usr.UserName
+                    };
+                    lstUsers.Add(utmnu);
+                }
+            }
+
+
+            if (groupUserFilters != null)
+            {
+                if (groupUserFilters.UserNameLike != null)
+                {
+                    lstUsers = lstUsers.Where(x => x.UserName.ToLower().Contains(groupUserFilters.UserNameLike.ToLower())).ToList();
+                }               
+            }
+
+            return await PagedList<UserToModifyNameDto>.Create(lstUsers, pageParams.PageNumber, pageParams.PageSize);
         }
 
         public async Task<bool> GroupExists(string groupName)

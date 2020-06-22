@@ -104,7 +104,15 @@ export class MyGroupsComponent implements OnInit {
   }
 
   editSelectedGroup() {
-    // this.router.navigate(['/equipmentEditor']);
+    this.router.navigate(['/groupEditor']);
+  }
+
+  manageUsers() {
+    this.router.navigate(['/manageUsers']);
+  }
+
+  reviewGroupUsers() {
+    this.router.navigate(['/groupPreview']);
   }
 
 
@@ -125,16 +133,19 @@ export class MyGroupsComponent implements OnInit {
   }
 
 
-  // usuwanie ekwipunku - jeżeli jest nasz
- /* removeEquipment() {
-    this.equipmentService.deleteEquipment(this.equipmentId);
-    this.equipmentService.pagination$.subscribe((value) => (this.pagination = value));
+  // usuwanie grupy - jeżeli jest nasz
+  removeGroup() {
+    this.groupService.deleteGroup(this.groupId);
+    this.groupService.pagination$.subscribe((value) => (this.pagination = value));
 
-    this.equipmentService.getEquipments(this.userId, this.pagination.currentPage, this.pagination.itemsPerPage).subscribe((eq) => {
-      this.equipments = eq.result;
-    });
-    this.router.navigate(['/myEquipments']);
-  }*/
+    // this.groupService.getGroups(this.userId, this.pagination.currentPage, this.pagination.itemsPerPage).subscribe((grp) => {
+    //   this.groups = grp.result;
+    // });
+
+    this.groupService.groups$.subscribe((grp) => (this.groups = grp));
+    this.router.navigate(['/myGroups']);
+  }
+
 
 
   pageChanged(event: any) {

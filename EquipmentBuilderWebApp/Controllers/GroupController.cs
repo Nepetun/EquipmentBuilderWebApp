@@ -47,7 +47,7 @@ namespace EquipmentBuilder.API.Controllers
         }
 
 
-        [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera , ActionName("GetRecivedInvitations")]
+       // [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera , ActionName("GetRecivedInvitations")]
         [HttpGet("GetUserGroups")]
         //public async Task<IEnumerable<Groups>> GetUserGroups([FromBody] int userId)  --TAKIE POWINNO BYC i usuneicie userId z linijki wyzej i tak kazdą inna przerobić
         public async Task<PagedList<GroupListDto>> GetUserGroups([FromQuery] PageParams pageParams, [FromQuery] int userId, [FromQuery] GroupFilter filters)
@@ -59,6 +59,29 @@ namespace EquipmentBuilder.API.Controllers
 
             return userGroups;
         }
+
+        [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera {userId}
+        [HttpPost("GetAllUsersWhichNotInGroup")]
+        public async Task<PagedList<UserToModifyNameDto>> GetAllUsersWhichNotInGroup([FromQuery] PageParams pageParams, [FromQuery] int groupId, [FromQuery] GroupUsersFilter filters) 
+        {
+            var usersWhichNotInGroup = await _repo.GetUsersForApplication(pageParams, groupId, filters);
+
+            Response.AddPagination(usersWhichNotInGroup.CurrentPage, usersWhichNotInGroup.PageSize, usersWhichNotInGroup.TotalCount, usersWhichNotInGroup.TotalPages);
+
+            return usersWhichNotInGroup;
+        }
+
+        [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
+        [HttpGet("GetGroupById")] //("{userId}")
+        public async Task<GroupDto> GetGroupById([FromQuery] int groupId)
+        {
+            var equipment = await _repo.GetGroupById(groupId);
+
+            return equipment;
+        }
+
+
+
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera {userId}
         [HttpPost("ModyfiyGroup")]
@@ -83,9 +106,9 @@ namespace EquipmentBuilder.API.Controllers
         }
 
         [HttpDelete("DeleteGroup")]
-        public async Task<bool> DeleteGroup([FromQuery] int gropId)
+        public async Task<bool> DeleteGroup([FromQuery] int groupId)
         {
-            return await _repo.DeleteGroup(gropId);
+            return await _repo.DeleteGroup(groupId);
         }
     }
 
