@@ -95,6 +95,11 @@
       </div>
 
       <div class="containerFlex" >
+        <div *ngIf="groups.length <= 0">
+          <div class="fontStyleBold">         
+             Brak grup
+          </div>          
+        </div>
           <div class="containerItem" *ngFor="let item of groups; let i = index">
               <mat-card (click)="higlightSelected(i,item.id, item.groupAdminName)" [ngClass]="{'highlight' : i === selectedCardIndex, 'not-highlight' : i !== selectedCardIndex}">
                 

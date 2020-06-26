@@ -61,7 +61,7 @@ namespace EquipmentBuilder.API.Controllers
         }
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera {userId}
-        [HttpPost("GetAllUsersWhichNotInGroup")]
+        [HttpGet("GetAllUsersWhichNotInGroup")]
         public async Task<PagedList<UserToModifyNameDto>> GetAllUsersWhichNotInGroup([FromQuery] PageParams pageParams, [FromQuery] int groupId, [FromQuery] GroupUsersFilter filters) 
         {
             var usersWhichNotInGroup = await _repo.GetUsersForApplication(pageParams, groupId, filters);
@@ -70,6 +70,18 @@ namespace EquipmentBuilder.API.Controllers
 
             return usersWhichNotInGroup;
         }
+
+        [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera {userId}
+        [HttpGet("GetAllUsersFromGroup")]
+        public async Task<PagedList<UserToModifyNameDto>> GetAllUsersFromGroup([FromQuery] PageParams pageParams, [FromQuery] int groupId, [FromQuery] GroupUsersFilter filters)
+        {
+            var usersWhichNotInGroup = await _repo.GetUsersFromGroup(pageParams, groupId, filters);
+
+            Response.AddPagination(usersWhichNotInGroup.CurrentPage, usersWhichNotInGroup.PageSize, usersWhichNotInGroup.TotalCount, usersWhichNotInGroup.TotalPages);
+
+            return usersWhichNotInGroup;
+        }
+
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
         [HttpGet("GetGroupById")] //("{userId}")
@@ -109,6 +121,13 @@ namespace EquipmentBuilder.API.Controllers
         public async Task<bool> DeleteGroup([FromQuery] int groupId)
         {
             return await _repo.DeleteGroup(groupId);
+        }
+
+
+        [HttpDelete("DeleteUserFromGroup")]
+        public async Task<bool> DeleteUserFromGroup([FromQuery] int userId, [FromQuery] int groupId)
+        {
+            return await _repo.DeleteUserFromGroup(userId,groupId);
         }
     }
 

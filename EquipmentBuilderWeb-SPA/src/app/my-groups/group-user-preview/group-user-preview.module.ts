@@ -5,11 +5,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MaterialModule } from 'src/app/material.module';
 import { GroupUserPreviewRoutingModule } from './group-user-preview.routing.module';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 @NgModule({
     declarations: [GroupUserPreviewComponent],
     imports: [
       CommonModule,
+      PaginationModule.forRoot(),
       FormsModule,
       ReactiveFormsModule,
       MatSelectModule,

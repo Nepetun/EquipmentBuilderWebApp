@@ -10,6 +10,7 @@ import { group } from 'console';
 import { IGroupFilter } from '../models/Filters/IGroupFilter';
 import { IUser } from '../models/IUser';
 import { IGroupModify } from '../models/IGroupModify';
+import { IUserGroupFilter } from '../models/Filters/IUserGroupFilter';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,7 @@ export class GroupService {
 
   private groupSubject = new BehaviorSubject<IGroups[]>([]);
 
+
   private paginationSubject = new BehaviorSubject<Pagination>({
     currentPage: 1,
     itemsPerPage: 100,
@@ -40,6 +42,7 @@ export class GroupService {
   public loading$ = this.loadingSubject.asObservable();
   public pagination$ = this.paginationSubject.asObservable();
   public groups$ = this.groupSubject.asObservable();
+  public userFromGroup$ = this.userToGroupSubject.asObservable();
 
   private selectedGroupId = new BehaviorSubject<number>(-1);
   public selectedGroupId$ = this.selectedGroupId.asObservable();
@@ -48,7 +51,7 @@ export class GroupService {
     this.selectedGroupId.next(groupId);
   }
 
-   loadGroupById(groupId: number) {
+  loadGroupById(groupId: number) {
      this.getGroupById(groupId).subscribe((res) => {
        this.groupByIdSubject.next(res);
      });
@@ -130,6 +133,61 @@ export class GroupService {
   }
 
 
+  loadUserFromGroup(groupId: number, pagination: Pagination, filters: IUserGroupFilter ) {
+    this.loadingSubject.next(true);
+
+    this.getUsersFromGroup(groupId, pagination.currentPage, pagination.itemsPerPage, filters).pipe(
+      finalize(() => this.loadingSubject.next(false))
+    )
+    .subscribe((res) => {
+      this.userToGroupSubject.next(res.result);
+      this.paginationSubject.next(res.pagination);
+    });
+  }
+  getUsersFromGroup(groupId: number, page?, itemsPerPage?, filters?): Observable<PaginatedResult<IUser[]>> {
+    const paginatedResult: PaginatedResult<IUser[]> = new PaginatedResult<IUser[]>();
+    let params = new HttpParams();
+
+    if ( page != null && itemsPerPage != null) {
+      params = params.append('pageNumber', page);
+      params = params.append('pageSize', itemsPerPage);
+    }
+
+    if ( groupId != null ) {
+      params = params.append('groupId', groupId.toString());
+    }
+
+    if (filters) {
+      let filtersData : IUserGroupFilter = filters;
+
+      if (filtersData.userNameLike) {
+        params = params.append('userNameLike', filtersData.userNameLike);
+      } else {
+        params = params.append('userNameLike', '');
+      }
+    }
+
+    return this.http.get<IUser[]>(this.baseUrl + '/GetAllUsersFromGroup', {
+      observe: 'response',
+      params
+    }).pipe(
+      map((response) => {
+        paginatedResult.result = response.body;
+        if ( response.headers.get('Pagination') != null ) {
+          paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+        }
+        return paginatedResult;
+      }
+    ));
+  }
+
+  // loadUserWhichIsNotInSelectedGroup((groupId: number, pagination: Pagination, filters: IGroupFilter ) {
+
+  // }
+  // getUsersWhichIsNotInSelectedGroup() {
+
+  // }
+
   createGroup(group: IGroupCreate) {
     //  let params = new HttpParams();
     let groupCreated: IGroupCreate = group;
@@ -192,5 +250,30 @@ deleteGroup(groupId: number) {
   });
 }
 
+
+// usuwanie uzytkownika z grupy
+deleteUserFromGroup(userId: number, groupId: number) {
+  let params = new HttpParams();
+
+  if ( groupId != null) {
+    params = params.append('groupId', groupId.toString());
+  }
+
+  if ( userId != null) {
+    params = params.append('userId', userId.toString());
+  }
+
+  return this.http.delete(this.baseUrl + '/DeleteUserFromGroup', {
+    observe: 'response',
+    params
+  })
+  .pipe(
+    map((reponse: any) => {
+      const grp = reponse;
+    })
+  ).subscribe( groupDeleted => {
+        console.log(groupDeleted);
+  });
+}
 
 }

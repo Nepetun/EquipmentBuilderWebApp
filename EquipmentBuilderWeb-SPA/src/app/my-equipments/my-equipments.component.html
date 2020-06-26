@@ -200,6 +200,11 @@ DOMYYSLNIE KOMPONENT DO ZARZADZANIA EKWIPUNKAMI
         </div>
 
         <div class="containerFlex" >
+          <div *ngIf="equipments.length <= 0">
+            <div class="fontStyleBold">         
+               Brak ekwipunków
+            </div>          
+          </div>
             <div class="containerItem" *ngFor="let item of equipments; let i = index">
                 <mat-card (click)="higlightSelected(i,item.equipmentId, item.userName)" [ngClass]="{'highlight' : i === selectedCardIndex, 'not-highlight' : i !== selectedCardIndex}">
                     <!-- <mat-card-header>

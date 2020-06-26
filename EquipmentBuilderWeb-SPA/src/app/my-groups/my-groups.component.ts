@@ -152,7 +152,7 @@ export class MyGroupsComponent implements OnInit {
     this.pagination.currentPage = Number(event.page);
     this.groupService.pagination$.subscribe((value) => (this.pagination = value));
 
-    this.groupService.getGroups(this.userId, this.pagination.currentPage, this.pagination.itemsPerPage).subscribe((grp) => {
+    this.groupService.getGroups(this.userId, this.pagination.itemsPerPage, this.groupFilter).subscribe((grp) => { //this.pagination.currentPage,
       this.groups = grp.result;
     });
   }
