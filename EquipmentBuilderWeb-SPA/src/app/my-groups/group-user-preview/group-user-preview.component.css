@@ -4,6 +4,7 @@
 
 .pageDiv {
     width: 100%;
+    min-height: 880px;
     height: 100%;
     background-color: rgba(110, 185, 255, 0.685);
 }

@@ -67,7 +67,7 @@ export class GroupUserPreviewComponent implements OnInit {
 
   reloadValues() {
     this.setFilterFromForm();
-    this.groupService.loadUserFromGroup(this.groupId,this.pagination,this.userFilter);
+    this.groupService.loadUserFromGroup(this.groupId, this.pagination, this.userFilter);
     this.groupService.pagination$.subscribe(
       (value) => (this.pagination = value)
     );

@@ -37,7 +37,8 @@ export const appRoutes: Routes = [
             { path: 'groupEditor', loadChildren: () => import('./my-groups/group-editor/group-editor.module').then(m => m.GroupEditorModule) },
 
             { path: 'manageUsers', loadChildren: () => import('./my-groups/group-user-management/group-user-management.module').then(m => m.GroupUserManagementModule) },
-            { path: 'groupPreview', loadChildren: () => import('./my-groups/group-user-preview/group-user-preview.module').then(m => m.GroupUserPreviewModule) }
+            { path: 'groupPreview', loadChildren: () => import('./my-groups/group-user-preview/group-user-preview.module').then(m => m.GroupUserPreviewModule) },
+            { path: 'invitationManagement', loadChildren: () => import('./my-groups/group-invitation-management/group-invitation-management.module').then(m => m.GroupInvitationManagementModule) }
         ]
     },
     { path: '**' , redirectTo: 'home', pathMatch: 'full'},

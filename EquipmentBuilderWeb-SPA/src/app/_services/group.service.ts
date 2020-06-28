@@ -27,6 +27,7 @@ export class GroupService {
   });
 
   private userToGroupSubject = new BehaviorSubject<IUser[]>([]);
+  private userAppSubject = new BehaviorSubject<IUser[]>([]);
 
   private groupSubject = new BehaviorSubject<IGroups[]>([]);
 
@@ -43,6 +44,7 @@ export class GroupService {
   public pagination$ = this.paginationSubject.asObservable();
   public groups$ = this.groupSubject.asObservable();
   public userFromGroup$ = this.userToGroupSubject.asObservable();
+  public userApp$ = this.userAppSubject.asObservable();
 
   private selectedGroupId = new BehaviorSubject<number>(-1);
   public selectedGroupId$ = this.selectedGroupId.asObservable();
@@ -181,12 +183,54 @@ export class GroupService {
     ));
   }
 
-  // loadUserWhichIsNotInSelectedGroup((groupId: number, pagination: Pagination, filters: IGroupFilter ) {
+  loadUserWhichIsNotInSelectedGroup(groupId: number, pagination: Pagination, filters: IUserGroupFilter ) {
+    this.loadingSubject.next(true);
 
-  // }
-  // getUsersWhichIsNotInSelectedGroup() {
+    this.getUsersWhichIsNotInSelectedGroup(groupId, pagination.currentPage, pagination.itemsPerPage, filters).pipe(
+      finalize(() => this.loadingSubject.next(false))
+    )
+    .subscribe((res) => {
+      this.userAppSubject.next(res.result);
+      this.paginationSubject.next(res.pagination);
+    });
+  }
 
-  // }
+  getUsersWhichIsNotInSelectedGroup(groupId: number, page?, itemsPerPage?, filters?): Observable<PaginatedResult<IUser[]>> {
+    const paginatedResult: PaginatedResult<IUser[]> = new PaginatedResult<IUser[]>();
+    let params = new HttpParams();
+
+    if ( page != null && itemsPerPage != null) {
+      params = params.append('pageNumber', page);
+      params = params.append('pageSize', itemsPerPage);
+    }
+
+    if ( groupId != null ) {
+      params = params.append('groupId', groupId.toString());
+    }
+
+    if (filters) {
+      let filtersData : IUserGroupFilter = filters;
+
+      if (filtersData.userNameLike) {
+        params = params.append('userNameLike', filtersData.userNameLike);
+      } else {
+        params = params.append('userNameLike', '');
+      }
+    }
+
+    return this.http.get<IUser[]>(this.baseUrl + '/GetAllUsersWhichNotInGroup', {
+      observe: 'response',
+      params
+    }).pipe(
+      map((response) => {
+        paginatedResult.result = response.body;
+        if ( response.headers.get('Pagination') != null ) {
+          paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+        }
+        return paginatedResult;
+      }
+    ));
+  }
 
   createGroup(group: IGroupCreate) {
     //  let params = new HttpParams();
@@ -275,5 +319,4 @@ deleteUserFromGroup(userId: number, groupId: number) {
         console.log(groupDeleted);
   });
 }
-
 }

@@ -1,6 +1,8 @@
 ﻿
+using EquipmentBuilder.API.Common;
 using EquipmentBuilder.API.Context;
 using EquipmentBuilder.API.Data.Interfaces;
+using EquipmentBuilder.API.Dtos;
 using EquipmentBuilder.API.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,19 +22,38 @@ namespace EquipmentBuilder.API.Data
             _context = context;
         }
 
-        public async Task<IEnumerable<Invitations>> GetRecieveInvitations(int userId)
+        public async Task<PagedList<InvitationDto>> GetRecieveInvitations(PageParams pageParams, int userId)
         {
 
             var sendInvitations = await _context.Invitations.Where(x => x.UserRecipientId == userId).ToListAsync();
-            return sendInvitations;
+
+            List<InvitationDto> lstInvitation = new List<InvitationDto>();
+
+            foreach(Invitations inv in sendInvitations)
+            {
+                Groups grp = await _context.Groups.FirstOrDefaultAsync(x => x.Id == inv.GroupId);
+
+                InvitationDto invD = new InvitationDto()
+                {
+                    GroupName = grp.GroupName,
+                    GroupId = grp.Id,
+                    InvitationId = inv.Id
+                };
+
+                lstInvitation.Add(invD);
+            }
+
+            return await PagedList<InvitationDto>.Create(lstInvitation, pageParams.PageNumber, pageParams.PageSize);
         }
 
-        public async Task<IEnumerable<Invitations>> GetSendedInvitations(int userId)
+        public async Task<IEnumerable<InvitationDto>> GetSendedInvitations(int userId)
         {
             var reciveInvitation = await _context.Invitations.Where(x => x.UserAdresserId == userId).ToListAsync();
             //recipient odbiorca
 
-            return reciveInvitation;
+            //return reciveInvitation;
+            return new List<InvitationDto>();
+        
         }
 
 
@@ -100,7 +121,7 @@ namespace EquipmentBuilder.API.Data
         /// <param name="userId"></param>
         /// <param name="invitationId"></param>
         /// <returns></returns>
-        public async Task<Invitations> RejectInvitation(int userId, int invitationId)
+        public async Task<bool> RejectInvitation(int userId, int invitationId)
         {
             //pobranie zaproszenia
             var invitation = await _context.Invitations.FirstOrDefaultAsync(z => z.UserRecipientId == userId && z.Id == invitationId);
@@ -108,7 +129,7 @@ namespace EquipmentBuilder.API.Data
             _context.Invitations.Remove(invitation);
 
             await _context.SaveChangesAsync();
-            return invitation;
+            return false;
         }
 
 

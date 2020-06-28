@@ -1,6 +1,8 @@
-﻿using EquipmentBuilder.API.Data.Interfaces;
+﻿using EquipmentBuilder.API.Common;
+using EquipmentBuilder.API.Data.Interfaces;
 using EquipmentBuilder.API.Dtos;
 using EquipmentBuilder.API.Models;
+using EquipmentBuilderWebApp.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -24,17 +26,17 @@ namespace EquipmentBuilder.API.Controllers
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera , ActionName("GetRecivedInvitations")]
         [HttpGet("GetRecivedInvitations")]
-        public async Task<IEnumerable<Invitations>> GetRecivedInvitations([FromQuery] int userId)
+        public async Task<PagedList<InvitationDto>> GetRecivedInvitations([FromQuery] PageParams pageParams, [FromQuery] int userId)
         {
 
-            var myEquipments = await _repo.GetRecieveInvitations(userId);
-
+            var myEquipments = await _repo.GetRecieveInvitations(pageParams,userId);
+            Response.AddPagination(myEquipments.CurrentPage, myEquipments.PageSize, myEquipments.TotalCount, myEquipments.TotalPages);
             return myEquipments;
         }
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera  , ActionName("GetSendInvitations")
         [HttpGet("GetSendInvitations")]
-        public async Task<IEnumerable<Invitations>> GetSendInvitations([FromQuery] int userId)
+        public async Task<IEnumerable<InvitationDto>> GetSendInvitations([FromQuery] int userId)
         {
 
             var myEquipments = await _repo.GetSendedInvitations(userId);
@@ -81,13 +83,12 @@ namespace EquipmentBuilder.API.Controllers
             return StatusCode(201);
         }
 
-        [HttpPost("RejectInvitation")]
-        public async Task<IActionResult> RejectInvitation([FromQuery] AcceptRejectRepositoryDto reject)
+        [HttpDelete("RejectInvitation")]
+        public async Task<bool> RejectInvitation([FromQuery] int userId, [FromQuery] int InvitationId)
         {
             //osoba odrzucajaca wpada jako user Id
-            var rejectedInvitation = await _repo.RejectInvitation(reject.UserId, reject.InvitationId);
-
-            return StatusCode(201);
+            return await _repo.RejectInvitation(userId, InvitationId);
+                   
         }
 
 

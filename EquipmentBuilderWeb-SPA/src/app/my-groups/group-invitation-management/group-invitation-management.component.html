@@ -1,0 +1,52 @@
+<div class="pageDiv">
+  <nav class="navSpecial">  
+      <a class="navbar-brand" >Zarządzanie grupami</a>
+  </nav>
+
+  <div class="justify-content-center">
+      <pagination 
+      [boundaryLinks]="true" 
+      [itemsPerPage]="pagination.itemsPerPage"
+      [totalItems] ="pagination.totalItems"
+      [maxSize] = "2"       
+      [rotate] = "rotate"
+      [(ngModel)]="pagination.currentPage"
+      (pageChanged)="pageChanged($event)"
+      previousText="&lsaquo;"
+      nextText = "&rsaquo;"
+      firstText = "&laquo;"
+      lastText = "&raquo;"
+  >
+  </pagination>
+  </div>
+
+      <div *ngIf = "loading$ | async">
+          <mat-spinner></mat-spinner>
+      </div>
+
+      <div class="containerFlex" >
+        <div *ngIf="invitationsRecived.length <= 0">
+          <div class="fontStyleBold">         
+             Brak grup
+          </div>          
+        </div>
+          <div class="containerItem" *ngFor="let item of invitationsRecived; let i = index">
+            <!-- (click)="higlightSelected(i,item.id, item.groupAdminName)" [ngClass]="{'highlight' : i === selectedCardIndex, 'not-highlight' : i !== selectedCardIndex}" -->
+              <mat-card>
+                
+                <mat-card-content>
+                  Nazwa grupy: 
+                  <div class="fontStyleBold">
+                      {{item.groupName}}
+                  </div>
+                </mat-card-content>
+                <mat-card-actions>
+                  <button mat-button class="buttonCard" (click)="accept(item.invitationId, item.groupId)">Zaakceptuj</button>
+                  <button mat-button class="buttonCard" (click)="reject(item.invitationId, item.groupId)">Odrzuć</button>                  
+                </mat-card-actions>     
+              </mat-card>
+          </div>
+      </div>
+
+  </div>
+

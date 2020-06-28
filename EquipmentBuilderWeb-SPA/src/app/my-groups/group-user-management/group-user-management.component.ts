@@ -8,6 +8,8 @@ import { AuthService } from 'src/app/_services/auth.service';
 import { GroupService } from 'src/app/_services/group.service';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { Router } from '@angular/router';
+import { InvitationService } from 'src/app/_services/invitation.service';
+import { IInvitationSend } from 'src/app/models/IInvitationSend';
 
 @Component({
   selector: 'app-group-user-management',
@@ -31,10 +33,19 @@ export class GroupUserManagementComponent implements OnInit {
     totalItems: 3,
     totalPages: 2,
   };
+
   userFilter: IUserGroupFilter = {
     userNameLike: ''
   };
+  allUserFilter: IUserGroupFilter = {
+    userNameLike: ''
+  };
   usersFromGroup: IUser[];
+
+  userInvitationFilter: IUserGroupFilter = {
+    userNameLike: ''
+  };
+  usersFromApp: IUser[];
 
   formFilter = this.fb.group(
     {
@@ -44,9 +55,17 @@ export class GroupUserManagementComponent implements OnInit {
       ]
     });
 
+  formInvitationFilter = this.fb.group({
+    userNameLikeFrom: [
+      '',
+      [Validators.maxLength(20)]
+    ]
+  });
+
   constructor(
     private authService: AuthService,
     private groupService: GroupService,
+    private invitationService: InvitationService,
     private alertify: AlertifyService,
     private fb: FormBuilder,
     private router: Router
@@ -64,11 +83,12 @@ export class GroupUserManagementComponent implements OnInit {
     this.loading$ = this.groupService.loading$;
 
     this.reloadValues();
+    this.reloadValuesForAllUsers();
   }
 
   reloadValues() {
     this.setFilterFromForm();
-    this.groupService.loadUserFromGroup(this.groupId,this.pagination,this.userFilter);
+    this.groupService.loadUserFromGroup(this.groupId, this.pagination, this.userFilter);
     this.groupService.pagination$.subscribe(
       (value) => (this.pagination = value)
     );
@@ -82,6 +102,22 @@ export class GroupUserManagementComponent implements OnInit {
     }
   }
 
+  reloadValuesForAllUsers() {
+    this.setFilterFromFormAllUsers();
+    // zaladowanie danych o uzytkownikach ktorzy jeszcze nie należa do grupy i nie otrzymali zaproszenia
+    this.groupService.loadUserWhichIsNotInSelectedGroup(this.groupId, this.pagination, this.allUserFilter);
+    this.groupService.pagination$.subscribe(
+      (value) => (this.pagination = value)
+    );
+
+    this.groupService.userApp$.subscribe((user) => (this.usersFromApp = user));
+  }
+
+  setFilterFromFormAllUsers() {
+    if (this.formInvitationFilter.controls.userNameLike) {
+      this.allUserFilter.userNameLike = this.formInvitationFilter.controls.userNameLike.value;
+    }
+  }
 
   resetFilter() {
     this.userFilter = {
@@ -133,6 +169,33 @@ export class GroupUserManagementComponent implements OnInit {
     );
 
     this.groupService.userFromGroup$.subscribe((usrs) => (this.usersFromGroup = usrs));
+  }
+
+
+  // zaproszenie użytkownika do grupy
+  inviteUser(userId: number) {
+    let invitation: IInvitationSend = {
+      invitationGroupId: this.groupId,
+      recipientUserId: userId,
+      userId: this.userId
+    };
+
+    this.invitationService.sendInvitation(invitation).subscribe(
+      () => {
+        this.alertify.success('ukończono wysyłkę zaproszenia');
+        this.router.navigate(['/myGroups']);
+      },
+      errror => {
+        this.alertify.error(errror);
+      }
+    );
+
+    this.groupService.loadUserWhichIsNotInSelectedGroup(this.groupId, this.pagination, this.allUserFilter);
+    this.groupService.pagination$.subscribe(
+      (value) => (this.pagination = value)
+    );
+
+    this.groupService.userApp$.subscribe((user) => (this.usersFromApp = user));
   }
 
 

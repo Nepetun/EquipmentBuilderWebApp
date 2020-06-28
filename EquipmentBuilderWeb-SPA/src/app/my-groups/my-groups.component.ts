@@ -115,6 +115,10 @@ export class MyGroupsComponent implements OnInit {
     this.router.navigate(['/groupPreview']);
   }
 
+  manageInvitation() {
+    this.router.navigate(['/invitationManagement']);
+  }
+
 
   higlightSelected(index, groupId: number, groupAdmin: string) {
     this.selectedCardIndex = index;
