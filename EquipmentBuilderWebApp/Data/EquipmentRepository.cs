@@ -66,11 +66,11 @@ namespace EquipmentBuilder.API.Data
                     }
                 }
             }
-           
+
 
             foreach (Equipments eq in await _context.Equipments.Where(x => x.UserId == userId).ToListAsync())
             {
-                if(!lstEquipments.Any(x=>x.EqName == eq.EqName))
+                if (!lstEquipments.Any(x => x.EqName == eq.EqName))
                 {
                     // pobranie nazwy bohatera dla ekwipunku
                     var hero = await _context.Heroes.FirstOrDefaultAsync(x => x.Id == eq.HeroId);
@@ -87,7 +87,7 @@ namespace EquipmentBuilder.API.Data
                         EquipmentId = eq.Id,
                         EqName = eq.EqName,
                         HeroName = hero.HeroName,
-                        HeroLvl =(int)heroLvl.Lvl,
+                        HeroLvl = (int)heroLvl.Lvl,
                         CounterOfLikes = counterOfLikes,
                         UserName = userName.UserName
                     };
@@ -98,9 +98,9 @@ namespace EquipmentBuilder.API.Data
 
             // dodanie ekwipunków samego użytkownika
             //var equipments = _context.Equipments.Where(x => x.UserId == userId).AsQueryable(); // pobranie ekwipunków użytkownika
-           // return await PagedList<EquipmentListDto>.CreateAsync(querableEq, pageParams.PageNumber, pageParams.PageSize);
+            // return await PagedList<EquipmentListDto>.CreateAsync(querableEq, pageParams.PageNumber, pageParams.PageSize);
 
-            if(eqFilters != null)
+            if (eqFilters != null)
             {
                 lstEquipments = lstEquipments.Where(x => x.HeroLvl >= eqFilters.HeroLvlFrom && x.HeroLvl <= eqFilters.HeroLvlTo).ToList();
 
@@ -114,17 +114,17 @@ namespace EquipmentBuilder.API.Data
                     lstEquipments = lstEquipments.Where(x => x.UserName.ToLower().Contains(eqFilters.UserNameLike.ToLower())).ToList();
                 }
 
-                if( eqFilters.HeroNameLike != null)
+                if (eqFilters.HeroNameLike != null)
                 {
                     lstEquipments = lstEquipments.Where(x => x.HeroName.ToLower().Contains(eqFilters.HeroNameLike.ToLower())).ToList();
                 }
             }
 
             return await PagedList<EquipmentListDto>.Create(lstEquipments, pageParams.PageNumber, pageParams.PageSize);
-           // return querableEq;
+            // return querableEq;
         }
 
-        
+
         public async Task<Equipments> UpdateEquipment(Equipments equipment, int heroLvl, int equipmentId)
         {
             equipment.Id = equipmentId;
@@ -170,50 +170,68 @@ namespace EquipmentBuilder.API.Data
             return equipment;
 
         }
+        public async Task<bool> DeleteShareEquipment(int equipmentId, int groupId)
+        {
+            try
+            {
+                EquipmentsToGroup etg = await _context.EquipmentsToGroup.FirstOrDefaultAsync(x => x.EquipmentId == equipmentId && x.GroupId == groupId);
+
+                _context.EquipmentsToGroup.Remove(etg);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return true;
+        }
+
 
         public async Task<bool> DeleteEquipment(int equipmentId)
         {
-            Equipments eq = _context.Equipments.FirstOrDefault(x => x.Id == equipmentId);
+            Equipments eq = await _context.Equipments.FirstOrDefaultAsync(x => x.Id == equipmentId);
             if (eq == null)
                 return false;
             try
             {
                 _context.Equipments.Remove(eq);
 
-            // kasowanie komentarzy dla ekwipunku
-            List<Comments> lstComments = new List<Comments>();
-            lstComments = await _context.Comments.Where(x => x.EquipmentId == equipmentId).ToListAsync();
-            foreach(Comments com in lstComments)
-            {
-                _context.Comments.Remove(com);
-            }
+                // kasowanie komentarzy dla ekwipunku
+                List<Comments> lstComments = new List<Comments>();
+                lstComments = await _context.Comments.Where(x => x.EquipmentId == equipmentId).ToListAsync();
+                foreach (Comments com in lstComments)
+                {
+                    _context.Comments.Remove(com);
+                }
 
-            // kasowanie przypisania ekwipunku dla grup
-            List<EquipmentsToGroup> lstEqToGroup = new List<EquipmentsToGroup>();
-            lstEqToGroup = await _context.EquipmentsToGroup.Where(x => x.EquipmentId == equipmentId).ToListAsync();
-            foreach(EquipmentsToGroup etg in lstEqToGroup)
-            {
-                _context.EquipmentsToGroup.Remove(etg);
-            }
+                // kasowanie przypisania ekwipunku dla grup
+                List<EquipmentsToGroup> lstEqToGroup = new List<EquipmentsToGroup>();
+                lstEqToGroup = await _context.EquipmentsToGroup.Where(x => x.EquipmentId == equipmentId).ToListAsync();
+                foreach (EquipmentsToGroup etg in lstEqToGroup)
+                {
+                    _context.EquipmentsToGroup.Remove(etg);
+                }
 
-            // kasowanie lajkow dla ekwipunku
-            List<Likes> lstLikes = new List<Likes>();
-            lstLikes = await _context.Likes.Where(x => x.EquipmentId == equipmentId).ToListAsync();
-            foreach(Likes lik in lstLikes)
-            {
-                _context.Likes.Remove(lik);
-            }
+                // kasowanie lajkow dla ekwipunku
+                List<Likes> lstLikes = new List<Likes>();
+                lstLikes = await _context.Likes.Where(x => x.EquipmentId == equipmentId).ToListAsync();
+                foreach (Likes lik in lstLikes)
+                {
+                    _context.Likes.Remove(lik);
+                }
 
-            // kasowanie user hero lvl dla ekwipunku
-            List<UserHeroesLvl> lstHero = new List<UserHeroesLvl>();
-            lstHero = await _context.UserHeroesLvl.Where(x => x.EquipmentId == equipmentId).ToListAsync();
-            foreach(UserHeroesLvl uhl in lstHero)
-            {
-                _context.UserHeroesLvl.Remove(uhl);
-            }
+                // kasowanie user hero lvl dla ekwipunku
+                List<UserHeroesLvl> lstHero = new List<UserHeroesLvl>();
+                lstHero = await _context.UserHeroesLvl.Where(x => x.EquipmentId == equipmentId).ToListAsync();
+                foreach (UserHeroesLvl uhl in lstHero)
+                {
+                    _context.UserHeroesLvl.Remove(uhl);
+                }
 
 
-           
+
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -221,7 +239,7 @@ namespace EquipmentBuilder.API.Data
 
                 throw;
             }
-            
+
 
             return true;
         }
@@ -248,47 +266,36 @@ namespace EquipmentBuilder.API.Data
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Equipments>> ListSharedEquipments(int userId)
+        public async Task<IEnumerable<SharedEquipmentInformation>> ListSharedEquipments(int userId) //, int groupIdVal
         {
-            //pobranie grup uzytkownika
-            var userGroups = _context.UserToGroups.Where(x => x.UserId == userId).ToList();
 
-            if (userGroups.Count > 0)
+
+            List<SharedEquipmentInformation> lstEquipments = new List<SharedEquipmentInformation>();
+            //pobranie ekwipunkow udostępnionych dla grup użytkowników
+            foreach (UserToGroups groupId in await _context.UserToGroups.Where(x => x.UserId == userId).ToListAsync()) // && x.GroupId == groupIdVal
             {
-                List<Equipments> lstEquipments = new List<Equipments>();
-                //pobranie ekwipunkow udostępnionych dla grup użytkowników
-                foreach (UserToGroups groupId in _context.UserToGroups.Where(x => x.UserId == userId).ToList())
+                foreach (EquipmentsToGroup eqToGroup in await _context.EquipmentsToGroup.Where(x => x.GroupId == groupId.GroupId).ToListAsync())
                 {
-                    foreach( EquipmentsToGroup eqToGroup in _context.EquipmentsToGroup.Where(x=>x.GroupId == groupId.GroupId).ToList())
+                    if (await _context.Equipments.AnyAsync(x => x.Id == eqToGroup.EquipmentId))
                     {
-                        if(await _context.Equipments.AnyAsync(x => x.Id == eqToGroup.EquipmentId))
+                        Equipments sharedEquipment = await _context.Equipments.FirstOrDefaultAsync(x => x.Id == eqToGroup.EquipmentId);
+                        Groups grp = await _context.Groups.FirstOrDefaultAsync(x => x.Id == groupId.GroupId);
+
+                        var eqShared = new SharedEquipmentInformation()
                         {
-                            Equipments sharedEquipment = await _context.Equipments.FirstOrDefaultAsync(x => x.Id == eqToGroup.EquipmentId);
+                            EquipmentId = sharedEquipment.Id,
+                            EquipmentName = sharedEquipment.EqName,
+                            GroupId = (int)groupId.GroupId,
+                            GroupName = grp.GroupName
+                        };
 
-                            var eqWithoutShared = new Equipments()
-                            {
-                                Id = sharedEquipment.Id,
-                                EqName = sharedEquipment.EqName,
-                                FirtItemId = sharedEquipment.FirtItemId,
-                                SecondItemId = sharedEquipment.SecondItemId,
-                                ThirdItemId = sharedEquipment.ThirdItemId,
-                                FourthItemId = sharedEquipment.FourthItemId,
-                                FifthItemId = sharedEquipment.FifthItemId,
-                                SixthItemId = sharedEquipment.SixthItemId,
-                                HeroId = sharedEquipment.HeroId,
-                                Likes = sharedEquipment.Likes,
-                                Comments = sharedEquipment.Comments,
-                                UserId = sharedEquipment.UserId
-                            };
-
-                            lstEquipments.Add(eqWithoutShared);
-                        }                        
-                    }                   
+                        lstEquipments.Add(eqShared);
+                    }
                 }
-
-                return lstEquipments;
             }
-            return new List<Equipments>();
+
+            return lstEquipments;
+
         }
 
 
@@ -302,7 +309,7 @@ namespace EquipmentBuilder.API.Data
                 EquipmentId = euqipmentToShare.EquipmentId,
                 GroupId = euqipmentToShare.GroupId
             };
-            
+
             await _context.EquipmentsToGroup.AddAsync(eqShared);
 
             await _context.SaveChangesAsync();

@@ -1,0 +1,56 @@
+<div class="pageDiv">
+  <!-- <mat-form-field appearance="fill">
+    <mat-label>Wybierz grupę</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let group of userGroup" [value]="group.id">
+        {{group.groupName}}
+      </mat-option>
+    </mat-select>   
+  </mat-form-field> -->
+
+  <label>Grupa:
+  <select
+    (change)="groupChange($event.target.value)"
+  >
+    <option *ngFor="let group of groups" [value]="group.id">{{
+      group.groupName
+    }}</option>
+  </select>
+  </label>
+  <button *ngIf="selectedGroup" mat-button class="buttonCard" (click)="shareEquipment()">Udostępnij ekwipunek</button>
+
+
+   
+  <div class="containerFlex" >
+    <div *ngIf="equipmentsShared && equipmentsShared.length <= 0">
+      <div class="fontStyleBold">         
+         Brak ekwipunków udostępnionych
+      </div>          
+    </div>
+      <div class="containerItem" *ngFor="let item of equipmentsShared; let i = index">          
+          <mat-card>
+            <mat-card-content>
+              Nazwa grupy: 
+              <div class="fontStyleBold">
+                  {{item.groupName}}
+              </div>
+            </mat-card-content>    
+            <mat-card-content>
+              Nazwa ekwipunku: 
+              <div class="fontStyleBold">
+                  {{item.equipmentName}}
+              </div>
+            </mat-card-content>    
+            <mat-card-actions>
+              <button mat-button class="buttonCard" (click)="removeShare(item.equipmentId, item.groupId)">Usuń udostępnienie</button>
+            </mat-card-actions>           
+            <!-- <img mat-card-image src="assets/Group3.png" alt="Zdjęcie Grupy">   -->
+          </mat-card>
+      </div>
+  </div>
+
+</div>
+
+
+
+

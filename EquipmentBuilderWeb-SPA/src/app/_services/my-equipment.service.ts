@@ -10,6 +10,8 @@ import { PaginatedResult, Pagination } from '../models/pagination';
 import { EquipmentModule } from '../my-equipments/equipment/equipment.module';
 import { IEquipmentToGetStatistics } from '../models/IEquipmentToGetStatistics';
 import { IEquipmentFilter } from '../models/Filters/IEquipmentFilter';
+import { ISharedEquipments } from '../models/ISharedEquipments';
+import { IEquipmentShare } from '../models/IEquipmentShare';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +33,7 @@ private equipmentByIdSubject =  new BehaviorSubject<IEquipmentToGetStatistics>({
   sixthItemId: 0
   });
 
+  private eqSharedSubject = new BehaviorSubject<ISharedEquipments[]>([]);
 
 private equipmentSubject = new BehaviorSubject<IEquipments[]>([]);
 
@@ -45,6 +48,7 @@ private loadingSubject = new BehaviorSubject<boolean>(false);
 public loading$ = this.loadingSubject.asObservable();
 public pagination$ = this.paginationSubject.asObservable();
 public equipments$ = this.equipmentSubject.asObservable();
+public equipmentShared$ = this.eqSharedSubject.asObservable();
 
 private selectedEquipmentId = new BehaviorSubject<number>(-1);
 public selectedEquipmentId$ = this.selectedEquipmentId.asObservable();
@@ -151,6 +155,48 @@ getEquipments(userId: number, page?, itemsPerPage?, filters?): Observable<Pagina
 }
 
 
+
+
+
+
+loadSharedEquipments(userId: number, groupId: number) {
+  this.loadingSubject.next(true);
+
+  this.getSharedEquipments(userId,groupId).pipe(
+    finalize(() => this.loadingSubject.next(false))
+  )
+  .subscribe((res) => {
+    this.eqSharedSubject.next(res);
+  });
+}
+
+getSharedEquipments(userId: number, groupId: number): Observable<ISharedEquipments[]> {
+
+  let paginatedResult: ISharedEquipments[] = new Array<ISharedEquipments>();
+  let params = new HttpParams();
+
+  if ( userId != null ) {
+    params = params.append('userId', userId.toString());
+  }
+
+  if ( groupId != null ) {
+    params = params.append('groupId', groupId.toString());
+  }
+
+  return this.http.get<ISharedEquipments[]>(this.baseUrl + '/GetSharedEquipments', {
+    observe: 'response',
+    params
+  }).pipe(
+    map((response) => {
+      paginatedResult = response.body;
+      return paginatedResult;
+    }
+  ));
+
+}
+
+
+
 // getEquipments(): Observable<IEquipments[]> {
 //   return this.http.get<IEquipments[]>(this.baseUrl + '');
 // }
@@ -246,5 +292,50 @@ deleteEquipment(equipmentId: number) {
         console.log(eqDeleted);
   });
 }
+
+
+
+// usuwanie udostępnienie ekwipunku
+deleteSharedEquipment(equipmentId: number, groupId: number) {
+  let params = new HttpParams();
+
+  if ( equipmentId != null) {
+    params = params.append('equipmentId', equipmentId.toString());
+  }
+
+  if ( groupId != null) {
+    params = params.append('groupId', groupId.toString());
+  }
+
+  return this.http.delete(this.baseUrl + '/deleteShareEquipment', {
+    observe: 'response',
+    params
+  })
+  .pipe(
+    map((reponse: any) => {
+      const eq = reponse;
+    })
+  ).subscribe( eqDeleted => {
+        console.log(eqDeleted);
+  });
+}
+
+
+
+addShareEquipment(shareEq: IEquipmentShare) {
+  let sharedEquipment: IEquipmentShare = shareEq;
+
+  return this.http.post<IEquipmentShare>(this.baseUrl + '/ShareEquipment' , {
+    equipmentId: sharedEquipment.equipmentId,
+    groupId: sharedEquipment.groupId
+  })
+  .pipe(
+    map((reponse: any) => {
+      const eq = reponse;
+    })
+  );
+}
+
+
 
 }

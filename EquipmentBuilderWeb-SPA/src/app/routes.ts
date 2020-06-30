@@ -30,6 +30,7 @@ export const appRoutes: Routes = [
             { path: 'equipmentEditor', loadChildren: () => import('./my-equipments/equipment-editor/equipment-editor.module').then(m => m.EquipmentEditorModule) },
             // tslint:disable-next-line: max-line-length
             { path: 'equipmentReview', loadChildren: () => import('./my-equipments/equipment-review/equipment-review.module').then(m => m.EquipmentReviewModule) },
+            { path: 'equipmentShare', loadChildren: () => import('./my-equipments/equipment-share/equipment-share.module').then(m => m.EquipmentShareModule) },
 
             // { path: 'myGroups', loadChildren: () => import('./my-groups/my-groups.module').then(m => m.MyGroupsModule) }
             { path: 'myGroups' , component: MyGroupsComponent},

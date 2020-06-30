@@ -17,7 +17,7 @@ namespace EquipmentBuilder.API.Data.Interfaces
 
         Task<EquipmentDto> GetEquipmentById(int equipmentId);
 
-        Task<IEnumerable<Equipments>> ListSharedEquipments(int userId);
+        Task<IEnumerable<SharedEquipmentInformation>> ListSharedEquipments(int userId); //, int groupId
 
         Task<Equipments> AddEquipment(Equipments equipment, int heroLvl);
 
@@ -28,10 +28,12 @@ namespace EquipmentBuilder.API.Data.Interfaces
         Task<bool> ValidateEquipmentNameForUpdate(string equipmentName, int userId, int equipmentId);
 
         Task<bool> DeleteEquipment(int equipmentId);
+        Task<bool> DeleteShareEquipment(int equipmentId, int groupId);
 
         Task<bool> CheckThatUserHaveGroupsAndSharedEquipments(int userId);
 
         Task<Equipments> ShareEquipment(ShareEquipmentDto equipmentToShare);
+        
 
         Task<bool> CheckThatEqWasShared(int equipmentId, int groupId);
     }

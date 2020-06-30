@@ -172,6 +172,10 @@ export class MyEquipmentsComponent implements OnInit {
   }
 
 
+  manageShareEquipment() {
+    this.router.navigate(['/equipmentShare']);
+  }
+
   // usuwanie ekwipunku - jeżeli jest nasz
   removeEquipment() {
     this.equipmentService.deleteEquipment(this.equipmentId);

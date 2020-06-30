@@ -147,12 +147,12 @@ namespace EquipmentBuilder.API.Controllers
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera  ,ActionName("GetSharedEquipments")
         [HttpGet("GetSharedEquipments")]
-        public async Task<IEnumerable<Equipments>> GetSharedEquipments([FromQuery] int userId)
+        public async Task<IEnumerable<SharedEquipmentInformation>> GetSharedEquipments([FromQuery] int userId, [FromQuery] int groupId)
         {
             //if (await _repo.CheckThatUserHaveGroupsAndSharedEquipments(userId))
             //   return BadRequest("Użytkownik nie posiada udostępnionych ekwpiunków");
 
-            var sharedEquipments = await _repo.ListSharedEquipments(userId);
+            var sharedEquipments = await _repo.ListSharedEquipments(userId); //, groupId
 
             return sharedEquipments;
         }
@@ -169,5 +169,14 @@ namespace EquipmentBuilder.API.Controllers
             return StatusCode(201);
         }
 
+
+        [HttpDelete("deleteShareEquipment")]
+        public Task<bool> DeleteShareEquipment([FromQuery] int equipmentId, [FromQuery] int groupId)
+        {
+            //await _repo.DeleteEquipment(equipmentId);
+            return _repo.DeleteShareEquipment(equipmentId, groupId);
+
+            //return StatusCode(201);
+        }
     }
 }
