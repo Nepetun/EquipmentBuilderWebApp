@@ -111,3 +111,13 @@ button {
 .alignButtonInFilter {
   margin-left: 2px;
 }
+
+.shareGroupOption {
+  border: royalblue;
+  margin-top: 10px;
+}
+
+.distanceBetweenObjects {
+  margin-top: 100px;
+}
+

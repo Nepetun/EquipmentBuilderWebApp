@@ -7,17 +7,23 @@
       </mat-option>
     </mat-select>   
   </mat-form-field> -->
+   
 
-  <label>Grupa:
-  <select
-    (change)="groupChange($event.target.value)"
-  >
-    <option *ngFor="let group of groups" [value]="group.id">{{
-      group.groupName
-    }}</option>
-  </select>
+  Wybierz grupę dla którego chcesz udostępnić wybrany ekwipunek:
+  <label>
+    <div class="shareGroupOption">
+      <select
+      (change)="groupChange($event.target.value)"
+    >
+      <option *ngFor="let group of groups" [value]="group.id">{{
+        group.groupName
+      }}</option>
+    </select>
+    </div>
   </label>
   <button *ngIf="selectedGroup" mat-button class="buttonCard" (click)="shareEquipment()">Udostępnij ekwipunek</button>
+
+  <div class="distanceBetweenObjects">
 
 
    
@@ -48,6 +54,7 @@
           </mat-card>
       </div>
   </div>
+</div>
 
 </div>
 
