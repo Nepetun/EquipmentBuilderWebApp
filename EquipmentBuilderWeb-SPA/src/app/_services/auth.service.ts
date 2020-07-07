@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject } from 'rxjs';
+import { IUserPasswordModify } from '../models/IUserPasswordModify';
 @Injectable({
   providedIn: 'root'// który moduł może skorzystać z serwisu - dla nas jest to appmodule
 })
@@ -37,6 +38,21 @@ login(model: any) {
         localStorage.setItem('userId', this.decodedToken.nameid);
         localStorage.setItem('userName', this.decodedToken.unique_name);
       }
+    })
+  );
+}
+
+modifyUserPassword(modifyData: IUserPasswordModify) {
+  let modifiedUserPassword: IUserPasswordModify = modifyData;
+
+  return this.http.post<IUserPasswordModify>(this.baseUrl + 'ChangePassword' , {
+    passwordNew: modifiedUserPassword.passwordNew,
+    passwordNewApproved: modifiedUserPassword.passwordNewApproved,
+    userId: modifyData.userId
+  })
+  .pipe(
+    map((reponse: any) => {
+      const eq = reponse;
     })
   );
 }

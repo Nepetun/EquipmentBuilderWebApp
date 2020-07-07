@@ -1,4 +1,5 @@
-﻿using EquipmentBuilder.API.Models;
+﻿using EquipmentBuilder.API.Dtos;
+using EquipmentBuilder.API.Models;
 using System.Threading.Tasks;
 
 namespace EquipmentBuilder.API.Data.Interfaces
@@ -13,6 +14,6 @@ namespace EquipmentBuilder.API.Data.Interfaces
         Task<bool> UserExists(string userName);
 
         Task<bool> ModifyUserName(int userId, string userName);
-        Task<bool> ChangePassword(int userId, string password);
+        Task<bool> ChangePassword(UserPasswordModify userPass);
     }
 }

@@ -3,6 +3,7 @@ import { AuthService } from '../_services/auth.service';
 import { AlertifyService } from '../_services/alertify.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { IUserPasswordModify } from '../models/IUserPasswordModify';
 
 @Component({
   selector: 'app-profileUser',
@@ -11,7 +12,8 @@ import { Router } from '@angular/router';
 })
 export class ProfileUserComponent implements OnInit {
   bsInlineValue = new Date();
-  model: any = {};
+  public userId: number;
+  data: IUserPasswordModify;
   startDate = Date.now();
   profileInformation = this.fb.group(
     {
@@ -45,20 +47,36 @@ export class ProfileUserComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadUserId();
+  }
 
-  register() {
-    this.model.passwordNew = this.profileInformation.controls.password.value;
-    this.model.passwordNewApproved = this.profileInformation.controls.password.value;
-/*
-    this.authService.register(this.model).subscribe(
-      () => {
-        this.alertify.success('modyfikacja danych zakończona');
-      },
-      errror => {
-        this.alertify.error(errror);
-      }
-    );*/
+
+  loadUserId() {
+    let userIdString = this.authService.getUserIdByUserName();
+    this.userId = +userIdString;
+    console.log(this.userId);
+  }
+
+  modifyData() {
+    let finalData : IUserPasswordModify  = {
+      passwordNew: this.profileInformation.controls.passwordNew.value,
+      passwordNewApproved: this.profileInformation.controls.passwordNewApproved.value,
+      userId: this.userId
+    };
+
+    if (finalData.passwordNew !== finalData.passwordNewApproved) {
+      this.alertify.warning('hasła nie są identyczne');
+    } else {
+      this.authService.modifyUserPassword(finalData).subscribe(
+        () => {
+          this.alertify.success('modyfikacja danych zakończona');
+        },
+        errror => {
+          this.alertify.error(errror);
+        }
+      );
+    }
   }
 
  cancel() {

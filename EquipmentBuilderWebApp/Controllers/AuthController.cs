@@ -121,9 +121,9 @@ namespace EquipmentBuilder.API.Controllers
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
         [HttpPost("ChangePassword")]
-        public async Task<IActionResult> ChangePassword([FromBody] UserToModifyPasswordDto userToModifyDto)
+        public async Task<IActionResult> ChangePassword([FromBody] UserPasswordModify userToModifyDto)
         {
-            var createdUser = await _repo.ChangePassword(userToModifyDto.UserId, userToModifyDto.Password);
+            var createdUser = await _repo.ChangePassword(userToModifyDto);
 
             return StatusCode(201);
         }

@@ -1,4 +1,19 @@
-<form [formGroup]="profileInformation" (ngSubmit)="register()">
+<!-- <form [formGroup]="profileInformation" (ngSubmit)="modifyData()"> -->
+  <div class="pageDiv">
+
+<label>
+  <div class= "distanceTopDiv">
+    
+  </div>
+</label>
+    
+    
+  <form
+  class="container"
+  [formGroup]="profileInformation"
+  (ngSubmit)="modifyData()"
+>
+
   <div *ngIf="!profileInformation.valid">
     <div class="errorDiv">
       <p *ngIf="profileInformation.hasError('requiredFieldsValidatorInvalid')">
@@ -11,7 +26,9 @@
    
     <div class="containerItem">
       <label>
-        Nowe Hasło:
+        
+        <div class="passwordFirstInput">
+          Nowe Hasło:
         <input
           formControlName="passwordNew"
           type="password"
@@ -19,6 +36,9 @@
           maxlength="8"
           minlength="4"
         />
+      </div>
+
+      
         <div *ngIf="passwordNew.invalid && (passwordNew.dirty || passwordNew.touched)">
           <div class="errorDiv">
             <span *ngIf="passwordNew.errors?.required">
@@ -32,6 +52,8 @@
             </span>
           </div>
         </div>
+
+     
       </label>
     </div>
     <div class="containerItem">
@@ -72,4 +94,6 @@
   <button class="btn btn-default" type="button" (click)="cancel()">
     Anuluj
   </button>
+
 </form>
+</div>   

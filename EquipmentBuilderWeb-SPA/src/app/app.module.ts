@@ -50,8 +50,8 @@ import { MyGroupsModule } from './my-groups/my-groups.module';
       //BrowserAnimationsModule,
       BsDropdownModule.forRoot(),
       BsDatepickerModule.forRoot(),
-      RouterModule.forRoot(appRoutes),
-      MyGroupsModule
+      RouterModule.forRoot(appRoutes) //,
+     // MyGroupsModule
       // MyEquipmentsModule // import modułu odpowiedzialnego za wyświetlanie ekwipunku
     ],
     providers: [

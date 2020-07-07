@@ -4,3 +4,8 @@
     min-height: 880px;
     background-color: rgba(110, 185, 255, 0.685);
 }
+
+.errorDiv {
+    color: red;
+    font-weight: bold;
+}

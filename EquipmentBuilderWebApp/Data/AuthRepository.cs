@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using EquipmentBuilder.API.Context;
 using EquipmentBuilder.API.Data.Interfaces;
+using EquipmentBuilder.API.Dtos;
 using EquipmentBuilder.API.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -106,12 +107,12 @@ namespace EquipmentBuilder.API.Data
         
         }
 
-        public async Task<bool> ChangePassword(int userId, string password)
+        public async Task<bool> ChangePassword(UserPasswordModify userPass)
         {
-            var userToModify = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            var userToModify = await _context.Users.FirstOrDefaultAsync(x => x.Id == userPass.UserId);
 
             byte[] passwordHash, passwordSalt;
-            CreatePasswordHash(password, out passwordHash, out passwordSalt); //jezeli updatowane w metodzie dzieki out rowniez sa tutaj updatowane
+            CreatePasswordHash(userPass.PasswordNew, out passwordHash, out passwordSalt); //jezeli updatowane w metodzie dzieki out rowniez sa tutaj updatowane
             userToModify.PasswordHash = passwordHash;
             userToModify.PasswordSalt = passwordSalt;
 

@@ -22,7 +22,8 @@ export const appRoutes: Routes = [
         children: [
            //{ path: 'groups', loadChildren: () => import('./groups/group.module').then(m => m.GroupModule) },
 
-            { path: 'profileUser', component: ProfileUserComponent },
+            //{ path: 'profileUser', component: ProfileUserComponent },
+            { path: 'profileUser', loadChildren: () => import('./profileUser/profileUser.module').then(m => m.ProfileUserModule) },
 
             { path: 'myEquipments', component: MyEquipmentsComponent },
             { path: 'equipment', loadChildren: () => import('./my-equipments/equipment/equipment.module').then(m => m.EquipmentModule) },
