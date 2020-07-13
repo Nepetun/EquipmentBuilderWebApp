@@ -127,7 +127,16 @@ namespace EquipmentBuilder.API.Controllers
 
             return StatusCode(201);
         }
-        
+
+
+        [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
+        [HttpGet("IsAdmin")]
+        public async Task<bool> IsAdmin([FromQuery] int userId)
+        {
+            var isAdmin = await _repo.IsAdmin(userId);
+
+            return isAdmin;
+        }
 
     }
 }

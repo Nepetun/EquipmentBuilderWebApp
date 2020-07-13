@@ -15,5 +15,6 @@ namespace EquipmentBuilder.API.Data.Interfaces
 
         Task<bool> ModifyUserName(int userId, string userName);
         Task<bool> ChangePassword(UserPasswordModify userPass);
+        Task<bool> IsAdmin(int userId);
     }
 }

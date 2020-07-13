@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { map, finalize } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { IUserPasswordModify } from '../models/IUserPasswordModify';
 @Injectable({
   providedIn: 'root'// który moduł może skorzystać z serwisu - dla nas jest to appmodule
@@ -13,6 +13,40 @@ export class AuthService {
   decodedToken: any;
   
 constructor(private http: HttpClient) { }
+
+
+private adminSubject = new BehaviorSubject<boolean>(false);
+public isAdmin$ = this.adminSubject.asObservable();
+
+loadSharedEquipments(userId: number) {
+  this.checkIsAdmin(userId).pipe()
+  .subscribe((res) => {
+    this.adminSubject.next(res);
+  });
+}
+
+checkIsAdmin(userId: number): Observable<boolean> {
+
+  let paginatedResult: boolean = false;
+  let params = new HttpParams();
+
+  if ( userId != null ) {
+    params = params.append('userId', userId.toString());
+  }
+
+  return this.http.get<boolean>(this.baseUrl + 'IsAdmin', {
+    observe: 'response',
+    params
+  }).pipe(
+    map((response) => {
+      paginatedResult = response.body;
+      return paginatedResult;
+    }
+  ));
+
+}
+
+
 
 /* metoda logowania - tworzymy post tak jak za pomocą postmana
 do metody login - co przesyłamy?

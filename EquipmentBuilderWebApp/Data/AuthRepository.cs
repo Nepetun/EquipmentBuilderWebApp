@@ -17,6 +17,23 @@ namespace EquipmentBuilder.API.Data
             _context = context;
         }
 
+        public async Task<bool> IsAdmin(int userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
+
+            if (user == null)
+                return false;
+
+            if((bool)user.IsAdmin)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public async Task<Users> Login(string userName, string password)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == userName);
@@ -123,6 +140,8 @@ namespace EquipmentBuilder.API.Data
 
             return true;
         }
+
+
 
     }
 }

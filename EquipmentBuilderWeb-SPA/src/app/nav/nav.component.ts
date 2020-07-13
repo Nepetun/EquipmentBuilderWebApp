@@ -12,7 +12,8 @@ import { Router } from '@angular/router';
 })
 export class NavComponent implements OnInit {
  model: any = {};
-
+ userId: number = -1;
+ isAdmin: boolean = false;
   constructor(public authService: AuthService, private alertify: AlertifyService, private router: Router) { }
 
   ngOnInit() {
@@ -25,9 +26,15 @@ export class NavComponent implements OnInit {
       }, error => {
         this.alertify.error(error);
       }, () => { // tutaj dziłanie  w przypadku completed z wykorzystaniem anonimowej funkcji
+          // sprawdzenei id użytkownika
+          let userIdString = this.authService.getUserIdByUserName();
+          this.userId = +userIdString;
+          // sprawdzenie czy uzytkownik jest administratorem
+          this.authService.checkIsAdmin(this.userId).subscribe((grp) => {
+            this.isAdmin = grp;
+          });
           this.router.navigate(['/myEquipments']);
-      }
-    );
+      });
   }
 
   loggedIn() {
