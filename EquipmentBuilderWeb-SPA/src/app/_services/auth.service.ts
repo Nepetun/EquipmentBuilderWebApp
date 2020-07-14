@@ -18,7 +18,7 @@ constructor(private http: HttpClient) { }
 private adminSubject = new BehaviorSubject<boolean>(false);
 public isAdmin$ = this.adminSubject.asObservable();
 
-loadSharedEquipments(userId: number) {
+loadIsAdminUser(userId: number) {
   this.checkIsAdmin(userId).pipe()
   .subscribe((res) => {
     this.adminSubject.next(res);

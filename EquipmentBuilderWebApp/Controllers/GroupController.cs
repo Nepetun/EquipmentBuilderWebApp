@@ -50,10 +50,10 @@ namespace EquipmentBuilder.API.Controllers
        // [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera , ActionName("GetRecivedInvitations")]
         [HttpGet("GetUserGroups")]
         //public async Task<IEnumerable<Groups>> GetUserGroups([FromBody] int userId)  --TAKIE POWINNO BYC i usuneicie userId z linijki wyzej i tak kazdą inna przerobić
-        public async Task<PagedList<GroupListDto>> GetUserGroups([FromQuery] PageParams pageParams, [FromQuery] int userId, [FromQuery] GroupFilter filters)
+        public async Task<PagedList<GroupListDto>> GetUserGroups([FromQuery] PageParams pageParams, [FromQuery] int userId, [FromQuery] GroupFilter filters, bool isAdmin)
         {
 
-            var userGroups = await _repo.GetUserGroups(pageParams,userId, filters);
+            var userGroups = await _repo.GetUserGroups(pageParams,userId, filters, isAdmin);
 
             Response.AddPagination(userGroups.CurrentPage, userGroups.PageSize, userGroups.TotalCount, userGroups.TotalPages);
 

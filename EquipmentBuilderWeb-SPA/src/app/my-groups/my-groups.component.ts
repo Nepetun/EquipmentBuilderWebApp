@@ -20,6 +20,7 @@ export class MyGroupsComponent implements OnInit {
   selectedCardIndex = -1;
   selectedGroup = false;
   selectedMyGroup = false;
+  isAdmin: boolean = false;
   userName = '';
   groupId = -1;
   itemsPerPage = 2;
@@ -58,12 +59,16 @@ export class MyGroupsComponent implements OnInit {
 
     this.loading$ = this.groupService.loading$;
 
-    this.reloadValues();
+
+    this.authService.checkIsAdmin(this.userId).subscribe((res) => {
+      this.isAdmin = res,
+      this.reloadValues();
+    });
   }
 
   reloadValues() {
     this.setFilterFromForm();
-    this.groupService.loadGroups(this.userId, this.pagination, this.groupFilter);
+    this.groupService.loadGroups(this.userId, this.pagination, this.groupFilter, this.isAdmin);
     this.groupService.pagination$.subscribe((value) => (this.pagination = value));
     this.groupService.groups$.subscribe((grp) => (this.groups = grp));
   }
@@ -156,7 +161,7 @@ export class MyGroupsComponent implements OnInit {
     this.pagination.currentPage = Number(event.page);
     this.groupService.pagination$.subscribe((value) => (this.pagination = value));
 
-    this.groupService.getGroups(this.userId, this.pagination.itemsPerPage, this.groupFilter).subscribe((grp) => { //this.pagination.currentPage,
+    this.groupService.getGroups(this.userId, this.isAdmin, this.pagination.itemsPerPage, this.groupFilter).subscribe((grp) => { //this.pagination.currentPage,
       this.groups = grp.result;
     });
   }

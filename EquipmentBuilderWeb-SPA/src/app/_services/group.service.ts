@@ -78,10 +78,10 @@ export class GroupService {
     ));
   }
 
-  loadGroups(userId: number, pagination: Pagination, filters: IGroupFilter) {
+  loadGroups(userId: number, pagination: Pagination, filters: IGroupFilter, isAdmin: boolean) {
     this.loadingSubject.next(true);
 
-    this.getGroups(userId, pagination.currentPage, pagination.itemsPerPage, filters).pipe(
+    this.getGroups(userId, isAdmin, pagination.currentPage, pagination.itemsPerPage, filters).pipe(
       finalize(() => this.loadingSubject.next(false))
     )
     .subscribe((res) => {
@@ -90,7 +90,7 @@ export class GroupService {
     });
   }
 
-  getGroups(userId: number, page?, itemsPerPage?, filters?): Observable<PaginatedResult<IGroups[]>> {
+  getGroups(userId: number, isAdmin: boolean, page?, itemsPerPage?, filters?): Observable<PaginatedResult<IGroups[]>> {
 
     const paginatedResult: PaginatedResult<IGroups[]> = new PaginatedResult<IGroups[]>();
     let params = new HttpParams();
@@ -102,6 +102,10 @@ export class GroupService {
 
     if ( userId != null ) {
       params = params.append('userId', userId.toString());
+    }
+
+    if ( isAdmin != null ) {
+      params = params.append('isAdmin', isAdmin.toString());
     }
 
     if(filters) {

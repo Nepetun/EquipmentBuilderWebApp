@@ -24,76 +24,112 @@ namespace EquipmentBuilder.API.Data
 
 
         //public async Task<List<EquipmentListDto>> ListMyEquipments(PageParams pageParams, int userId)
-        public async Task<PagedList<EquipmentListDto>> ListMyEquipments(PageParams pageParams, int userId, EquipmentFilter eqFilters)
+        public async Task<PagedList<EquipmentListDto>> ListMyEquipments(PageParams pageParams, int userId, EquipmentFilter eqFilters, bool isAdmin)
         {
             List<EquipmentListDto> lstEquipments = new List<EquipmentListDto>();
 
-            //pobranie grup uzytkownika
-            var userGroups = await _context.UserToGroups.Where(x => x.UserId == userId).ToListAsync();
-            if (userGroups.Count > 0)
+
+            if (isAdmin)
             {
-                //pobranie ekwipunkow udostępnionych dla grup użytkowników
-                foreach (UserToGroups groupId in await _context.UserToGroups.Where(x => x.UserId == userId).ToListAsync())
+                foreach (Equipments eq in await _context.Equipments.Where(x => x.UserId == userId || isAdmin).ToListAsync())
                 {
-                    foreach (EquipmentsToGroup eqToGroup in await _context.EquipmentsToGroup.Where(x => x.GroupId == groupId.GroupId).ToListAsync())
+                    if (!lstEquipments.Any(x => x.EqName == eq.EqName))
                     {
-                        if (await _context.Equipments.AnyAsync(x => x.Id == eqToGroup.EquipmentId))
+                        // pobranie nazwy bohatera dla ekwipunku
+                        var hero = await _context.Heroes.FirstOrDefaultAsync(x => x.Id == eq.HeroId);
+                        // pobranie poziomu bohatera dla ekwipunku
+                        var heroLvl = await _context.UserHeroesLvl.FirstOrDefaultAsync(x => x.EquipmentId == eq.Id);
+                        // pobranie ilości lajków dla ekwipunku
+                        var counterOfLikes = await _context.Likes.CountAsync(x => x.EquipmentId == eq.Id);
+
+                        // pobranie nazwy użytkownika
+                        var userName = await _context.Users.FirstOrDefaultAsync(x => x.Id == eq.UserId);
+
+                        var eqWithoutShared = new EquipmentListDto()
                         {
-                            Equipments sharedEquipment = await _context.Equipments.FirstOrDefaultAsync(x => x.Id == eqToGroup.EquipmentId);
+                            EquipmentId = eq.Id,
+                            EqName = eq.EqName,
+                            HeroName = hero.HeroName,
+                            HeroLvl = heroLvl != null ? 1 : (int)heroLvl.Lvl,
+                            CounterOfLikes = counterOfLikes,
+                            UserName = userName.UserName
+                        };
 
-                            // pobranie nazwy bohatera dla ekwipunku
-                            var hero = await _context.Heroes.FirstOrDefaultAsync(x => x.Id == sharedEquipment.HeroId);
-                            // pobranie poziomu bohatera dla ekwipunku
-                            var heroLvl = await _context.UserHeroesLvl.FirstOrDefaultAsync(x => x.EquipmentId == sharedEquipment.Id);
-                            // pobranie ilości lajków dla ekwipunku
-                            var counterOfLikes = await _context.Likes.CountAsync(x => x.EquipmentId == sharedEquipment.Id);
-
-                            // pobranie nazwy użytkownika
-                            var userName = await _context.Users.FirstOrDefaultAsync(x => x.Id == sharedEquipment.UserId);
-
-                            var eqWithoutShared = new EquipmentListDto()
-                            {
-                                EquipmentId = sharedEquipment.Id,
-                                EqName = sharedEquipment.EqName,
-                                HeroName = hero.HeroName,
-                                HeroLvl = (int)heroLvl.Lvl,
-                                CounterOfLikes = counterOfLikes,
-                                UserName = userName.UserName
-                            };
-
-                            lstEquipments.Add(eqWithoutShared);
-                        }
+                        lstEquipments.Add(eqWithoutShared);
                     }
                 }
             }
-
-
-            foreach (Equipments eq in await _context.Equipments.Where(x => x.UserId == userId).ToListAsync())
+            else
             {
-                if (!lstEquipments.Any(x => x.EqName == eq.EqName))
+                //pobranie grup uzytkownika
+                var userGroups = await _context.UserToGroups.Where(x => x.UserId == userId).ToListAsync();
+                if (userGroups.Count > 0)
                 {
-                    // pobranie nazwy bohatera dla ekwipunku
-                    var hero = await _context.Heroes.FirstOrDefaultAsync(x => x.Id == eq.HeroId);
-                    // pobranie poziomu bohatera dla ekwipunku
-                    var heroLvl = await _context.UserHeroesLvl.FirstOrDefaultAsync(x => x.EquipmentId == eq.Id);
-                    // pobranie ilości lajków dla ekwipunku
-                    var counterOfLikes = await _context.Likes.CountAsync(x => x.EquipmentId == eq.Id);
-
-                    // pobranie nazwy użytkownika
-                    var userName = await _context.Users.FirstOrDefaultAsync(x => x.Id == eq.UserId);
-
-                    var eqWithoutShared = new EquipmentListDto()
+                    //pobranie ekwipunkow udostępnionych dla grup użytkowników
+                    foreach (UserToGroups groupId in await _context.UserToGroups.Where(x => x.UserId == userId).ToListAsync())
                     {
-                        EquipmentId = eq.Id,
-                        EqName = eq.EqName,
-                        HeroName = hero.HeroName,
-                        HeroLvl = (int)heroLvl.Lvl,
-                        CounterOfLikes = counterOfLikes,
-                        UserName = userName.UserName
-                    };
+                        foreach (EquipmentsToGroup eqToGroup in await _context.EquipmentsToGroup.Where(x => x.GroupId == groupId.GroupId).ToListAsync())
+                        {
+                            if (await _context.Equipments.AnyAsync(x => x.Id == eqToGroup.EquipmentId))
+                            {
+                                Equipments sharedEquipment = await _context.Equipments.FirstOrDefaultAsync(x => x.Id == eqToGroup.EquipmentId);
 
-                    lstEquipments.Add(eqWithoutShared);
+                                // pobranie nazwy bohatera dla ekwipunku
+                                var hero = await _context.Heroes.FirstOrDefaultAsync(x => x.Id == sharedEquipment.HeroId);
+                                // pobranie poziomu bohatera dla ekwipunku
+                                var heroLvl = await _context.UserHeroesLvl.FirstOrDefaultAsync(x => x.EquipmentId == sharedEquipment.Id);
+                                // pobranie ilości lajków dla ekwipunku
+                                var counterOfLikes = await _context.Likes.CountAsync(x => x.EquipmentId == sharedEquipment.Id);
+
+                                // pobranie nazwy użytkownika
+                                var userName = await _context.Users.FirstOrDefaultAsync(x => x.Id == sharedEquipment.UserId);
+
+                                var eqWithoutShared = new EquipmentListDto()
+                                {
+                                    EquipmentId = sharedEquipment.Id,
+                                    EqName = sharedEquipment.EqName,
+                                    HeroName = hero.HeroName,
+                                    HeroLvl = (int)heroLvl.Lvl,
+                                    CounterOfLikes = counterOfLikes,
+                                    UserName = userName.UserName
+                                };
+
+                                lstEquipments.Add(eqWithoutShared);
+                            }
+                        }
+                    }
                 }
+
+
+                foreach (Equipments eq in await _context.Equipments.Where(x => x.UserId == userId).ToListAsync())
+                {
+                    if (!lstEquipments.Any(x => x.EqName == eq.EqName))
+                    {
+                        // pobranie nazwy bohatera dla ekwipunku
+                        var hero = await _context.Heroes.FirstOrDefaultAsync(x => x.Id == eq.HeroId);
+                        // pobranie poziomu bohatera dla ekwipunku
+                        var heroLvl = await _context.UserHeroesLvl.FirstOrDefaultAsync(x => x.EquipmentId == eq.Id);
+                        // pobranie ilości lajków dla ekwipunku
+                        var counterOfLikes = await _context.Likes.CountAsync(x => x.EquipmentId == eq.Id);
+
+                        // pobranie nazwy użytkownika
+                        var userName = await _context.Users.FirstOrDefaultAsync(x => x.Id == eq.UserId);
+
+                        var eqWithoutShared = new EquipmentListDto()
+                        {
+                            EquipmentId = eq.Id,
+                            EqName = eq.EqName,
+                            HeroName = hero.HeroName,
+                            HeroLvl = (int)heroLvl.Lvl,
+                            CounterOfLikes = counterOfLikes,
+                            UserName = userName.UserName
+                        };
+
+                        lstEquipments.Add(eqWithoutShared);
+                    }
+                }
+
+              
             }
 
             // dodanie ekwipunków samego użytkownika

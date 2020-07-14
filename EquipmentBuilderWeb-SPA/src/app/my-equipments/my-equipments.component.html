@@ -8,11 +8,11 @@ DOMYYSLNIE KOMPONENT DO ZARZADZANIA EKWIPUNKAMI
     <nav class="navSpecial">  
         <a class="navbar-brand" >Zarządzanie ekwipunkami</a>
     </nav>
-    <button type="button" class="btn btn-success"  (click)="createEquipment()">Stwórz ekwipunek</button>
-    <button type="button" class="btn btn-success" [disabled]="!selectedEq && !selectedMyEq" (click)="editSelectedEquipment()">Edycja</button>
+    <button type="button" class="btn btn-success"  [disabled]="isAdmin" (click)="createEquipment()">Stwórz ekwipunek</button>
+    <button type="button" class="btn btn-success" [disabled]="!selectedEq && !selectedMyEq || isAdmin" (click)="editSelectedEquipment()">Edycja</button>
     <button type="button" class="btn btn-success" [disabled]="!selectedEq" (click)="showPickedEquipment()">Przeglądaj ekwipunek</button>
     <button type="button" class="btn btn-success" [disabled]="!selectedEq && !selectedMyEq" (click)="removeEquipment()">Usuń ekwipunek</button>
-    <button type="button" class="btn btn-success" [disabled]="!selectedEq && !selectedMyEq" (click)="manageShareEquipment()">Udostępnienia ekwipunku</button>
+    <button type="button" class="btn btn-success" [disabled]="!selectedEq && !selectedMyEq || isAdmin" (click)="manageShareEquipment()">Udostępnienia ekwipunku</button>
 <!-- 
     <form class="form-inline" novalidate>
         <div class="form-group">
@@ -231,7 +231,6 @@ DOMYYSLNIE KOMPONENT DO ZARZADZANIA EKWIPUNKAMI
                     </mat-card-content>
 
 
-                    {{item.heroName}}
                     <div *ngIf="item.heroName === 'Caitlin'">
                         <img mat-card-image src="assets/Caitlyn.jpg" alt="Zdjęcie Caitlyn">
                     </div>

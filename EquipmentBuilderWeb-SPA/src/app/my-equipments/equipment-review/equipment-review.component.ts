@@ -72,7 +72,7 @@ export class EquipmentReviewComponent implements OnInit {
   public fourthItemId: number;
   public fifthItemId: number;
   public sixthItemId: number;
-
+  isAdmin: boolean = false;
   public selectedEquipmentId: number;
 
   public lvlArray: Array<number>;
@@ -158,11 +158,13 @@ export class EquipmentReviewComponent implements OnInit {
       this.selectedEquipmentId = res;
     });
 
+
     this.userName = this.authService.getUserName();
 
     this.loadHeroes();
     this.loadItems();
     this.loadUserId();
+    this.authService.checkIsAdmin(this.userId).subscribe((res) => { this.isAdmin = res; });
 
     this.eqCreatedStatistic = {
       heroLvl: 0,

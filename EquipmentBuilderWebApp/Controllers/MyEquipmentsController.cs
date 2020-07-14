@@ -36,10 +36,10 @@ namespace EquipmentBuilder.API.Controllers
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
         [HttpGet("GetEquipments")] //("{userId}")
         // public async Task<List<EquipmentListDto>> GetEquipments([FromQuery] PageParams pageParams,[FromQuery] int userId)
-        public async Task<PagedList<EquipmentListDto>> GetEquipments([FromQuery] PageParams pageParams, [FromQuery] int userId, [FromQuery] EquipmentFilter eqFilters)
+        public async Task<PagedList<EquipmentListDto>> GetEquipments([FromQuery] PageParams pageParams, [FromQuery] int userId, [FromQuery] EquipmentFilter eqFilters, [FromQuery] bool isAdmin)
         {
 
-            var myEquipments = await _repo.ListMyEquipments(pageParams, userId, eqFilters);
+            var myEquipments = await _repo.ListMyEquipments(pageParams, userId, eqFilters, isAdmin);
            
             //Response.AddPagination(myEquipments.CurrentPage, myEquipments.PageSize, myEquipments.TotalCount, myEquipments.TotalPages);
 

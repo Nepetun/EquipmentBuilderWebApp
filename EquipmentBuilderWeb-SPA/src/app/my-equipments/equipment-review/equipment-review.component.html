@@ -347,7 +347,7 @@
               <mat-card-content>                
                 {{item.commentString}}
               </mat-card-content> 
-              <div *ngIf="item.userName == userName">
+              <div *ngIf="item.userName == userName || isAdmin">
               <mat-card-actions>
                 <button mat-button class="buttonCard" (click)="removeComment(item.commentId)">Usuń</button>
               </mat-card-actions>

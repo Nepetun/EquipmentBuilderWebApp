@@ -12,7 +12,7 @@ namespace EquipmentBuilder.API.Data.Interfaces
     public interface IGroupRepository
     {
 
-        public Task<PagedList<GroupListDto>> GetUserGroups(PageParams pageParams, int userId, GroupFilter filters);
+        public Task<PagedList<GroupListDto>> GetUserGroups(PageParams pageParams, int userId, GroupFilter filters, bool isAdmin);
         public Task<GroupDto> GetGroupById(int groupId);
 
         public Task<PagedList<UserToModifyNameDto>> GetUsersForApplication(PageParams pageParams, int groupId, GroupUsersFilter filters);

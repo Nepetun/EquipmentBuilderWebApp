@@ -44,18 +44,14 @@ namespace EquipmentBuilder.API.Data
             return group;
         }
 
-        public async Task<PagedList<GroupListDto>> GetUserGroups(PageParams pageParams, int userId, GroupFilter groupFilter)
+        public async Task<PagedList<GroupListDto>> GetUserGroups(PageParams pageParams, int userId, GroupFilter groupFilter, bool isAdmin)
         {
-            var userGroupsAdmin = await _context.Groups.Where(x => x.GroupAdminId == userId).ToListAsync();
-            // grupy użytkownika do których należy 
-            var userGroups = await _context.UserToGroups.Where(x => x.UserId == userId).ToListAsync();
-
             List<GroupListDto> lstGroups = new List<GroupListDto>();
 
-            // jeżeli uzytkownik jest administratorem danej grupy = założycielem
-            if (userGroupsAdmin.Count > 0)
+
+            if (isAdmin)
             {
-                foreach (Groups grp in userGroupsAdmin)
+                foreach (Groups grp in await _context.Groups.Where(x => x.GroupAdminId == userId || isAdmin).ToListAsync())
                 {
                     var adminUserName = await _context.Users.FirstOrDefaultAsync(x => x.Id == grp.GroupAdminId);
                     GroupListDto gto = new GroupListDto()
@@ -69,15 +65,17 @@ namespace EquipmentBuilder.API.Data
                     lstGroups.Add(gto);
                 }
             }
-
-            // jeżeli użytkownik nalezy do której z grup 
-            if( userGroups.Count > 0)
+            else
             {
-                foreach (UserToGroups utg in userGroups)
+                var userGroupsAdmin = await _context.Groups.Where(x => x.GroupAdminId == userId).ToListAsync();
+                // grupy użytkownika do których należy 
+                var userGroups = await _context.UserToGroups.Where(x => x.UserId == userId).ToListAsync();
+
+                // jeżeli uzytkownik jest administratorem danej grupy = założycielem
+                if (userGroupsAdmin.Count > 0)
                 {
-                    if (await _context.Groups.AnyAsync(x => x.Id == utg.GroupId)) //pobranie grup
-                    {                       
-                        var grp = await _context.Groups.FirstOrDefaultAsync(x => x.Id == utg.GroupId);
+                    foreach (Groups grp in userGroupsAdmin)
+                    {
                         var adminUserName = await _context.Users.FirstOrDefaultAsync(x => x.Id == grp.GroupAdminId);
                         GroupListDto gto = new GroupListDto()
                         {
@@ -90,7 +88,29 @@ namespace EquipmentBuilder.API.Data
                         lstGroups.Add(gto);
                     }
                 }
-            }
+
+                // jeżeli użytkownik nalezy do której z grup 
+                if (userGroups.Count > 0)
+                {
+                    foreach (UserToGroups utg in userGroups)
+                    {
+                        if (await _context.Groups.AnyAsync(x => x.Id == utg.GroupId)) //pobranie grup
+                        {
+                            var grp = await _context.Groups.FirstOrDefaultAsync(x => x.Id == utg.GroupId);
+                            var adminUserName = await _context.Users.FirstOrDefaultAsync(x => x.Id == grp.GroupAdminId);
+                            GroupListDto gto = new GroupListDto()
+                            {
+                                GroupAdminId = grp.GroupAdminId,
+                                GroupName = grp.GroupName,
+                                Id = grp.Id,
+                                UserId = userId,
+                                GroupAdminName = adminUserName.UserName
+                            };
+                            lstGroups.Add(gto);
+                        }
+                    }
+                }
+            }           
         
             
             if (groupFilter != null)

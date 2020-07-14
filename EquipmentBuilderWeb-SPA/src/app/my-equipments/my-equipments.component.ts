@@ -19,6 +19,7 @@ export class MyEquipmentsComponent implements OnInit {
   public userId: number;
   equipments: IEquipments[];
   selectedCardIndex = -1;
+  isAdmin: boolean = false;
   selectedEq = false;
   selectedMyEq = false;
   userName = '';
@@ -72,9 +73,12 @@ export class MyEquipmentsComponent implements OnInit {
     this.loadUserId();
     this.userName = this.authService.getUserName();
 
+    this.authService.checkIsAdmin(this.userId).subscribe((res) => {
+      this.isAdmin = res,
+      this.reloadValues();
+    });
     this.loading$ = this.equipmentService.loading$;
 
-    this.reloadValues();
     /*
     this.equipmentService.loadEquipments(this.userId, this.pagination);
     this.equipmentService.pagination$.subscribe((value) => (this.pagination = value));
@@ -88,7 +92,7 @@ export class MyEquipmentsComponent implements OnInit {
 
   reloadValues() {
     this.setFilterFromForm();
-    this.equipmentService.loadEquipments(this.userId, this.pagination, this.equipmentFilter);
+    this.equipmentService.loadEquipments(this.userId, this.pagination, this.equipmentFilter, this.isAdmin);
     this.equipmentService.pagination$.subscribe((value) => (this.pagination = value));
     this.equipmentService.equipments$.subscribe((eq) => (this.equipments = eq));
   }
@@ -181,7 +185,7 @@ export class MyEquipmentsComponent implements OnInit {
     this.equipmentService.deleteEquipment(this.equipmentId);
     this.equipmentService.pagination$.subscribe((value) => (this.pagination = value));
 
-    this.equipmentService.getEquipments(this.userId, this.pagination.currentPage, this.pagination.itemsPerPage).subscribe((eq) => {
+    this.equipmentService.getEquipments(this.userId, this.isAdmin, this.pagination.currentPage, this.pagination.itemsPerPage).subscribe((eq) => {
       this.equipments = eq.result;
     });
     this.router.navigate(['/myEquipments']);
@@ -192,7 +196,7 @@ export class MyEquipmentsComponent implements OnInit {
     this.pagination.currentPage = Number(event.page);
     this.equipmentService.pagination$.subscribe((value) => (this.pagination = value));
 
-    this.equipmentService.getEquipments(this.userId, this.pagination.currentPage, this.pagination.itemsPerPage).subscribe((eq) => {
+    this.equipmentService.getEquipments(this.userId,this.isAdmin, this.pagination.currentPage, this.pagination.itemsPerPage ).subscribe((eq) => {
       this.equipments = eq.result;
     });
   }

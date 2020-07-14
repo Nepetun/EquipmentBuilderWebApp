@@ -68,7 +68,7 @@ export class EquipmentShareComponent implements OnInit {
     });
 
     // pobranie listy grup użytkownika
-    this.groupService.loadGroups(this.userId, this.pagination, this.groupFilter);
+    this.groupService.loadGroups(this.userId, this.pagination, this.groupFilter, false);
     this.groupService.groups$.subscribe((grp) => (this.groups = grp));
 
     this.equipmentService.getSharedEquipments(this.userId, this.groupId).subscribe((shEq) => {

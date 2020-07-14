@@ -13,7 +13,7 @@ namespace EquipmentBuilder.API.Data.Interfaces
     public interface IEquipmentRepository
     {
         //Task<List<EquipmentListDto>> ListMyEquipments(PageParams pageParams ,int userId);
-        Task<PagedList<EquipmentListDto>> ListMyEquipments(PageParams pageParams, int userId, EquipmentFilter eqFilters);
+        Task<PagedList<EquipmentListDto>> ListMyEquipments(PageParams pageParams, int userId, EquipmentFilter eqFilters, bool isAdmin);
 
         Task<EquipmentDto> GetEquipmentById(int equipmentId);
 

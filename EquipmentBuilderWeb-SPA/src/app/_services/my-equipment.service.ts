@@ -89,10 +89,10 @@ getEquipmentById(equipmentId: number): Observable<IAddEquipment> {
   ));
 }
 
-loadEquipments(userId: number, pagination: Pagination, filters: IEquipmentFilter) {
+loadEquipments(userId: number, pagination: Pagination, filters: IEquipmentFilter, isAdmin: boolean) {
   this.loadingSubject.next(true);
 
-  this.getEquipments(userId, pagination.currentPage, pagination.itemsPerPage, filters).pipe(
+  this.getEquipments(userId, isAdmin, pagination.currentPage, pagination.itemsPerPage,filters ).pipe(
     finalize(() => this.loadingSubject.next(false))
   )
   .subscribe((res) => {
@@ -101,7 +101,7 @@ loadEquipments(userId: number, pagination: Pagination, filters: IEquipmentFilter
   });
 }
 
-getEquipments(userId: number, page?, itemsPerPage?, filters?): Observable<PaginatedResult<IEquipments[]>> {
+getEquipments(userId: number, isAdmin: boolean, page?, itemsPerPage?, filters?): Observable<PaginatedResult<IEquipments[]>> {
 
   const paginatedResult: PaginatedResult<IEquipments[]> = new PaginatedResult<IEquipments[]>();
   let params = new HttpParams();
@@ -113,6 +113,10 @@ getEquipments(userId: number, page?, itemsPerPage?, filters?): Observable<Pagina
 
   if ( userId != null ) {
     params = params.append('userId', userId.toString());
+  }
+
+  if (isAdmin != null) {
+    params = params.append('isAdmin', isAdmin.toString());
   }
 
   if(filters) {
