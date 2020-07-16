@@ -26,6 +26,8 @@
         </a>
 
         <a class="dropdown-item" [routerLink]="['/myEquipments']" routerLinkActive="router-link-active">Zarządzaj ekwipunkami</a>
+        
+        <a *ngIf="isAdmin==true" class="dropdown-item" [routerLink]="['/manageUsers']" routerLinkActive="router-link-active">Zarządzaj użytkownikami</a>
         <!-- <a class="dropdown-item" [routerLink]="['/equipment']" routerLinkActive="router-link-active">Stwórz ekwipunek</a> -->
         <!-- <a class="dropdown-item" [routerLink]="['/allEquipments']" routerLinkActive="router-link-active">Lista wszystkich ekwpiunków</a> -->
         <a class="dropdown-item" [routerLink]="['/myGroups']" routerLinkActive="router-link-active">Zarządzaj Grupami</a>

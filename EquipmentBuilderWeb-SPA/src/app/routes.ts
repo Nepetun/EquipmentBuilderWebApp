@@ -21,7 +21,7 @@ export const appRoutes: Routes = [
         canActivate: [AuthGuard],
         children: [
            //{ path: 'groups', loadChildren: () => import('./groups/group.module').then(m => m.GroupModule) },
-
+            { path: 'manageUsers', loadChildren: () => import('./userManagementAdmin/userManagementAdmin.module').then(m => m.UserManagementAdminModule) },
             //{ path: 'profileUser', component: ProfileUserComponent },
             { path: 'profileUser', loadChildren: () => import('./profileUser/profileUser.module').then(m => m.ProfileUserModule) },
 
