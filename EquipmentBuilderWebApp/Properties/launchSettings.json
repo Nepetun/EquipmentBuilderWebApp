@@ -19,7 +19,7 @@
     },
     "EquipmentBuilderWebApp": {
       "commandName": "Project",
-      "launchUrl": "api/Values/1",
+      "launchUrl": "api/IsAdmin/2",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

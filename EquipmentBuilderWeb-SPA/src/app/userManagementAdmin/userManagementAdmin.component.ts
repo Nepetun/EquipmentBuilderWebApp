@@ -8,6 +8,7 @@ import { AuthService } from '../_services/auth.service';
 import { GroupService } from '../_services/group.service';
 import { AlertifyService } from '../_services/alertify.service';
 import { Router } from '@angular/router';
+import { AdminServiceService } from '../_services/adminService.service';
 
 @Component({
   selector: 'app-userManagementAdmin',
@@ -15,7 +16,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./userManagementAdmin.component.css']
 })
 export class UserManagementAdminComponent implements OnInit {
-  public userId: number;
+  public userId: number = 0;
   selectedCardIndex = -1;
   selectedGroup = false;
   selectedMyGroup = false;
@@ -49,11 +50,11 @@ export class UserManagementAdminComponent implements OnInit {
     private groupService: GroupService,
     private alertify: AlertifyService,
     private fb: FormBuilder,
+    private adminService: AdminServiceService,
     private router: Router
   ) {}
 
-  ngOnInit() {
-    this.loadUserId();
+  ngOnInit() {    
     this.userName = this.authService.getUserName();
     this.loading$ = this.groupService.loading$;
 
@@ -102,12 +103,6 @@ export class UserManagementAdminComponent implements OnInit {
     });
   }
 
-  loadUserId() {
-    let userIdString = this.authService.getUserIdByUserName();
-    this.userId = +userIdString;
-    console.log(this.userId);
-  }
-
   returnToGroups() {
     this.router.navigate(["/myGroups"]);
   }
@@ -130,7 +125,12 @@ export class UserManagementAdminComponent implements OnInit {
       });
   }
 
-  editUser(userId : number){
+  editUser(userId: number) {
+    this.userId = userId;
+    this.adminService.setSelectedUserId(userId);
+    console.log(userId);
+    this.router.navigate(["/userManagementPasswordReset"]);
     // tutaj dać załadowanie danych o użytkowniku wybranym -> do zrobienai - oznaczanie wbybranego lub klikniecie edycji
   }
+
 }

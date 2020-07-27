@@ -4,11 +4,13 @@ import { map, finalize } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IUserPasswordModify } from '../models/IUserPasswordModify';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'// który moduł może skorzystać z serwisu - dla nas jest to appmodule
 })
 export class AuthService {
-  baseUrl = 'http://localhost:5000/api/auth/';
+  // baseUrl = 'https://localhost:5000/api/auth/';
+  baseUrl: any = environment.apiUrl + '/auth';
   jwtHelper = new JwtHelperService();
   decodedToken: any;
   
@@ -34,7 +36,7 @@ checkIsAdmin(userId: number): Observable<boolean> {
     params = params.append('userId', userId.toString());
   }
 
-  return this.http.get<boolean>(this.baseUrl + 'IsAdmin', {
+  return this.http.get<boolean>(this.baseUrl + '/IsAdmin', {
     observe: 'response',
     params
   }).pipe(
@@ -61,7 +63,7 @@ jezeli user istnieje to ustawiamy localstorage na jego token
 login(model: any) {
 
 
-  return this.http.post(this.baseUrl + 'login' , model)
+  return this.http.post(this.baseUrl + '/login' , model)
   .pipe(
     map((reponse: any) => {
       const user = reponse;
@@ -79,7 +81,7 @@ login(model: any) {
 modifyUserPassword(modifyData: IUserPasswordModify) {
   let modifiedUserPassword: IUserPasswordModify = modifyData;
 
-  return this.http.post<IUserPasswordModify>(this.baseUrl + 'ChangePassword' , {
+  return this.http.post<IUserPasswordModify>(this.baseUrl + '/ChangePassword' , {
     passwordNew: modifiedUserPassword.passwordNew,
     passwordNewApproved: modifiedUserPassword.passwordNewApproved,
     userId: modifyData.userId
@@ -101,7 +103,7 @@ getUserName() {
 
 register(model: any) {
   // metoda ma za zadanie wywołać post na api z modelem - czyli loginem i haslem
-  return this.http.post(this.baseUrl + 'register' , model);
+  return this.http.post(this.baseUrl + '/register' , model);
 }
 
 loggedIn() {

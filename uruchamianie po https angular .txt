@@ -1,0 +1,1 @@
+ng serve --ssl --ssl-key C:\\Users\\admin\\source\\repos\\EquipmentBuilderWebApp\\certyfikat\\localhost.key  --ssl-cert C:\\Users\\admin\\source\\repos\\EquipmentBuilderWebApp\\certyfikat\localhost.crt

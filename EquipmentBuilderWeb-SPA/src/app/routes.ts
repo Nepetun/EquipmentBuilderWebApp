@@ -22,6 +22,8 @@ export const appRoutes: Routes = [
         children: [
            //{ path: 'groups', loadChildren: () => import('./groups/group.module').then(m => m.GroupModule) },
             { path: 'manageUsers', loadChildren: () => import('./userManagementAdmin/userManagementAdmin.module').then(m => m.UserManagementAdminModule) },
+            { path: 'userManagementPasswordReset', loadChildren: () => import('./userManagementAdmin/userManagementPasswordReset/userManagementPasswordReset.module').then(m => m.UserManagementPasswordResetModule) },
+            
             //{ path: 'profileUser', component: ProfileUserComponent },
             { path: 'profileUser', loadChildren: () => import('./profileUser/profileUser.module').then(m => m.ProfileUserModule) },
 

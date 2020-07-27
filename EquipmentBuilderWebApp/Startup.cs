@@ -44,6 +44,9 @@ namespace EquipmentBuilderWebApp
             });
             services.AddControllers();
             services.AddCors(); //pozwala na uzycie middleware 
+
+
+
             services.AddAutoMapper(typeof(EquipmentRepository).Assembly); // dodanie automappera - w konstruktorze określamy, która klasa ma mieć "dane" dla mppera - które assemby ma mieć profile dla mappera
             //services.AddSingleton(); //nie bardzo je�eli chodzi o r�wnoleg�e rz�dania
             //services.AddTransient();// dla lekkich - ci�gle tworzy nowe obiekty przy rz�daniu          
@@ -99,15 +102,18 @@ namespace EquipmentBuilderWebApp
                     });
                 });
             }
-            //app.UseHttpsRedirection();
+            
+           // app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             //NA CZAS TESTOW API!!!
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+  
 
             app.UseEndpoints(endpoints =>
             {
