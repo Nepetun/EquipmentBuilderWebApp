@@ -20,11 +20,9 @@ export const appRoutes: Routes = [
         runGuardsAndResolvers: 'always',
         canActivate: [AuthGuard],
         children: [
-           //{ path: 'groups', loadChildren: () => import('./groups/group.module').then(m => m.GroupModule) },
             { path: 'manageUsers', loadChildren: () => import('./userManagementAdmin/userManagementAdmin.module').then(m => m.UserManagementAdminModule) },
             { path: 'userManagementPasswordReset', loadChildren: () => import('./userManagementAdmin/userManagementPasswordReset/userManagementPasswordReset.module').then(m => m.UserManagementPasswordResetModule) },
-            
-            //{ path: 'profileUser', component: ProfileUserComponent },
+
             { path: 'profileUser', loadChildren: () => import('./profileUser/profileUser.module').then(m => m.ProfileUserModule) },
 
             { path: 'myEquipments', component: MyEquipmentsComponent },
@@ -35,7 +33,6 @@ export const appRoutes: Routes = [
             { path: 'equipmentReview', loadChildren: () => import('./my-equipments/equipment-review/equipment-review.module').then(m => m.EquipmentReviewModule) },
             { path: 'equipmentShare', loadChildren: () => import('./my-equipments/equipment-share/equipment-share.module').then(m => m.EquipmentShareModule) },
 
-            // { path: 'myGroups', loadChildren: () => import('./my-groups/my-groups.module').then(m => m.MyGroupsModule) }
             { path: 'myGroups' , component: MyGroupsComponent},
             { path: 'groups', loadChildren: () => import('./my-groups/groups/group.module').then(m => m.GroupModule) },
             { path: 'groupEditor', loadChildren: () => import('./my-groups/group-editor/group-editor.module').then(m => m.GroupEditorModule) },

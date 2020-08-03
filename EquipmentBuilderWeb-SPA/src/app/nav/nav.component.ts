@@ -17,6 +17,11 @@ export class NavComponent implements OnInit {
   constructor(public authService: AuthService, private alertify: AlertifyService, private router: Router) { }
 
   ngOnInit() {
+    let userIdString = this.authService.getUserIdByUserName();
+    this.userId = +userIdString;
+    this.authService.checkIsAdmin(this.userId).subscribe((grp) => {
+      this.isAdmin = grp;
+    });
   }
 
   login() {
