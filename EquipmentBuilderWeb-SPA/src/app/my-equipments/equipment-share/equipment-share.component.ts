@@ -74,6 +74,11 @@ export class EquipmentShareComponent implements OnInit {
     this.equipmentService.getSharedEquipments(this.userId, this.groupId).subscribe((shEq) => {
       this.equipmentsShared = shEq;
     });
+
+    if(this.groups) {
+      this.selectedGroup = +this.groups[0].id;
+    }
+
   }
 
   loadUserId() {

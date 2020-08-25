@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace EquipmentBuilder.API.Data
@@ -27,6 +28,22 @@ namespace EquipmentBuilder.API.Data
             await _context.Groups.AddAsync(group);
 
             await _context.SaveChangesAsync();
+
+
+
+
+            //var usrToGrp = await _context.UserToGroups.FirstOrDefaultAsync();
+            var usrToGrp = new UserToGroups()
+            {
+                GroupId = group.Id,
+                UserId = group.GroupAdminId
+            };
+
+            await _context.UserToGroups.AddAsync(usrToGrp);
+
+            await _context.SaveChangesAsync();
+
+
             return group;
         }
 
@@ -94,21 +111,25 @@ namespace EquipmentBuilder.API.Data
                 {
                     foreach (UserToGroups utg in userGroups)
                     {
-                        if (await _context.Groups.AnyAsync(x => x.Id == utg.GroupId)) //pobranie grup
+                        if(!userGroupsAdmin.Any(x =>x.GroupAdminId == utg.UserId))                       
                         {
-                            var grp = await _context.Groups.FirstOrDefaultAsync(x => x.Id == utg.GroupId);
-                            var adminUserName = await _context.Users.FirstOrDefaultAsync(x => x.Id == grp.GroupAdminId);
-                            GroupListDto gto = new GroupListDto()
+                            if (await _context.Groups.AnyAsync(x => x.Id == utg.GroupId)) //pobranie grup
                             {
-                                GroupAdminId = grp.GroupAdminId,
-                                GroupName = grp.GroupName,
-                                Id = grp.Id,
-                                UserId = userId,
-                                GroupAdminName = adminUserName.UserName
-                            };
-                            lstGroups.Add(gto);
+                                var grp = await _context.Groups.FirstOrDefaultAsync(x => x.Id == utg.GroupId);
+                                var adminUserName = await _context.Users.FirstOrDefaultAsync(x => x.Id == grp.GroupAdminId);
+                                GroupListDto gto = new GroupListDto()
+                                {
+                                    GroupAdminId = grp.GroupAdminId,
+                                    GroupName = grp.GroupName,
+                                    Id = grp.Id,
+                                    UserId = userId,
+                                    GroupAdminName = adminUserName.UserName
+                                };
+                                lstGroups.Add(gto);
+                            }
                         }
                     }
+                       
                 }
             }           
         
