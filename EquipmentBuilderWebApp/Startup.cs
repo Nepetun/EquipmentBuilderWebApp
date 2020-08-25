@@ -109,7 +109,6 @@ namespace EquipmentBuilderWebApp
 
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
-            //NA CZAS TESTOW API!!!
             app.UseAuthentication();
             app.UseAuthorization();
 
