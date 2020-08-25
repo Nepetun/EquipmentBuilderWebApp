@@ -82,7 +82,7 @@ export class UserManagementPasswordResetComponent implements OnInit {
   }
 
  cancel() {
-  this.router.navigate(['/manageUsers']);
+  this.router.navigate(['/manageAdminUsers']);
  }
 
 }

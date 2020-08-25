@@ -4,7 +4,7 @@ import { UserManagementAdminComponent } from './userManagementAdmin.component';
 
 const routes: Routes = [
     { path: '', component: UserManagementAdminComponent},
-    { path: 'manageUsers', component: UserManagementAdminComponent}
+    { path: 'manageAdminUsers', component: UserManagementAdminComponent}
   ];
 
 @NgModule({

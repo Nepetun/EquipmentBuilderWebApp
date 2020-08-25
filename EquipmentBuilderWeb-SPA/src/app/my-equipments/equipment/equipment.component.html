@@ -38,29 +38,50 @@
             </label>
           </div>
 
-        <div [ngSwitch]="heroId">
-          <div *ngSwitchCase="1">
-            <img mat-card-image src="assets/Caitlyn.jpg" alt="Zdjęcie Caitlyn">
-          </div>  
+          <div class="containerItem">
+            <div [ngSwitch]="heroId">
+              <div *ngSwitchCase="1">
+                <img
+                  mat-card-image
+                  src="assets/Caitlyn.jpg"
+                  alt="Zdjęcie Caitlyn"
+                />
+              </div>
 
-          <div *ngSwitchCase="2">
-            <img mat-card-image src="assets/Darius.jpg" alt="Zdjęcie Darius">
-          </div>  
+              <div *ngSwitchCase="2">
+                <img
+                  mat-card-image
+                  src="assets/Darius.jpg"
+                  alt="Zdjęcie Darius"
+                />
+              </div>
 
-          <div *ngSwitchCase="3">
-            <img mat-card-image src="assets/Varus.jpg" alt="Zdjęcie Varus">
-          </div>  
+              <div *ngSwitchCase="3">
+                <img
+                  mat-card-image
+                  src="assets/Varus.jpg"
+                  alt="Zdjęcie Varus"
+                />
+              </div>
 
-          <div *ngSwitchCase="4">
-            <img mat-card-image src="assets/Janna.jpg" alt="Zdjęcie Janna">
-          </div>  
+              <div *ngSwitchCase="4">
+                <img
+                  mat-card-image
+                  src="assets/Janna.jpg"
+                  alt="Zdjęcie Janna"
+                />
+              </div>
 
-          <div *ngSwitchCase="5">
-            <img mat-card-image src="assets/Ahrii.jpg" alt="Zdjęcie Ahrii">
-          </div>  
-          <!-- TUTAJ RESZTA BOHATEROW !!           -->
-        </div>
-
+              <div *ngSwitchCase="5">
+                <img
+                  mat-card-image
+                  src="assets/Ahrii.jpg"
+                  alt="Zdjęcie Ahrii"
+                />
+              </div>
+              <!-- TUTAJ RESZTA BOHATEROW !!           -->
+            </div>
+          </div>
 
           <!-- DO USUNIECIA ngModel - nie korzysta sie juz z tego -->
           <div class="containerItem">
@@ -288,71 +309,64 @@
           Mana - regeneracja co 5 sek : {{ statistic.manaRegen }}
         </div>
 
-
-
-
+        <div class="statisticFlexItem">Zasięg : {{ statistic.range }}</div>
         <div class="statisticFlexItem">
-          Zasięg : {{statistic.range}}
+          Obrażenia fizyczne : {{ statistic.attackDamage }}
         </div>
         <div class="statisticFlexItem">
-          Obrażenia fizyczne : {{statistic.attackDamage}}
+          Szybkość ataku : {{ statistic.attackSpeed }}
+        </div>
+        <div class="statisticFlexItem">Pancerz : {{ statistic.armour }}</div>
+        <div class="statisticFlexItem">
+          Odporność na magie : {{ statistic.magicResistance }}
         </div>
         <div class="statisticFlexItem">
-          Szybkość ataku : {{statistic.attackSpeed}} 
+          Szybkość ruchu : {{ statistic.movementSpeed }}
         </div>
+        <div class="statisticFlexItem">Moc : {{ statistic.abillityPower }}</div>
         <div class="statisticFlexItem">
-          Pancerz : {{statistic.armour}} 
-        </div>
-        <div class="statisticFlexItem">
-          Odporność na magie : {{statistic.magicResistance}}
-        </div>
-        <div class="statisticFlexItem">
-          Szybkość ruchu : {{statistic.movementSpeed}}
-        </div>
-        <div class="statisticFlexItem">
-          Moc : {{statistic.abillityPower}}
-        </div>
-        <div class="statisticFlexItem">
-          Skrócenie czasu odnowienia : {{statistic.cooldownReduction}}
+          Skrócenie czasu odnowienia : {{ statistic.cooldownReduction }}
         </div>
 
         <div class="statisticFlexItem">
-          Przebicie pancerza : {{statistic.armourPenetration}}
+          Przebicie pancerza : {{ statistic.armourPenetration }}
         </div>
         <div class="statisticFlexItem">
-          Przebicie pancerza % : {{statistic.armourPenetrationProc}}
+          Przebicie pancerza % : {{ statistic.armourPenetrationProc }}
         </div>
         <div class="statisticFlexItem">
-          Przebicie odporności na magie : {{statistic.magicPenetration}}
+          Przebicie odporności na magie : {{ statistic.magicPenetration }}
         </div>
         <div class="statisticFlexItem">
-          Przebicie odporności na magie % : {{statistic.magicPenetrationProc}}
+          Przebicie odporności na magie % : {{ statistic.magicPenetrationProc }}
         </div>
         <div class="statisticFlexItem">
-          Kradzież życia : {{statistic.lifeSteal}}
+          Kradzież życia : {{ statistic.lifeSteal }}
         </div>
         <div class="statisticFlexItem">
-          Wampiryzm zaklęć : {{statistic.apLifeSteal}}
+          Wampiryzm zaklęć : {{ statistic.apLifeSteal }}
         </div>
         <div class="statisticFlexItem">
-          Nieustępliwość : {{statistic.tenacity}}
+          Nieustępliwość : {{ statistic.tenacity }}
         </div>
         <div class="statisticFlexItem">
-          Krytyczne uderzenie % : {{statistic.criticalChance}}
+          Krytyczne uderzenie % : {{ statistic.criticalChance }}
         </div>
         <div class="statisticFlexItem">
-          Wzmocnienie potionów : {{statistic.additionalPotionPower}}
+          Wzmocnienie potionów : {{ statistic.additionalPotionPower }}
         </div>
 
         <div class="statisticFlexItem">
-          Życie co cios : {{statistic.additionalHitPointsPerHit}}
+          Życie co cios : {{ statistic.additionalHitPointsPerHit }}
         </div>
         <div class="statisticFlexItem">
-          Złoto co 10 sek : {{statistic.additionalGoldPerTenSec}}
+          Złoto co 10 sek : {{ statistic.additionalGoldPerTenSec }}
         </div>
         <div class="statisticFlexItem">
-          Dodatkowe umiejętności : 
-            <textarea readonly class="form-control" id="textArea" rows="2"> {{statistic.description}} </textarea>
+          Dodatkowe umiejętności :
+          <textarea readonly class="form-control" id="textArea" rows="2">
+ {{ statistic.description }} </textarea
+          >
         </div>
       </div>
     </div>

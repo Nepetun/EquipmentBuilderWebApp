@@ -20,7 +20,7 @@ export const appRoutes: Routes = [
         runGuardsAndResolvers: 'always',
         canActivate: [AuthGuard],
         children: [
-            { path: 'manageUsers', loadChildren: () => import('./userManagementAdmin/userManagementAdmin.module').then(m => m.UserManagementAdminModule) },
+            { path: 'manageAdminUsers', loadChildren: () => import('./userManagementAdmin/userManagementAdmin.module').then(m => m.UserManagementAdminModule) },
             { path: 'userManagementPasswordReset', loadChildren: () => import('./userManagementAdmin/userManagementPasswordReset/userManagementPasswordReset.module').then(m => m.UserManagementPasswordResetModule) },
 
             { path: 'profileUser', loadChildren: () => import('./profileUser/profileUser.module').then(m => m.ProfileUserModule) },
