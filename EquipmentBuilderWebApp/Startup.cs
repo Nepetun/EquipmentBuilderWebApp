@@ -64,7 +64,7 @@ namespace EquipmentBuilderWebApp
             services.AddScoped<IStatisticsRepository, StatisticsRepository>();
 
             //gorny zapis oznacza ze wstrzykujemy interfejs IAuthRepository a po przecinku jego konkretna implementacje
-            //NA CZAS TESTOW API
+            
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -88,7 +88,7 @@ namespace EquipmentBuilderWebApp
             }
             else
             {
-                //dodanie globlnego exception handlera w produckcyjnym trybie
+                //dodanie globlnego exception handlera 
                 app.UseExceptionHandler(builder => {
                     builder.Run( async context => {
                         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
