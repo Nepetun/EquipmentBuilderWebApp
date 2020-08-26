@@ -79,12 +79,14 @@
           <div class="containerItem" *ngFor="let item of usersFromGroup; let i = index">
             <!-- <mat-card (click)="higlightSelected(i,item.Id, item.UserName)" [ngClass]="{'highlight' : i === selectedCardIndex, 'not-highlight' : i !== selectedCardIndex}" -->
               <mat-card>
+                <img mat-card-image src="assets/User.png" alt="Zdjęcie user">
                 <mat-card-content>
                   Nazwa użytkownika: 
                   <div class="fontStyleBold">
                       {{item.userName}}
                   </div>
-                </mat-card-content>                      
+                </mat-card-content>    
+                                  
               </mat-card>
           </div>
       </div>

@@ -160,3 +160,10 @@ button {
   background-color: rgba(4, 0, 255, 0.685);
 }
 
+.mat-card-image {
+  margin-top: 10px !important;
+  max-width: 75px !important;
+  width: 75px !important;
+  height: 75px !important;
+  max-height: 75px !important;
+}

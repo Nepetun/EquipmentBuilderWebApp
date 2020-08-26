@@ -119,3 +119,8 @@ textarea {
     background-color: rgba(14, 152, 233, 0.493);
 }
 
+.statisticInfo {    
+    font-size: 40;
+    text-align: center;
+    font-weight: bold;
+}

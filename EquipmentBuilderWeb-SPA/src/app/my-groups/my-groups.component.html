@@ -103,7 +103,7 @@
         </div>
           <div class="containerItem" *ngFor="let item of groups; let i = index">
               <mat-card (click)="higlightSelected(i,item.id, item.groupAdminName)" [ngClass]="{'highlight' : i === selectedCardIndex, 'not-highlight' : i !== selectedCardIndex}">
-                
+                <img mat-card-image src="assets/Group3.png" alt="Zdjęcie Grupy">  
                 <mat-card-content>
                   Administrator grupy: 
                   <div class="fontStyleBold">
@@ -116,7 +116,7 @@
                       {{item.groupName}}
                   </div>
                 </mat-card-content>
-                <img mat-card-image src="assets/Group3.png" alt="Zdjęcie Grupy">  
+               
               </mat-card>
           </div>
       </div>

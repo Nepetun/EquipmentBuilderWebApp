@@ -54,3 +54,11 @@ button {
 .alignButtonInFilter {
   margin-left: 2px;
 }
+
+.mat-card-image {
+  margin-top: 10px !important;
+  max-width: 75px !important;
+  width: 75px !important;
+  height: 75px !important;
+  max-height: 75px !important;
+}

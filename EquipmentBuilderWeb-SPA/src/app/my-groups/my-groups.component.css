@@ -112,3 +112,12 @@ button {
 .alignButtonInFilter {
   margin-left: 2px;
 }
+
+
+.mat-card-image {
+  margin-top: 10px !important;
+  max-width: 120px !important;
+  width: 120px !important;
+  height: 120px !important;
+  max-height: 120px !important;
+}
