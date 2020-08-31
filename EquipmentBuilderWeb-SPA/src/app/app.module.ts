@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { ItemManagementAdminComponent } from './itemManagementAdmin/itemManagementAdmin.component';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -31,13 +32,7 @@ import { MyGroupsModule } from './my-groups/my-groups.module';
       AppComponent,
       NavComponent,
       HomeComponent,
-      RegisterComponent,
-      /*EquipmentComponent,
-      //AllEquipmentsComponent,
-      GroupsComponent,
-      //MyEquipmentsComponent,
-      ProfileUserComponent*/
-      /*MyGroupsComponent*/
+      RegisterComponent
    ],
    imports: [
       BrowserModule,
@@ -47,15 +42,11 @@ import { MyGroupsModule } from './my-groups/my-groups.module';
       MaterialModule,
       HttpClientModule,
       PaginationModule.forRoot(),
-      //BrowserAnimationsModule,
       BsDropdownModule.forRoot(),
       BsDatepickerModule.forRoot(),
-      RouterModule.forRoot(appRoutes) //,
-     // MyGroupsModule
-      // MyEquipmentsModule // import modułu odpowiedzialnego za wyświetlanie ekwipunku
+      RouterModule.forRoot(appRoutes)
     ],
     providers: [
-       //AuthService,
        ErrorInterceptorProvider,
        {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
     ],

@@ -1,0 +1,130 @@
+<div *ngIf="loading$ | async">
+  <mat-spinner></mat-spinner>
+</div>
+<div class="pageDiv">
+
+  <button type="button" class="btn btn-success" (click)="addHero()">Dodaj bohatera</button>
+
+  <form class="container" [formGroup]="formFilter" (ngSubmit)="reloadValues()">
+    <div class="containerFlexForm">
+      <div class="containerItemForm">
+        <label
+          >Nazwa Bohatera:
+          <input
+            type="text"
+            formControlName="heroNameLikeForm"
+            maxlength="20"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              formFilter.invalid && (formFilter.dirty || formFilter.touched)
+            "
+          >
+            <div class="errorDiv">
+              <span *ngIf="formFilter.errors?.maxlength">
+                Przekroczono maksymalna długość 20 znaków
+              </span>
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+    <div class="alignButtonInFilter">
+      <button class="btn btn-info" type="button" (click)="reloadValues()">
+        Filtruj
+      </button>
+
+      <button class="btn btn-info" type="button" (click)="resetFilter()">
+        Resetuj filtry
+      </button>
+    </div>
+  </form>
+
+    <div class="justify-content-center">
+      <pagination
+        [boundaryLinks]="true"
+        [itemsPerPage]="pagination.itemsPerPage"
+        [totalItems]="pagination.totalItems"
+        [maxSize]="2"
+        [rotate]="rotate"
+        [(ngModel)]="pagination.currentPage"
+        (pageChanged)="pageChanged($event)"
+        previousText="&lsaquo;"
+        nextText="&rsaquo;"
+        firstText="&laquo;"
+        lastText="&raquo;"
+      >
+      </pagination>
+    </div>
+
+    <div class="containerFlex">
+      <div *ngIf="hero.length <= 0">
+        <div class="fontStyleBold">Brak przedmiotów</div>
+      </div>
+
+      <div class="containerItem" *ngFor="let item of hero; let i = index">
+        <mat-card>
+          <!-- <img mat-card-image src="assets/Item.png" alt="Zdjęcie bohatera" /> -->
+
+        <!-- <div class="heroPicture"> -->
+            <div [ngSwitch]="item.id">
+              <div *ngSwitchCase="1">
+                <img
+                  mat-card-image
+                  src="assets/Caitlyn.jpg"
+                  alt="Zdjęcie Caitlyn"
+                />
+              </div>
+
+              <div *ngSwitchCase="2">
+                <img
+                  mat-card-image
+                  src="assets/Darius.jpg"
+                  alt="Zdjęcie Darius"
+                />
+              </div>
+
+              <div *ngSwitchCase="3">
+                <img
+                  mat-card-image
+                  src="assets/Varus.jpg"
+                  alt="Zdjęcie Varus"
+                />
+              </div>
+
+              <div *ngSwitchCase="4">
+                <img
+                  mat-card-image
+                  src="assets/Janna.jpg"
+                  alt="Zdjęcie Janna"
+                />
+              </div>
+
+              <div *ngSwitchCase="5">
+                <img
+                  mat-card-image
+                  src="assets/Ahrii.jpg"
+                  alt="Zdjęcie Ahrii"
+                />
+              </div>
+              <!-- TUTAJ RESZTA BOHATEROW !!           -->
+            </div>
+          <!-- </div> -->
+
+
+          <mat-card-content>
+            Nazwa Bohatera:
+            <div class="fontStyleBold">
+              {{ item.heroName }}
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button class="buttonCard" (click)="editHero(item.id)">Edytuj bohatera</button>
+            <!-- <button mat-button class="buttonCard"  (click)="deleteHero(item.id)">Usuń bohatera</button> -->
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+
+</div>

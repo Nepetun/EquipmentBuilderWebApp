@@ -23,6 +23,16 @@ export const appRoutes: Routes = [
             { path: 'manageAdminUsers', loadChildren: () => import('./userManagementAdmin/userManagementAdmin.module').then(m => m.UserManagementAdminModule) },
             { path: 'userManagementPasswordReset', loadChildren: () => import('./userManagementAdmin/userManagementPasswordReset/userManagementPasswordReset.module').then(m => m.UserManagementPasswordResetModule) },
 
+
+            { path: 'manageAdminItems', loadChildren: () => import('./itemManagementAdmin/itemManagementAdmin.module').then(m => m.ItemManagementAdminModule) },
+            { path: 'itemEditor', loadChildren: () => import('./itemManagementAdmin/itemEditorAdmin/itemEditorAdmin.module').then(m => m.ItemEditorAdminModule) },
+            { path: 'itemCreator', loadChildren: () => import('./itemManagementAdmin/itemCreatorAdmin/itemCreatorAdmin.module').then(m => m.ItemCreatorAdminModule) },
+
+            { path: 'manageAdminHeroes', loadChildren: () => import('./heroesManagementAdmin/heroesManagementAdmin.module').then(m => m.HeroesManagementModule) },
+            { path: 'heroesEditorAdmin', loadChildren: () => import('./heroesManagementAdmin/heroesEditorAdmin/heroesEditorAdmin.module').then(m => m.HeroesEditorAdminModule) },
+            { path: 'heroesCreatorAdmin', loadChildren: () => import('./heroesManagementAdmin/heroesCreatorAdmin/heroesCreatorAdmin.module').then(m => m.HeroesCreatorAdminModule) },
+
+
             { path: 'profileUser', loadChildren: () => import('./profileUser/profileUser.module').then(m => m.ProfileUserModule) },
 
             { path: 'myEquipments', component: MyEquipmentsComponent },

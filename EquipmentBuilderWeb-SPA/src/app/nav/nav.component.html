@@ -2,15 +2,6 @@
   <div class="container">
     <a class="navbar-brand" [routerLink]="['/home']" routerLinkActive="router-link-active" >Tworzenie ekwipunku</a>
 
-    <!-- <ul *ngIf="loggedIn()" class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" [routerLink]="['/myEquipments']">Moje ekwipunki-temp </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/equipment']">Stwórz ekwipunek-temp</a>
-        </li>         
-    </ul> -->
-
     <div *ngIf="loggedIn()" class="dropdown" dropdown>
       <a class="dropdown-toggle text-light" dropdownToggle>
         Witaj {{authService.decodedToken?.unique_name | titlecase}} 
@@ -28,8 +19,9 @@
         <a class="dropdown-item" [routerLink]="['/myEquipments']" routerLinkActive="router-link-active">Zarządzaj ekwipunkami</a>
         
         <a *ngIf="isAdmin==true" class="dropdown-item" [routerLink]="['/manageAdminUsers']" routerLinkActive="router-link-active">Zarządzaj użytkownikami</a>
-        <!-- <a class="dropdown-item" [routerLink]="['/equipment']" routerLinkActive="router-link-active">Stwórz ekwipunek</a> -->
-        <!-- <a class="dropdown-item" [routerLink]="['/allEquipments']" routerLinkActive="router-link-active">Lista wszystkich ekwpiunków</a> -->
+        <a *ngIf="isAdmin==true" class="dropdown-item" [routerLink]="['/manageAdminItems']" routerLinkActive="router-link-active">Zarządzaj przedmiotami</a>
+        <a *ngIf="isAdmin==true" class="dropdown-item" [routerLink]="['/manageAdminHeroes']" routerLinkActive="router-link-active">Zarządzaj bohaterami</a>
+        
         <a class="dropdown-item" [routerLink]="['/myGroups']" routerLinkActive="router-link-active">Zarządzaj Grupami</a>
         <div class="dropdown-diver"></div>
         <a class="dropdown-item" (click)="logout()">

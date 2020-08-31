@@ -22,8 +22,6 @@ namespace EquipmentBuilder.API.Data
             _context = context;
         }
 
-
-        //public async Task<List<EquipmentListDto>> ListMyEquipments(PageParams pageParams, int userId)
         public async Task<PagedList<EquipmentListDto>> ListMyEquipments(PageParams pageParams, int userId, EquipmentFilter eqFilters, bool isAdmin)
         {
             List<EquipmentListDto> lstEquipments = new List<EquipmentListDto>();
@@ -127,15 +125,8 @@ namespace EquipmentBuilder.API.Data
 
                         lstEquipments.Add(eqWithoutShared);
                     }
-                }
-
-
-              
+                }              
             }
-
-            // dodanie ekwipunków samego użytkownika
-            //var equipments = _context.Equipments.Where(x => x.UserId == userId).AsQueryable(); // pobranie ekwipunków użytkownika
-            // return await PagedList<EquipmentListDto>.CreateAsync(querableEq, pageParams.PageNumber, pageParams.PageSize);
 
             if (eqFilters != null)
             {
@@ -273,7 +264,6 @@ namespace EquipmentBuilder.API.Data
             }
             catch (Exception ex)
             {
-
                 throw;
             }
 
@@ -309,7 +299,7 @@ namespace EquipmentBuilder.API.Data
 
             List<SharedEquipmentInformation> lstEquipments = new List<SharedEquipmentInformation>();
             //pobranie ekwipunkow udostępnionych dla grup użytkowników
-            foreach (UserToGroups groupId in await _context.UserToGroups.Where(x => x.UserId == userId).ToListAsync()) // && x.GroupId == groupIdVal
+            foreach (UserToGroups groupId in await _context.UserToGroups.Where(x => x.UserId == userId).ToListAsync())
             {
                 foreach (EquipmentsToGroup eqToGroup in await _context.EquipmentsToGroup.Where(x => x.GroupId == groupId.GroupId).ToListAsync())
                 {

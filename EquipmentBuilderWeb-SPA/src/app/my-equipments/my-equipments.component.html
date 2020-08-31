@@ -1,213 +1,204 @@
-<!-- 
-DOMYYSLNIE KOMPONENT DO ZARZADZANIA EKWIPUNKAMI
--- NAWIGACJA:
-- TWORZENIE EKWIPUNKU -> PO KLIKNIECIU STWORZ EKWIPUNEK
-- PRZEGLADANIE EKWIPUNKOW INNYCH UZYTKOWNIKOW - LUB EDYCJA/USUNIECIE JEZELI WYBRANY STWORZONY PRZEZ NAS  -->
-
 <div class="pageDiv">
-    <nav class="navSpecial">  
-        <a class="navbar-brand" >Zarządzanie ekwipunkami</a>
-    </nav>
-    <button type="button" class="btn btn-success"  [disabled]="isAdmin" (click)="createEquipment()">Stwórz ekwipunek</button>
-    <button type="button" class="btn btn-success" [disabled]="!selectedEq || !selectedMyEq" (click)="editSelectedEquipment()">Edycja</button>
-    <button type="button" class="btn btn-success" [disabled]="!selectedEq" (click)="showPickedEquipment()">Przeglądaj ekwipunek</button>
-    <button type="button" class="btn btn-success" [disabled]="(!selectedEq || !selectedMyEq) && !isAdmin" (click)="removeEquipment()">Usuń ekwipunek</button>
-    <button type="button" class="btn btn-success" [disabled]="!selectedEq || !selectedMyEq" (click)="manageShareEquipment()">Udostępnienia ekwipunku</button>
-<!-- 
-    <form class="form-inline" novalidate>
-        <div class="form-group">
-          <label for="minAge">Age From</label>
-          <input type="number" class="form-control ml-1" style="width: 70px" id="minAge" name="minAge">
-        </div>
-      
-        <div class="form-group px-2">
-          <label for="maxAge">Age To</label>
-          <input type="number" class="form-control ml-1" style="width: 70px" id="maxAge" name="maxAge">
-        </div>
-      
-        <div class="form-group px-2">
-          <label for="gender">Show: </label>
-          <select class="form-control ml-1" style="width: 130px" id="gender" name="gender">
-            <option>
-      
+  <nav class="navSpecial">
+    <a class="navbar-brand">Zarządzanie ekwipunkami</a>
+  </nav>
+  <button
+    type="button"
+    class="btn btn-success"
+    [disabled]="isAdmin"
+    (click)="createEquipment()"
+  >
+    Stwórz ekwipunek
+  </button>
+  <button
+    type="button"
+    class="btn btn-success"
+    [disabled]="!selectedEq || !selectedMyEq"
+    (click)="editSelectedEquipment()"
+  >
+    Edycja
+  </button>
+  <button
+    type="button"
+    class="btn btn-success"
+    [disabled]="!selectedEq"
+    (click)="showPickedEquipment()"
+  >
+    Przeglądaj ekwipunek
+  </button>
+  <button
+    type="button"
+    class="btn btn-success"
+    [disabled]="(!selectedEq || !selectedMyEq) && !isAdmin"
+    (click)="removeEquipment()"
+  >
+    Usuń ekwipunek
+  </button>
+  <button
+    type="button"
+    class="btn btn-success"
+    [disabled]="!selectedEq || !selectedMyEq"
+    (click)="manageShareEquipment()"
+  >
+    Udostępnienia ekwipunku
+  </button>
+
+  <form class="container" [formGroup]="formFilter" (ngSubmit)="reloadValues()">
+    <div class="containerFlexForm">
+      <div class="containerItemForm">
+        <label
+          >Nazwa Ekwipunku:
+          <input
+            type="text"
+            formControlName="equipmentName"
+            maxlength="20"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              formFilter.invalid && (formFilter.dirty || formFilter.touched)
+            "
+          >
+            <div class="errorDiv">
+              <span *ngIf="formFilter.errors?.maxlength">
+                Przekroczono maksymalna długość 20 znaków
+              </span>
+            </div>
+          </div>
+        </label>
+      </div>
+
+      <div class="containerItemForm">
+        <label
+          >Nazwa Użytkownika:
+          <input
+            type="text"
+            formControlName="userName"
+            maxlength="20"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              formFilter.invalid && (formFilter.dirty || formFilter.touched)
+            "
+          >
+            <div class="errorDiv">
+              <span *ngIf="formFilter.errors?.maxlength">
+                Przekroczono maksymalna długość 20 znaków
+              </span>
+            </div>
+          </div>
+        </label>
+      </div>
+
+      <div class="containerItemForm">
+        <label
+          >Nazwa Bohatera:
+          <input
+            type="text"
+            formControlName="heroName"
+            maxlength="20"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              formFilter.invalid && (formFilter.dirty || formFilter.touched)
+            "
+          >
+            <div class="errorDiv">
+              <span *ngIf="formFilter.errors?.maxlength">
+                Przekroczono maksymalna długość 20 znaków
+              </span>
+            </div>
+          </div>
+        </label>
+      </div>
+
+      <div class="containerItemForm">
+        <label for="heroLvlFrom"
+          >Poziom bohatera od:
+          <select
+            id="heroLvlFrom"
+            formControlName="heroLvlFrom"
+            class="form-control"
+            name="heroLvlFrom"
+          >
+            <option *ngFor="let lvl of lvlArray" [value]="lvl">
+              {{ lvl }}
             </option>
           </select>
-        </div>
-        <button type="submit" class="btn btn-primary" style="margin-left:10px">Filtruj</button>
-        <button type="button" class="btn btn-info" style="margin-left:10px">Resetuj filtry</button>
-      
-      </form> -->
+        </label>
+      </div>
 
-
-      <form
-        class="container"
-        [formGroup]="formFilter"
-        (ngSubmit)="reloadValues()"
-      >
-        <div class="containerFlexForm">
-          <div class="containerItemForm">
-            <label
-              >Nazwa Ekwipunku:
-              <input
-                type="text"
-                formControlName="equipmentName"
-                maxlength="20"
-                class="form-control"
-              />
-              <div
-                *ngIf="
-                formFilter.invalid &&
-                  (formFilter.dirty || formFilter.touched)
-                "
-              >
-                <div class="errorDiv">
-                  <span *ngIf="formFilter.errors?.maxlength">
-                    Przekroczono maksymalna długość 20 znaków
-                  </span>
-                </div>
-              </div>
-            </label>
-          </div>   
-
-          <div class="containerItemForm">
-            <label
-              >Nazwa Użytkownika:
-              <input
-                type="text"
-                formControlName="userName"
-                maxlength="20"
-                class="form-control"
-              />
-              <div
-                *ngIf="
-                formFilter.invalid &&
-                  (formFilter.dirty || formFilter.touched)
-                "
-              >
-                <div class="errorDiv">
-                  <span *ngIf="formFilter.errors?.maxlength">
-                    Przekroczono maksymalna długość 20 znaków
-                  </span>
-                </div>
-              </div>
-            </label>
-          </div>  
-
-          <div class="containerItemForm">
-            <label
-              >Nazwa Bohatera:
-              <input
-                type="text"
-                formControlName="heroName"
-                maxlength="20"
-                class="form-control"
-              />
-              <div
-                *ngIf="
-                formFilter.invalid &&
-                  (formFilter.dirty || formFilter.touched)
-                "
-              >
-                <div class="errorDiv">
-                  <span *ngIf="formFilter.errors?.maxlength">
-                    Przekroczono maksymalna długość 20 znaków
-                  </span>
-                </div>
-              </div>
-            </label>
-          </div>  
-
-          <div class="containerItemForm">
-            <label for="heroLvlFrom"
-              >Poziom bohatera od:
-              <select
-                id="heroLvlFrom"
-                formControlName="heroLvlFrom"
-                class="form-control"
-                name="heroLvlFrom"
-              >
-                <option *ngFor="let lvl of lvlArray" [value]="lvl">{{
-                  lvl
-                }}</option>
-              </select>
-            </label>
-          </div>   
-
-          <div class="containerItemForm">
-            <label for="heroLvlTo"
-              >Poziom bohatera do:
-              <select
-                id="heroLvlTo"
-                formControlName="heroLvlTo"
-                class="form-control"
-                name="heroLvlTo"
-              >
-                <!-- <option *ngFor="let lvl of lvlArray" [value]="lvl">{{
+      <div class="containerItemForm">
+        <label for="heroLvlTo"
+          >Poziom bohatera do:
+          <select
+            id="heroLvlTo"
+            formControlName="heroLvlTo"
+            class="form-control"
+            name="heroLvlTo"
+          >
+            <!-- <option *ngFor="let lvl of lvlArray" [value]="lvl">{{
                   lvl
                 }}</option> -->
 
-                <option
-                *ngFor="let lvl of filterLvlHigherThanLvlFrom()"
-                [value]="lvl"
-                >{{
-                  lvl
-                }}</option
-              >
-
-              </select>
-            </label>
-          </div>         
-          
-          
-        </div>
-        
-        <div class="alignButtonInFilter">
-            <button class="btn btn-info" type="button" (click) = "reloadValues()" >Filtruj</button>
-
-            <button class="btn btn-info" type="button" (click) = "resetFilter()">Resetuj filtry</button>
-        </div>
- 
-       
-
-      </form>
-
-
-
-
-    <div class="justify-content-center">
-        <pagination 
-        [boundaryLinks]="true" 
-        [itemsPerPage]="pagination.itemsPerPage"
-        [totalItems] ="pagination.totalItems"
-        [maxSize] = "2"       
-        [rotate] = "rotate"
-        [(ngModel)]="pagination.currentPage"
-        (pageChanged)="pageChanged($event)"
-        previousText="&lsaquo;"
-        nextText = "&rsaquo;"
-        firstText = "&laquo;"
-        lastText = "&raquo;"
-    >
-    </pagination>
+            <option
+              *ngFor="let lvl of filterLvlHigherThanLvlFrom()"
+              [value]="lvl"
+            >
+              {{ lvl }}
+            </option>
+          </select>
+        </label>
+      </div>
     </div>
 
-    <!-- {{pagination.itemsPerPage}}
-    {{pagination.totalItems}}
-    {{pagination.currentPage}} -->
+    <div class="alignButtonInFilter">
+      <button class="btn btn-info" type="button" (click)="reloadValues()">
+        Filtruj
+      </button>
 
-        <div *ngIf = "loading$ | async">
-            <mat-spinner></mat-spinner>
-        </div>
+      <button class="btn btn-info" type="button" (click)="resetFilter()">
+        Resetuj filtry
+      </button>
+    </div>
+  </form>
 
-        <div class="containerFlex" >
-          <div *ngIf="equipments && equipments.length <= 0">
-            <div class="fontStyleBold">         
-               Brak ekwipunków
-            </div>          
-          </div>
-            <div class="containerItem" *ngFor="let item of equipments; let i = index">
-                <mat-card (click)="higlightSelected(i,item.equipmentId, item.userName)" [ngClass]="{'highlight' : i === selectedCardIndex, 'not-highlight' : i !== selectedCardIndex}">
-                    <!-- <mat-card-header>
+  <div class="justify-content-center">
+    <pagination
+      [boundaryLinks]="true"
+      [itemsPerPage]="pagination.itemsPerPage"
+      [totalItems]="pagination.totalItems"
+      [maxSize]="2"
+      [rotate]="rotate"
+      [(ngModel)]="pagination.currentPage"
+      (pageChanged)="pageChanged($event)"
+      previousText="&lsaquo;"
+      nextText="&rsaquo;"
+      firstText="&laquo;"
+      lastText="&raquo;"
+    >
+    </pagination>
+  </div>
+
+  <div *ngIf="loading$ | async">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div class="containerFlex">
+    <div *ngIf="equipments && equipments.length <= 0">
+      <div class="fontStyleBold">Brak ekwipunków</div>
+    </div>
+    <div class="containerItem" *ngFor="let item of equipments; let i = index">
+      <mat-card
+        (click)="higlightSelected(i, item.equipmentId, item.userName)"
+        [ngClass]="{
+          highlight: i === selectedCardIndex,
+          'not-highlight': i !== selectedCardIndex
+        }"
+      >
+        <!-- <mat-card-header>
                         Użytkownik: {{item.userName}}
                         <mat-card-title>
                             Ekwipunek:   
@@ -217,63 +208,59 @@ DOMYYSLNIE KOMPONENT DO ZARZADZANIA EKWIPUNKAMI
                            
                         </mat-card-title> 
                     </mat-card-header> -->
-                    <mat-card-content>
-                        Użytkownik: 
-                        <div class="fontStyleBold">
-                            {{item.userName}}
-                        </div>
-                    </mat-card-content>
-                    <mat-card-content>
-                        Ekwipunek:   
-                        <div class="fontStyleBold">
-                            {{item.eqName}}
-                        </div>
-                    </mat-card-content>
+        <mat-card-content>
+          Użytkownik:
+          <div class="fontStyleBold">
+            {{ item.userName }}
+          </div>
+        </mat-card-content>
+        <mat-card-content>
+          Ekwipunek:
+          <div class="fontStyleBold">
+            {{ item.eqName }}
+          </div>
+        </mat-card-content>
 
+        <div *ngIf="item.heroName === 'Caitlyn'">
+          <img mat-card-image src="assets/Caitlyn.jpg" alt="Zdjęcie Caitlyn" />
+        </div>
+        <div *ngIf="item.heroName === 'Darius'">
+          <img mat-card-image src="assets/Darius.jpg" alt="Zdjęcie Darius" />
+        </div>
+        <div *ngIf="item.heroName === 'Varus'">
+          <img mat-card-image src="assets/Varus.jpg" alt="Zdjęcie Varus" />
+        </div>
+        <div *ngIf="item.heroName === 'Janna'">
+          <img mat-card-image src="assets/Janna.jpg" alt="Zdjęcie Janna" />
+        </div>
+        <div *ngIf="item.heroName === 'Ahrii'">
+          <img mat-card-image src="assets/Ahrii.jpg" alt="Zdjęcie Ahrii" />
+        </div>
 
-                    <div *ngIf="item.heroName === 'Caitlyn'">
-                        <img mat-card-image src="assets/Caitlyn.jpg" alt="Zdjęcie Caitlyn">
-                    </div>
-                    <div *ngIf="item.heroName === 'Darius'">
-                      <img mat-card-image src="assets/Darius.jpg" alt="Zdjęcie Darius">
-                    </div>
-                    <div *ngIf="item.heroName === 'Varus'">
-                      <img mat-card-image src="assets/Varus.jpg" alt="Zdjęcie Varus">
-                    </div>
-                    <div *ngIf="item.heroName === 'Janna'">
-                      <img mat-card-image src="assets/Janna.jpg" alt="Zdjęcie Janna">
-                    </div>
-                    <div *ngIf="item.heroName === 'Ahrii'">
-                      <img mat-card-image src="assets/Ahrii.jpg" alt="Zdjęcie Ahrii">
-                    </div>
-          
-  
-                    <mat-card-content>
-                        Bohater: 
-                        <div class="fontStyleBold">
-                            {{item.heroName}}
-                        </div>
-                    </mat-card-content>
-                    <mat-card-content>
-                        Poziom bohatera: 
-                        <div class="fontStyleBold">
-                            {{item.heroLvl}}   
-                        </div>
-                    </mat-card-content> 
-                    <mat-card-content>
-                        Ilość lajków: 
-                        <div class="fontStyleBold">
-                            {{item.counterOfLikes}}
-                        </div>
-                    </mat-card-content>
-         
-                    <!-- <mat-card-actions>
+        <mat-card-content>
+          Bohater:
+          <div class="fontStyleBold">
+            {{ item.heroName }}
+          </div>
+        </mat-card-content>
+        <mat-card-content>
+          Poziom bohatera:
+          <div class="fontStyleBold">
+            {{ item.heroLvl }}
+          </div>
+        </mat-card-content>
+        <mat-card-content>
+          Ilość lajków:
+          <div class="fontStyleBold">
+            {{ item.counterOfLikes }}
+          </div>
+        </mat-card-content>
+
+        <!-- <mat-card-actions>
                         <button mat-button>Polub</button>
                         <button mat-button>Udostępnij</button>
                     </mat-card-actions> -->
-                </mat-card>
-            
-            </div>
-        </div>
-
+      </mat-card>
     </div>
+  </div>
+</div>

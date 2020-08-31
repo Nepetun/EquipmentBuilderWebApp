@@ -1,0 +1,85 @@
+<div *ngIf="loading$ | async">
+  <mat-spinner></mat-spinner>
+</div>
+<div class="pageDiv">
+  <button type="button" class="btn btn-success" (click)="addItem()">Dodaj przedmiot</button>
+
+  <form class="container" [formGroup]="formFilter" (ngSubmit)="reloadValues()">
+    <div class="containerFlexForm">
+      <div class="containerItemForm">
+        <label
+          >Nazwa Przedmiotu:
+          <input
+            type="text"
+            formControlName="itemNameLikeForm"
+            maxlength="20"
+            class="form-control"
+          />
+          <div
+            *ngIf="
+              formFilter.invalid && (formFilter.dirty || formFilter.touched)
+            "
+          >
+            <div class="errorDiv">
+              <span *ngIf="formFilter.errors?.maxlength">
+                Przekroczono maksymalna długość 20 znaków
+              </span>
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+    <div class="alignButtonInFilter">
+      <button class="btn btn-info" type="button" (click)="reloadValues()">
+        Filtruj
+      </button>
+
+      <button class="btn btn-info" type="button" (click)="resetFilter()">
+        Resetuj filtry
+      </button>
+    </div>
+  </form>
+
+    <div class="justify-content-center">
+      <pagination
+        [boundaryLinks]="true"
+        [itemsPerPage]="pagination.itemsPerPage"
+        [totalItems]="pagination.totalItems"
+        [maxSize]="2"
+        [rotate]="rotate"
+        [(ngModel)]="pagination.currentPage"
+        (pageChanged)="pageChanged($event)"
+        previousText="&lsaquo;"
+        nextText="&rsaquo;"
+        firstText="&laquo;"
+        lastText="&raquo;"
+      >
+      </pagination>
+    </div>
+
+    
+
+
+    <div class="containerFlex">
+      <div *ngIf="items.length <= 0">
+        <div class="fontStyleBold">Brak przedmiotów</div>
+      </div>
+
+      <div class="containerItem" *ngFor="let item of items; let i = index">
+        <mat-card>
+          <img mat-card-image src="assets/Item.png" alt="Zdjęcie przedmiotu" />
+          <mat-card-content>
+            Nazwa przedmiotu:
+            <div class="fontStyleBold">
+              {{ item.itemName }}
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button class="buttonCard" (click)="editItem(item.id)">Edytuj przedmiot</button>
+            <!-- <button mat-button class="buttonCard" (click)="deleteItem(item.id)">Usuń przedmiot</button> -->
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+
+</div>

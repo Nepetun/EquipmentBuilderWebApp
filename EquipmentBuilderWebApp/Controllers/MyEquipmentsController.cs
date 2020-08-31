@@ -22,7 +22,6 @@ namespace EquipmentBuilder.API.Controllers
     public class MyEquipmentsController : ControllerBase //controller base nie wprowadza viewsow- te robimy w angularze
     {
         private readonly IEquipmentRepository _repo;
-        //private readonly IConfiguration _config;
         private readonly IMapper _mapper;
 
         public MyEquipmentsController(IEquipmentRepository repo, IMapper mapper) // IMapper mapper;
@@ -34,18 +33,12 @@ namespace EquipmentBuilder.API.Controllers
 
         // Paging
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
-        [HttpGet("GetEquipments")] //("{userId}")
-        // public async Task<List<EquipmentListDto>> GetEquipments([FromQuery] PageParams pageParams,[FromQuery] int userId)
+        [HttpGet("GetEquipments")]
         public async Task<PagedList<EquipmentListDto>> GetEquipments([FromQuery] PageParams pageParams, [FromQuery] int userId, [FromQuery] EquipmentFilter eqFilters, [FromQuery] bool isAdmin)
         {
 
             var myEquipments = await _repo.ListMyEquipments(pageParams, userId, eqFilters, isAdmin);
-           
-            //Response.AddPagination(myEquipments.CurrentPage, myEquipments.PageSize, myEquipments.TotalCount, myEquipments.TotalPages);
 
-            //return myEquipments;
-            
-            // var eqToReturn = _mapper.Map<PagedList<EquipmentListDto>>(myEquipments);
             Response.AddPagination(myEquipments.CurrentPage, myEquipments.PageSize, myEquipments.TotalCount, myEquipments.TotalPages);
             return myEquipments;
         }
@@ -56,22 +49,13 @@ namespace EquipmentBuilder.API.Controllers
         {
 
             var equipment = await _repo.GetEquipmentById(equipmentId);
-
-            // Response.AddPagination(myEquipments.CurrentPage, myEquipments.PageSize, myEquipments.TotalCount, myEquipments.TotalPages);
-
             return equipment;
-
-            // var eqToReturn = _mapper.Map<PagedList<EquipmentListDto>>(myEquipments);
-
-            // return eqToReturn;
         }
 
 
 
-
-
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera 
-        [HttpPost("addEquipment")]//, ActionName("addEquipment")]
+        [HttpPost("addEquipment")]
         public async Task<IActionResult> AddEquipment([FromBody] EquipmentDto equipmentDto)
         {
             //nieuwzglenianie case sensitivity 
@@ -93,12 +77,7 @@ namespace EquipmentBuilder.API.Controllers
                 SixthItemId = equipmentDto.SixthItemId
             };
 
-            var createdEquipment = await _repo.AddEquipment(eqToCreate, equipmentDto.HeroLvl);//,equipmentDto.UserId);
-
-            //var createdUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
-
-            //zwrotka dla klienta gdzie został stworzony nowy obiekt
-            //return CreatedAtRoute();
+            var createdEquipment = await _repo.AddEquipment(eqToCreate, equipmentDto.HeroLvl);
             return StatusCode(201);
         }
 
@@ -125,23 +104,15 @@ namespace EquipmentBuilder.API.Controllers
                 SixthItemId = equipmentDto.SixthItemId
             };
 
-            var createdEquipment = await _repo.UpdateEquipment(eqToCreate, equipmentDto.HeroLvl, equipmentDto.EquipmentId);//,equipmentDto.UserId);
-
-            //var createdUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
-
-            //zwrotka dla klienta gdzie został stworzony nowy obiekt
-            //return CreatedAtRoute();
+            var createdEquipment = await _repo.UpdateEquipment(eqToCreate, equipmentDto.HeroLvl, equipmentDto.EquipmentId);
             return StatusCode(201);
         }
 
         // async Task<IActionResult> 
-        [HttpDelete("deleteEquipment")]  
+        [HttpDelete("deleteEquipment")]
         public Task<bool> DeleteEquipment([FromQuery] int equipmentId)
         {
-            //await _repo.DeleteEquipment(equipmentId);
             return _repo.DeleteEquipment(equipmentId);
-
-            //return StatusCode(201);
         }
 
 
@@ -149,18 +120,14 @@ namespace EquipmentBuilder.API.Controllers
         [HttpGet("GetSharedEquipments")]
         public async Task<IEnumerable<SharedEquipmentInformation>> GetSharedEquipments([FromQuery] int userId, [FromQuery] int groupId)
         {
-            //if (await _repo.CheckThatUserHaveGroupsAndSharedEquipments(userId))
-            //   return BadRequest("Użytkownik nie posiada udostępnionych ekwpiunków");
-
-            var sharedEquipments = await _repo.ListSharedEquipments(userId); //, groupId
-
+            var sharedEquipments = await _repo.ListSharedEquipments(userId);
             return sharedEquipments;
         }
 
         [AllowAnonymous] //dzieki temu atrybutowi nie musimy wysyłać tokenu do serwera  ,ActionName("GetSharedEquipments")
         [HttpPost("ShareEquipment")]
         public async Task<IActionResult> ShareEquipment([FromBody] ShareEquipmentDto eqToShare)
-        {           
+        {
             if (await _repo.CheckThatEqWasShared(eqToShare.EquipmentId, eqToShare.GroupId))
                 return BadRequest("Ekwipunek jest już udostpępniony dla tej grupy");
 
@@ -173,10 +140,7 @@ namespace EquipmentBuilder.API.Controllers
         [HttpDelete("deleteShareEquipment")]
         public Task<bool> DeleteShareEquipment([FromQuery] int equipmentId, [FromQuery] int groupId)
         {
-            //await _repo.DeleteEquipment(equipmentId);
             return _repo.DeleteShareEquipment(equipmentId, groupId);
-
-            //return StatusCode(201);
         }
     }
 }
