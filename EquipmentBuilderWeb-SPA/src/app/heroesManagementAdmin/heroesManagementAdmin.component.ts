@@ -82,9 +82,6 @@ export class HeroesManagementAdminComponent implements OnInit {
     });
   }
 
-  returnToGroups() {
-    this.router.navigate(["/myGroups"]);
-  }
 
   pageChanged(event: any) {
     this.pagination.currentPage = Number(event.page);
@@ -116,6 +113,7 @@ export class HeroesManagementAdminComponent implements OnInit {
   }
 
   editHero(heroId: number) {
+    this.heroesService.setSelectedHero(heroId);
     this.router.navigate(['/heroesEditorAdmin']);
   }
   // deleteHero(heroId: number) {

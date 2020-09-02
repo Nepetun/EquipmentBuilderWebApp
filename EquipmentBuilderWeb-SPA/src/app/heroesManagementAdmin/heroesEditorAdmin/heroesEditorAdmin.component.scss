@@ -1,0 +1,119 @@
+
+.pageDiv {
+    width: 100%;
+    height: 100%;
+    min-height: 880px;
+    background-color: rgba(110, 185, 255, 0.685);
+    align-content: center;
+}
+
+.errorDiv {
+    color: red;
+    font-weight: bold;
+}
+
+input {
+    margin-bottom: 10px;
+}
+.textSpecial {
+    font-weight: bold;
+}
+
+textarea {
+    max-height: 250px;
+    min-height: 200px;
+    height: 200px;
+}
+
+
+.columnFlex {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+    // background-color: rgba(110, 185, 255, 0.685);
+    align-items: stretch;
+    align-content: stretch;
+}
+
+.columnFlex :nth-child(1) {order: 0; }
+
+.columnFlexItem {
+    height: 100%;
+    width: 70%;
+    flex-direction: row;
+    flex-shrink: 10;
+    text-align: center;
+    margin: 10px;
+    /* background-color: yellow; */
+}
+
+.columnFlexItemEq {
+    height: 100%;
+    width: 20%;
+    flex-direction: row;
+    flex-shrink: 10;
+    text-align: center;
+    margin: 10px;
+    // background-color: rgb(117, 192, 241);
+}
+
+
+
+
+.containerFlex {
+    display: flex;
+    flex-direction: column;
+    width: 100%; 
+    height: 100%;
+    align-content: stretch;
+    align-items: stretch; 
+}
+
+
+.containerFlex :nth-child(1) { order:0 }
+
+.containerItem {
+    margin: 0px;
+    width: 100%;
+    flex-direction: column;
+    align-content: center;
+}
+
+
+.statisticFlex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(110, 185, 255, 0.685);
+    /* background-color: red; */
+    align-items: stretch;
+    align-content: stretch;
+}
+
+.statisticFlex :nth-child(1) {order: 0; }
+
+.statisticFlexItem {
+    height: 100%;
+    width: 30%;
+    flex-direction: row;
+    flex-shrink: 10;
+    text-align: center;
+    margin: 10px;
+    background-color: rgba(14, 152, 233, 0.493);
+}
+
+.statisticInfo {    
+    font-size: 40;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+form {
+    align-content: center !important;
+    width: fit-content !important;
+}

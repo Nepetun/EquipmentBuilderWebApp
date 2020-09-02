@@ -1,3 +1,555 @@
-<p>
-  heroesEditorAdmin works!
-</p>
+<div class="pageDiv">
+  <div class="columnFlex">
+    <div class="columnFlexItemEq">
+      <form  [formGroup]="heroCreator" (ngSubmit)="saveHero()">
+        <div class="containerFlex">
+          <div class="containerItem">
+            <label
+              >Nazwa bohatera:
+              <input
+                type="text"
+                formControlName="heroName"
+                maxlength="20"
+                minlength="3"
+                class="form-control"
+              />
+              <div *ngIf="heroName.invalid">
+                <div class="errorDiv">
+                  <span *ngIf="heroName.errors?.required">
+                    Uzupelnij wartosc
+                  </span>
+                  <span *ngIf="heroName.errors?.maxlength">
+                    Przekroczono maksymalna wartość 20 znaków
+                  </span>
+                  <span *ngIf="heroName.errors?.minlength">
+                    Minimum 3 znaki
+                  </span>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="containerItem">
+            <label
+              >Punkty życia - regeneracja co 5 sek
+              <input
+                (keypress)="numberOnly($event)"
+                type="text"
+                formControlName="hitPointsRegen"
+                max="500"
+                min="200"
+                class="form-control"
+              />
+              <div
+                *ngIf="
+                  hitPointsRegen.invalid &&
+                  (hitPointsRegen.dirty || hitPointsRegen.touched)
+                "
+              >
+               
+              <div class="errorDiv">
+                <span *ngIf="hitPoints.errors?.required">
+                  Uzupelnij wartosc
+                </span>
+                <span *ngIf="hitPoints.errors?.max">
+                  Przekroczono maksymalna wartość 25
+                </span>
+                <span *ngIf="hitPoints.errors?.min"> Minimum 1 </span>
+              </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="containerItem">
+            <label
+              >Punkty życia:
+              <input
+                (keypress)="numberOnly($event)"
+                type="text"
+                formControlName="hitPoints"
+                max="25"
+                min="1"
+                class="form-control"
+              />
+              <div *ngIf="hitPoints.invalid">
+                <div class="errorDiv">
+                  <span *ngIf="hitPointsRegen.errors?.required">
+                    Uzupelnij wartosc
+                  </span>
+                  <span *ngIf="hitPointsRegen.errors?.max">
+                    Przekroczono maksymalna wartość 500
+                  </span>
+                  <span *ngIf="hitPointsRegen.errors?.min"> Minimum 200 </span>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="containerItem">
+            <label
+              >Mana :
+              <input
+                (keypress)="numberOnly($event)"
+                type="text"
+                formControlName="mana"
+                max="600"
+                min="1"
+                class="form-control"
+              />
+              <div *ngIf="mana.invalid">
+                <div class="errorDiv">
+                  <span *ngIf="mana.errors?.required"> Uzupelnij wartosc </span>
+                  <span *ngIf="mana.errors?.max">
+                    Przekroczono maksymalna wartość 600
+                  </span>
+                  <span *ngIf="mana.errors?.min"> Minimum 1 </span>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="containerItem">
+            <label
+              >Mana - regeneracja co 5 sek :
+              <input
+                (keypress)="numberOnly($event)"
+                type="text"
+                formControlName="manaRegen"
+                max="25"
+                min="1"
+                class="form-control"
+              />
+              <div *ngIf="manaRegen.invalid">
+                <div class="errorDiv">
+                  <span *ngIf="manaRegen.errors?.required">
+                    Uzupelnij wartosc
+                  </span>
+                  <span *ngIf="manaRegen.errors?.max">
+                    Przekroczono maksymalna wartość 25
+                  </span>
+                  <span *ngIf="manaRegen.errors?.min"> Minimum 1 </span>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="containerItem">
+            <label
+              >Zasięg :
+              <input
+                (keypress)="numberOnly($event)"
+                type="text"
+                formControlName="range"
+                max="600"
+                min="10"
+                class="form-control"
+              />
+              <div *ngIf="range.invalid">
+                <div class="errorDiv">
+                  <span *ngIf="range.errors?.required">
+                    Uzupelnij wartosc
+                  </span>
+                  <span *ngIf="range.errors?.max">
+                    Przekroczono maksymalna wartość 600
+                  </span>
+                  <span *ngIf="range.errors?.min"> Minimum 10 </span>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="containerItem">
+            <label
+              >Obrażenia fizyczne :
+              <input
+                (keypress)="numberOnly($event)"
+                type="text"
+                formControlName="attackDamage"
+                max="90"
+                min="10"
+                class="form-control"
+              />
+              <div *ngIf="attackDamage.invalid">
+                <div class="errorDiv">
+                  <span *ngIf="attackDamage.errors?.required">
+                    Uzupelnij wartosc
+                  </span>
+                  <span *ngIf="attackDamage.errors?.max">
+                    Przekroczono maksymalna wartość 90
+                  </span>
+                  <span *ngIf="attackDamage.errors?.min"> Minimum 10 </span>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="containerItem">
+            <label>
+              Szybkość ataku :
+              <input
+                (keypress)="numberOnly($event)"
+                type="text"
+                formControlName="attackSpeed"
+                max="2"
+                min="1"
+                class="form-control"
+              />
+              <div *ngIf="attackSpeed.invalid">
+                <div class="errorDiv">
+                  <span *ngIf="attackSpeed.errors?.required">
+                    Uzupelnij wartosc
+                  </span>
+                  <span *ngIf="attackSpeed.errors?.max">
+                    Przekroczono maksymalna wartość 2
+                  </span>
+                  <span *ngIf="attackSpeed.errors?.min"> Minimum 1 </span>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="containerItem">
+            <label>
+              Pancerz :
+              <input
+                (keypress)="numberOnly($event)"
+                type="text"
+                formControlName="armour"
+                max="70"
+                min="25"
+                class="form-control"
+              />
+              <div *ngIf="armour.invalid">
+                <div class="errorDiv">
+                  <span *ngIf="armour.errors?.required">
+                    Uzupelnij wartosc
+                  </span>
+                  <span *ngIf="armour.errors?.max">
+                    Przekroczono maksymalna wartość 70
+                  </span>
+                  <span *ngIf="armour.errors?.min"> Minimum 25 </span>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="containerItem">
+            <label>
+              Odporność na magie :
+              <input
+                (keypress)="numberOnly($event)"
+                type="text"
+                formControlName="magicResistance"
+                max="70"
+                min="10"
+                class="form-control"
+              />
+              <div *ngIf="magicResistance.invalid">
+                <div class="errorDiv">
+                  <span *ngIf="magicResistance.errors?.required">
+                    Uzupelnij wartosc
+                  </span>
+                  <span *ngIf="magicResistance.errors?.max">
+                    Przekroczono maksymalna wartość 70
+                  </span>
+                  <span *ngIf="magicResistance.errors?.min"> Minimum 10 </span>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="containerItem">
+            <label>
+              Szybkość ruchu :
+              <input
+                (keypress)="numberOnly($event)"
+                type="text"
+                formControlName="movementSpeed"
+                max="380"
+                min="300"
+                class="form-control"
+              />
+              <div *ngIf="movementSpeed.invalid">
+                <div class="errorDiv">
+                  <span *ngIf="movementSpeed.errors?.required">
+                    Uzupelnij wartosc
+                  </span>
+                  <span *ngIf="movementSpeed.errors?.max">
+                    Przekroczono maksymalna wartość 380
+                  </span>
+                  <span *ngIf="movementSpeed.errors?.min"> Minimum 300 </span>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="containerItem">
+            <label>
+              Moc :
+              <input
+                (keypress)="numberOnly($event)"
+                type="text"
+                formControlName="abilityPower"
+                max="50"
+                min="0"
+                class="form-control"
+              />
+              <div *ngIf="abilityPower.invalid">
+                <div class="errorDiv">
+                  <span *ngIf="abilityPower.errors?.required">
+                    Uzupelnij wartosc
+                  </span>
+                  <span *ngIf="abilityPower.errors?.max">
+                    Przekroczono maksymalna wartość 50
+                  </span>
+                  <span *ngIf="abilityPower.errors?.min"> Minimum 0 </span>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="containerItem">
+            <label>
+              Skrócenie czasu odnowienia :
+              <input
+                (keypress)="numberOnly($event)"
+                type="text"
+                formControlName="cooldownReduction"
+                max="10"
+                min="0"
+                class="form-control"
+              />
+              <div *ngIf="cooldownReduction.invalid">
+                <div class="errorDiv">
+                  <span *ngIf="cooldownReduction.errors?.required">
+                    Uzupelnij wartosc
+                  </span>
+                  <span *ngIf="cooldownReduction.errors?.max">
+                    Przekroczono maksymalna wartość 10
+                  </span>
+                  <span *ngIf="cooldownReduction.errors?.min"> Minimum 0 </span>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="containerItem">
+            <label>
+              Przebicie pancerza :
+              <input
+                (keypress)="numberOnly($event)"
+                type="text"
+                formControlName="armourPenetration"
+                max="10"
+                min="0"
+                class="form-control"
+              />
+              <div *ngIf="armourPenetration.invalid">
+                <div class="errorDiv">
+                  <span *ngIf="armourPenetration.errors?.required">
+                    Uzupelnij wartosc
+                  </span>
+                  <span *ngIf="armourPenetration.errors?.max">
+                    Przekroczono maksymalna wartość 10
+                  </span>
+                  <span *ngIf="armourPenetration.errors?.min"> Minimum 0 </span>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="containerItem">
+            <label>
+              Przebicie pancerza % :
+              <input
+                (keypress)="numberOnly($event)"
+                type="text"
+                formControlName="armourPenetrationProc"
+                max="10"
+                min="0"
+                class="form-control"
+              />
+              <div *ngIf="armourPenetrationProc.invalid">
+                <div class="errorDiv">
+                  <span *ngIf="armourPenetrationProc.errors?.required">
+                    Uzupelnij wartosc
+                  </span>
+                  <span *ngIf="armourPenetrationProc.errors?.max">
+                    Przekroczono maksymalna wartość 10
+                  </span>
+                  <span *ngIf="armourPenetrationProc.errors?.min">
+                    Minimum 0
+                  </span>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="containerItem">
+            <label>
+              Przebicie odporności na magie :
+              <input
+                (keypress)="numberOnly($event)"
+                type="text"
+                formControlName="magicPenetration"
+                max="10"
+                min="0"
+                class="form-control"
+              />
+              <div *ngIf="magicPenetration.invalid">
+                <div class="errorDiv">
+                  <span *ngIf="magicPenetration.errors?.required">
+                    Uzupelnij wartosc
+                  </span>
+                  <span *ngIf="magicPenetration.errors?.max">
+                    Przekroczono maksymalna wartość 10
+                  </span>
+                  <span *ngIf="magicPenetration.errors?.min"> Minimum 0 </span>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="containerItem">
+            <label
+              >Przebicie odporności na magie % :
+              <input
+                (keypress)="numberOnly($event)"
+                type="text"
+                formControlName="magicPenetrationProc"
+                max="10"
+                min="0"
+                class="form-control"
+              />
+              <div *ngIf="magicPenetrationProc.invalid">
+                <div class="errorDiv">
+                  <span *ngIf="magicPenetrationProc.errors?.required">
+                    Uzupelnij wartosc
+                  </span>
+                  <span *ngIf="magicPenetrationProc.errors?.max">
+                    Przekroczono maksymalna wartość 10
+                  </span>
+                  <span *ngIf="magicPenetrationProc.errors?.min">
+                    Minimum 0
+                  </span>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="containerItem">
+            <label
+              >Kradzież życia :
+              <input
+                (keypress)="numberOnly($event)"
+                type="text"
+                formControlName="lifeSteal"
+                max="10"
+                min="0"
+                class="form-control"
+              />
+              <div *ngIf="lifeSteal.invalid">
+                <div class="errorDiv">
+                  <span *ngIf="lifeSteal.errors?.required">
+                    Uzupelnij wartosc
+                  </span>
+                  <span *ngIf="lifeSteal.errors?.max">
+                    Przekroczono maksymalna wartość 10
+                  </span>
+                  <span *ngIf="lifeSteal.errors?.min"> Minimum 0 </span>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="containerItem">
+            <label>
+              Wampiryzm zaklęć :
+              <input
+                (keypress)="numberOnly($event)"
+                type="text"
+                formControlName="apLifeSteal"
+                max="10"
+                min="0"
+                class="form-control"
+              />
+              <div *ngIf="apLifeSteal.invalid">
+                <div class="errorDiv">
+                  <span *ngIf="apLifeSteal.errors?.required">
+                    Uzupelnij wartosc
+                  </span>
+                  <span *ngIf="apLifeSteal.errors?.max">
+                    Przekroczono maksymalna wartość 10
+                  </span>
+                  <span *ngIf="apLifeSteal.errors?.min"> Minimum 0 </span>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="containerItem">
+            <label>
+              Nieustępliwość :
+              <input
+                (keypress)="numberOnly($event)"
+                type="text"
+                formControlName="tenacity"
+                max="30"
+                min="0"
+                class="form-control"
+              />
+              <div *ngIf="tenacity.invalid">
+                <div class="errorDiv">
+                  <span *ngIf="tenacity.errors?.required">
+                    Uzupelnij wartosc
+                  </span>
+                  <span *ngIf="tenacity.errors?.max">
+                    Przekroczono maksymalna wartość 30
+                  </span>
+                  <span *ngIf="tenacity.errors?.min"> Minimum 0 </span>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <div class="containerItem">
+            <label>
+              Krytyczne uderzenie % :
+              <input
+                (keypress)="numberOnly($event)"
+                type="text"
+                formControlName="criticalChance"
+                max="30"
+                min="0"
+                class="form-control"
+              />
+              <div *ngIf="criticalChance.invalid">
+                <div class="errorDiv">
+                  <span *ngIf="criticalChance.errors?.required">
+                    Uzupelnij wartosc
+                  </span>
+                  <span *ngIf="criticalChance.errors?.max">
+                    Przekroczono maksymalna wartość 30
+                  </span>
+                  <span *ngIf="criticalChance.errors?.min"> Minimum 0 </span>
+                </div>
+              </div>
+            </label>
+          </div>
+
+          <button
+            class="btn btn-success"
+            [disabled]="heroCreator.invalid"
+            type="submit"
+          >
+            Zatwierdź
+          </button>
+
+          <button class="btn btn-default" type="button" (click)="cancel()">
+            Anuluj
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

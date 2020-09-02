@@ -200,28 +200,8 @@ getSharedEquipments(userId: number, groupId: number): Observable<ISharedEquipmen
 }
 
 
-
-// getEquipments(): Observable<IEquipments[]> {
-//   return this.http.get<IEquipments[]>(this.baseUrl + '');
-// }
-
-
 addEquipment(addedEq: IAddEquipment) {
-  //  let params = new HttpParams();
   let eqCreated: IAddEquipment = addedEq;
-/*
-  if (eqCreated) {
-    params = params.append('eqName', eqCreated.eqName);
-    params = params.append('heroId', eqCreated.heroId.toString());
-    params = params.append('userId', eqCreated.userId.toString());
-    params = params.append('firtItemId', eqCreated.firtItemId.toString());
-    params = params.append('secondItemId', eqCreated.secondItemId.toString());
-    params = params.append('thirdItemId', eqCreated.thirdItemId.toString());
-    params = params.append('fourthItemId', eqCreated.fourthItemId.toString());
-    params = params.append('fifthItemId', eqCreated.fifthItemId.toString());
-    params = params.append('sixthItemId', eqCreated.sixthItemId.toString());
-  }
-*/
 
   return this.http.post<IAddEquipment>(this.baseUrl + '/addEquipment' , {
     eqName: eqCreated.eqName,
@@ -240,9 +220,6 @@ addEquipment(addedEq: IAddEquipment) {
       const eq = reponse;
     })
   );
-  // .subscribe( addEq => {
-  //   console.log(addEq);
-  // });
 
 }
 

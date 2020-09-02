@@ -2,6 +2,7 @@
 using EquipmentBuilder.API.Common.Filters;
 using EquipmentBuilder.API.Context;
 using EquipmentBuilder.API.Data.Interfaces;
+using EquipmentBuilder.API.Dtos;
 using EquipmentBuilder.API.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,6 +23,8 @@ namespace EquipmentBuilder.API.Data
 
         public async Task<Heroes> CreateHero(Heroes heroToCreate)
         {
+            int id = await _context.Heroes.MaxAsync(x => x.Id);
+            heroToCreate.Id = id + 1;
             await _context.Heroes.AddAsync(heroToCreate);
             await _context.SaveChangesAsync();
             return heroToCreate;
@@ -29,9 +32,45 @@ namespace EquipmentBuilder.API.Data
 
         public async Task<HeroeStats> CreateHeroStats(HeroeStats heroStats)
         {
+            int id = await _context.HeroeStats.MaxAsync(x => x.Id);
+            heroStats.Id = id + 1;
             await _context.HeroeStats.AddAsync(heroStats);
             await _context.SaveChangesAsync();
             return heroStats;
+        }
+
+        public async Task<HeroesManagementDto> GetHeroesToModify(int heroId)
+        {
+            HeroesManagementDto heroToReturn = new HeroesManagementDto();
+
+            Heroes hero = await _context.Heroes.FirstOrDefaultAsync(x => x.Id == heroId);
+
+            HeroeStats heroStats = await _context.HeroeStats.FirstOrDefaultAsync(x => x.HeroId == hero.Id);
+
+
+            heroToReturn.AbilityPower = heroStats.AbilityPower;
+            heroToReturn.ApLifeSteal = heroStats.ApLifeSteal;
+            heroToReturn.Armour = heroStats.Armour;
+            heroToReturn.ArmourPenetration = heroStats.ArmourPenetration;
+            heroToReturn.ArmourPenetrationProc = heroStats.ArmourPenetrationProc;
+            heroToReturn.AttackDamage = heroStats.AttackDamage;
+            heroToReturn.AttackSpeed = heroStats.AttackSpeed;
+            heroToReturn.CooldownReduction = heroStats.CooldownReduction;
+            heroToReturn.CriticalChance = heroStats.CriticalChance;
+            heroToReturn.HeroName = hero.HeroName;
+            heroToReturn.HitPoints = heroStats.HitPoints;
+            heroToReturn.HitPointsRegen = heroStats.HitPointsRegen;
+            heroToReturn.LifeSteal = heroStats.LifeSteal;
+            heroToReturn.MagicPenetration = heroStats.MagicPenetration;
+            heroToReturn.MagicPenetrationProc = heroStats.MagicPenetrationProc;
+            heroToReturn.MagicResistance = heroStats.MagicResistance;
+            heroToReturn.Mana = heroStats.Mana;
+            heroToReturn.ManaRegen = heroStats.ManaRegen;
+            heroToReturn.MovementSpeed = heroStats.MovementSpeed;
+            heroToReturn.Range = heroStats.Range;
+            heroToReturn.Tenacity = heroStats.Tenacity;
+
+            return heroToReturn;            
         }
 
         public async Task<IEnumerable<HeroDto>> GetAllHeroes()

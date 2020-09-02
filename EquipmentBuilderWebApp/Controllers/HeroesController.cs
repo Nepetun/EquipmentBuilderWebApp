@@ -42,6 +42,15 @@ namespace EquipmentBuilder.API.Controllers
             return heroes;
         }
 
+
+
+        [HttpGet("GetHeroesToModify")]
+        public async Task<HeroesManagementDto> GetHeroesToModify([FromQuery] int heroId)
+        {
+            var heroes = await _repo.GetHeroesToModify(heroId);
+            return heroes;
+        }
+
         [HttpPost("AddHeroes")]
         public async Task<IActionResult> AddHeroes([FromBody] HeroesManagementDto hero)
         {

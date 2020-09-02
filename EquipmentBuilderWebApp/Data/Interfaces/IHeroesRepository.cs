@@ -1,5 +1,6 @@
 ﻿using EquipmentBuilder.API.Common;
 using EquipmentBuilder.API.Common.Filters;
+using EquipmentBuilder.API.Dtos;
 using EquipmentBuilder.API.Models;
 using System;
 using System.Collections.Generic;
@@ -17,5 +18,6 @@ namespace EquipmentBuilder.API.Data.Interfaces
         Task<HeroeStats> CreateHeroStats(HeroeStats heroStats);
         Task<bool> ModifyHero(Heroes heroToModify);
         Task<bool> ModifyHeroStats(HeroeStats heroStats);
+        Task<HeroesManagementDto> GetHeroesToModify(int heroId);
     }
 }

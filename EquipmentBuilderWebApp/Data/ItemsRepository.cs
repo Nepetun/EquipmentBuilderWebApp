@@ -23,6 +23,8 @@ namespace EquipmentBuilder.API.Data
 
         public async Task<Items> CreateItem(Items itemToCreate)
         {
+            int id = await _context.Items.MaxAsync(x => x.Id);
+            itemToCreate.Id = id + 1;
             await _context.Items.AddAsync(itemToCreate);
             await _context.SaveChangesAsync();
             return itemToCreate;
@@ -30,6 +32,8 @@ namespace EquipmentBuilder.API.Data
 
         public async Task<ItemStats> CreateItemStats(ItemStats itemStats)
         {
+            int id = await _context.ItemStats.MaxAsync(x => x.Id);
+            itemStats.Id = id + 1;
             await _context.ItemStats.AddAsync(itemStats);
             await _context.SaveChangesAsync();
             return itemStats;
