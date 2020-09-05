@@ -99,15 +99,6 @@ export class HeroesManagementAdminComponent implements OnInit {
       });
   }
 
-  // editUser(userId: number) {
-  //   this.userId = userId;
-  //   this.adminService.setSelectedUserId(userId);
-  //   console.log(userId);
-  //   this.router.navigate(["/userManagementPasswordReset"]);
-  //   // tutaj dać załadowanie danych o użytkowniku wybranym -> do zrobienai - oznaczanie wbybranego lub klikniecie edycji
-  // }
-
-
   addHero() {
     this.router.navigate(['/heroesCreatorAdmin']);
   }

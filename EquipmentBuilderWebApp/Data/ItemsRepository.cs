@@ -108,18 +108,10 @@ namespace EquipmentBuilder.API.Data
             return await PagedList<ItemsDto>.Create(lstItemsListed, pageParams.PageNumber, pageParams.PageSize);
         }
 
-        public async Task<bool> ModifyItem(Items itemToModify)
+        public async Task<int> GetItemId(string itemToModify)
         {
-            var itemToModifyData = await _context.Items.FirstOrDefaultAsync(x => x.ItemName == itemToModify.ItemName);
-
-
-            itemToModifyData.ItemName = itemToModify.ItemName;
-
-            _context.Items.Update(itemToModifyData);
-
-            await _context.SaveChangesAsync();
-
-            return true;
+            var itemToModifyData = await _context.Items.FirstOrDefaultAsync(x => x.ItemName.ToLower() == itemToModify.ToLower());
+            return itemToModifyData.Id;
         }
 
         public async Task<bool> ModifyItemStats(ItemStats itemStats)
@@ -160,6 +152,39 @@ namespace EquipmentBuilder.API.Data
                 return true;
             else
                 return false;
+        }
+
+        public async Task<ItemsManagementDto> GetItemToModify(int itemId)
+        {
+            ItemsManagementDto itemToReturn = new ItemsManagementDto();
+
+            Items item = await _context.Items.FirstOrDefaultAsync(x => x.Id == itemId);
+
+            ItemStats itemStats = await _context.ItemStats.FirstOrDefaultAsync(x => x.ItemId == item.Id);
+
+            itemToReturn.AdditionalAp = itemStats.AdditionalAp;
+            itemToReturn.AdditionalArmour = itemStats.AdditionalArmour;
+            itemToReturn.AdditionalAttackSpeed = itemStats.AdditionalAttackSpeed;
+            itemToReturn.AdditionalBasicHpRegenPercentage = itemStats.AdditionalBasicHpRegenPercentage;
+            itemToReturn.AdditionalBasicManaRegenPercentage = itemStats.AdditionalBasicManaRegenPercentage;
+            itemToReturn.AdditionalCooldownReduction = itemStats.AdditionalCooldownReduction;
+            itemToReturn.AdditionalCriticalChance = itemStats.AdditionalCriticalChance;
+            itemToReturn.AdditionalDmg = itemStats.AdditionalDmg;
+            itemToReturn.AdditionalGoldPerTenSec = itemStats.AdditionalGoldPerTenSec;
+            itemToReturn.AdditionalHitPointsPerHit = itemStats.AdditionalHitPointsPerHit;
+            itemToReturn.AdditionalHp = itemStats.AdditionalHp;
+            itemToReturn.AdditionalLifeSteal = itemStats.AdditionalLifeSteal;
+            itemToReturn.AdditionalMagicResist = itemStats.AdditionalMagicResist;
+            itemToReturn.AdditionalMana = itemStats.AdditionalMana;
+            itemToReturn.AdditionalManaRegen = itemStats.AdditionalManaRegen;
+            itemToReturn.AdditionalMovementSpeed = itemStats.AdditionalMovementSpeed;
+            itemToReturn.AdditionalPotionPower = itemStats.AdditionalPotionPower;
+            itemToReturn.Descriptions = itemStats.Descriptions;
+            itemToReturn.Price = itemStats.Price;
+            itemToReturn.ItemName = item.ItemName;
+            itemToReturn.MinHeroLvl = (int)item.MinHeroLvl;
+
+            return itemToReturn;
         }
     }
 }

@@ -106,17 +106,8 @@ namespace EquipmentBuilder.API.Controllers
             //nieuwzglenianie case sensitivity 
             hero.HeroName = hero.HeroName.ToLower();
 
-            // sprawdzenie czy taki bohater juz istnieje
-            if (await _repo.ValidateHeroName(hero.HeroName))
-                return BadRequest("Taka nazwa bohatera już istnieje");
-
-            // dodanie bohatera
-            var heroToModify = new Heroes
-            {
-                HeroName = hero.HeroName
-            };
-
-            var createdHero = await _repo.ModifyHero(heroToModify);
+          
+            var heroIdFromDB = await _repo.GetHeroId(hero.HeroName);
 
 
             // dodanie statystyk bohatera 
@@ -142,7 +133,7 @@ namespace EquipmentBuilder.API.Controllers
                 MovementSpeed = hero.MovementSpeed,
                 Range = hero.Range,
                 Tenacity = hero.Tenacity,
-                HeroId = heroToModify.Id
+                HeroId = heroIdFromDB
             };
 
             var createdItemStats = await _repo.ModifyHeroStats(heroStats);

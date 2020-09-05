@@ -116,19 +116,19 @@ namespace EquipmentBuilder.API.Data
             return await PagedList<HeroDto>.Create(lstHeroesListed, pageParams.PageNumber, pageParams.PageSize);
         }
 
-        public async Task<bool> ModifyHero(Heroes heroToModify)
-        {
-            var heroToModifyData = await _context.Heroes.FirstOrDefaultAsync(x => x.HeroName == heroToModify.HeroName);
+        //public async Task<bool> ModifyHero(Heroes heroToModify)
+        //{
+        //    var heroToModifyData = await _context.Heroes.FirstOrDefaultAsync(x => x.HeroName == heroToModify.HeroName);
 
 
-            heroToModifyData.HeroName = heroToModify.HeroName;
+        //    heroToModifyData.HeroName = heroToModify.HeroName;
 
-            _context.Heroes.Update(heroToModifyData);
+        //    _context.Heroes.Update(heroToModifyData);
 
-            await _context.SaveChangesAsync();
+        //    await _context.SaveChangesAsync();
 
-            return true;
-        }
+        //    return true;
+        //}
 
         public async Task<bool> ModifyHeroStats(HeroeStats heroStats)
         {
@@ -170,6 +170,12 @@ namespace EquipmentBuilder.API.Data
                 return true;
             else
                 return false;
+        }
+
+        public async Task<int> GetHeroId(string heroToModify)
+        {
+            var heroToModifyData = await _context.Heroes.FirstOrDefaultAsync(x => x.HeroName.ToLower() == heroToModify.ToLower());
+            return heroToModifyData.Id;
         }
     }
 }

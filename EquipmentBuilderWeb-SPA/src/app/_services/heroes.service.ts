@@ -153,6 +153,42 @@ export class HeroesService {
       );
   }
 
+
+  modifyHero(heroAdded: IHeroCreator) {
+    let heroCreated: IHeroCreator = heroAdded;
+
+    return this.http
+      .post<IHeroCreator>(this.baseUrl + '/ModifyHeroes', {
+        id: heroCreated.id,
+        heroName: heroCreated.heroName,
+        hitPoints: heroCreated.hitPoints,
+        hitPointsRegen: heroCreated.hitPointsRegen,
+        mana: heroCreated.mana,
+        manaRegen: heroCreated.manaRegen,
+        range: heroCreated.range,
+        attackDamage: heroCreated.attackDamage,
+        attackSpeed: heroCreated.attackSpeed,
+        armour: heroCreated.armour,
+        magicResistance: heroCreated.magicResistance,
+        movementSpeed: heroCreated.movementSpeed,
+        abilityPower: heroCreated.abilityPower,
+        cooldownReduction: heroCreated.cooldownReduction,
+        armourPenetration: heroCreated.armourPenetration,
+        armourPenetrationProc: heroCreated.armourPenetrationProc,
+        magicPenetration: heroCreated.magicPenetration,
+        magicPenetrationProc: heroCreated.magicPenetrationProc,
+        lifeSteal: heroCreated.lifeSteal,
+        apLifeSteal: heroCreated.apLifeSteal,
+        tenacity: heroCreated.tenacity,
+        criticalChance: heroCreated.criticalChance,
+      })
+      .pipe(
+        map((reponse: any) => {
+          const eq = reponse;
+        })
+      );
+  }
+
   setSelectedHero(heroId: number) {
     this.selectedHeroId.next(heroId);
   }

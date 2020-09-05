@@ -74,26 +74,30 @@ namespace EquipmentBuilder.API.Controllers
             // dodanie statystyk przedmiotu 
             var itemStats = new ItemStats
             {
-                AdditionalAp = item.AbillityPower,
-                AdditionalArmour = item.Armour,
-                AdditionalAttackSpeed = item.AttackSpeed,
-                AdditionalHitPointsPerHit = item.AdditionalHitPointsPerHit,
-                AdditionalCooldownReduction = item.CooldownReduction,
-                AdditionalCriticalChance = item.CriticalChance,
-                AdditionalDmg = item.AttackDamage,
-                AdditionalGoldPerTenSec = item.AdditionalGoldPerTenSec,
-                AdditionalHp = item.HitPoints,
-                AdditionalLifeSteal = item.LifeSteal,
-                AdditionalMagicResist = item.MagicResistance,
-                AdditionalMana = item.Mana,
-                AdditionalManaRegen = item.ManaRegen,
-                AdditionalMovementSpeed = item.MovementSpeed,
+                ItemId = itemToCreate.Id,
+                AdditionalHp = item.AdditionalHp,
+                AdditionalDmg = item.AdditionalDmg,
+                Price = item.Price,
+                AdditionalLifeSteal = item.AdditionalLifeSteal,
+                AdditionalAp = item.AdditionalAp,
+                AdditionalManaRegen = item.AdditionalManaRegen,
                 AdditionalPotionPower = item.AdditionalPotionPower,
-                Descriptions = item.Description,
-                ItemId = itemToCreate.Id
+                AdditionalHitPointsPerHit = item.AdditionalHitPointsPerHit,
+                AdditionalGoldPerTenSec = item.AdditionalGoldPerTenSec,
+                AdditionalBasicManaRegenPercentage = item.AdditionalBasicManaRegenPercentage,
+                AdditionalBasicHpRegenPercentage = item.AdditionalBasicHpRegenPercentage,
+                AdditionalArmour = item.AdditionalArmour,
+                AdditionalMana  = item.AdditionalMana,
+                AdditionalMagicResist = item.AdditionalMagicResist,
+                AdditionalCooldownReduction = item.AdditionalCooldownReduction,
+                AdditionalAttackSpeed = item.AdditionalAttackSpeed,
+                AdditionalMovementSpeed = item.AdditionalMovementSpeed,
+                AdditionalCriticalChance = item.AdditionalCriticalChance,
+                Descriptions = item.Descriptions
             };
 
-            var createdItemStats = await _repo.CreateItemStats(itemStats);
+
+        var createdItemStats = await _repo.CreateItemStats(itemStats);
             return StatusCode(201);
         }
 
@@ -105,44 +109,45 @@ namespace EquipmentBuilder.API.Controllers
             //nieuwzglenianie case sensitivity 
             item.ItemName = item.ItemName.ToLower();
 
-            // sprawdzenie czy taki przedmiot juz istnieje
-            if (await _repo.ValidateItemName(item.ItemName))
-                return BadRequest("Taka nazwa przedmiotu już istnieje");
-
-            // dodanie itemu
-            var itemToModify = new Items
-            {
-                ItemName = item.ItemName,
-                MinHeroLvl = item.MinHeroLvl
-            };
-
-            var createdItem = await _repo.ModifyItem(itemToModify);
+            var itemId = await _repo.GetItemId(item.ItemName);
 
 
             // dodanie statystyk przedmiotu 
             var itemStats = new ItemStats
             {
-                AdditionalAp = item.AbillityPower,
-                AdditionalArmour = item.Armour,
-                AdditionalAttackSpeed = item.AttackSpeed,
-                AdditionalHitPointsPerHit = item.AdditionalHitPointsPerHit,
-                AdditionalCooldownReduction = item.CooldownReduction,
-                AdditionalCriticalChance = item.CriticalChance,
-                AdditionalDmg = item.AttackDamage,
-                AdditionalGoldPerTenSec = item.AdditionalGoldPerTenSec,
-                AdditionalHp = item.HitPoints,
-                AdditionalLifeSteal = item.LifeSteal,
-                AdditionalMagicResist = item.MagicResistance,
-                AdditionalMana = item.Mana,
-                AdditionalManaRegen = item.ManaRegen,
-                AdditionalMovementSpeed = item.MovementSpeed,
+                AdditionalHp = item.AdditionalHp,
+                AdditionalDmg = item.AdditionalDmg,
+                Price = item.Price,
+                AdditionalLifeSteal = item.AdditionalLifeSteal,
+                AdditionalAp = item.AdditionalAp,
+                AdditionalManaRegen = item.AdditionalManaRegen,
                 AdditionalPotionPower = item.AdditionalPotionPower,
-                Descriptions = item.Description,
-                ItemId = itemToModify.Id
+                AdditionalHitPointsPerHit = item.AdditionalHitPointsPerHit,
+                AdditionalGoldPerTenSec = item.AdditionalGoldPerTenSec,
+                AdditionalBasicManaRegenPercentage = item.AdditionalBasicManaRegenPercentage,
+                AdditionalBasicHpRegenPercentage = item.AdditionalBasicHpRegenPercentage,
+                AdditionalArmour = item.AdditionalArmour,
+                AdditionalMana = item.AdditionalMana,
+                AdditionalMagicResist = item.AdditionalMagicResist,
+                AdditionalCooldownReduction = item.AdditionalCooldownReduction,
+                AdditionalAttackSpeed = item.AdditionalAttackSpeed,
+                AdditionalMovementSpeed = item.AdditionalMovementSpeed,
+                AdditionalCriticalChance = item.AdditionalCriticalChance,
+                Descriptions = item.Descriptions,
+                ItemId = itemId
             };
 
             var createdItemStats = await _repo.ModifyItemStats(itemStats);
             return StatusCode(201);
+        }
+
+
+
+        [HttpGet("GetItemToModify")]
+        public async Task<ItemsManagementDto> GetItemToModify([FromQuery] int itemId)
+        {
+            var item = await _repo.GetItemToModify(itemId);
+            return item;
         }
     }
 }

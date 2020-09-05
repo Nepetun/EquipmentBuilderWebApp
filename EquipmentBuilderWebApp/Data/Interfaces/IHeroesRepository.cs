@@ -16,7 +16,7 @@ namespace EquipmentBuilder.API.Data.Interfaces
         Task<bool> ValidateHeroName(string heroName);
         Task<Heroes> CreateHero(Heroes heroToCreate);
         Task<HeroeStats> CreateHeroStats(HeroeStats heroStats);
-        Task<bool> ModifyHero(Heroes heroToModify);
+        Task<int> GetHeroId(string heroNameToModify);
         Task<bool> ModifyHeroStats(HeroeStats heroStats);
         Task<HeroesManagementDto> GetHeroesToModify(int heroId);
     }

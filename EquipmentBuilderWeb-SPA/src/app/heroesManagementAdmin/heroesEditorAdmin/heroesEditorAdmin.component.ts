@@ -255,9 +255,9 @@ export class HeroesEditorAdminComponent implements OnInit {
       criticalChance: +this.heroCreator.controls.criticalChance.value,
     };
 
-    this.heroService.addHero(heroToCreate).subscribe(
+    this.heroService.modifyHero(heroToCreate).subscribe(
       () => {
-        this.alertify.success('ukończono tworzenie bohatera');
+        this.alertify.success('ukończono modfyikacje bohatera');
         this.router.navigate(['/manageAdminHeroes']);
       },
       (errror) => {

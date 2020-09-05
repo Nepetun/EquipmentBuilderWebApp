@@ -15,45 +15,44 @@ namespace EquipmentBuilder.API.Dtos
 
         public string ItemName { get; set; }
         public int MinHeroLvl { get; set; }
-        public decimal HitPoints { get; set; }
 
-        public decimal HitPointsRegen { get; set; }
+        public decimal? Price { get; set; }
+       
+        public decimal? AdditionalHp { get; set; }
+  
+        public decimal? AdditionalDmg { get; set; }
 
-        public decimal Mana { get; set; }
+        public decimal? AdditionalLifeSteal { get; set; }
 
-        public decimal ManaRegen { get; set; }
+        public decimal? AdditionalAp { get; set; }
 
-        public int Range { get; set; }
+        public decimal? AdditionalManaRegen { get; set; }
 
-        public decimal AttackDamage { get; set; }
-        public decimal AttackSpeed { get; set; }
-        public decimal Armour { get; set; }
+        public decimal? AdditionalPotionPower { get; set; }
 
-        public decimal MagicResistance { get; set; }
-        public decimal MovementSpeed { get; set; }
-        public decimal AbillityPower { get; set; }
+        public decimal? AdditionalHitPointsPerHit { get; set; }
 
-        public decimal CooldownReduction { get; set; }
+        public decimal? AdditionalGoldPerTenSec { get; set; }
 
-        public decimal ArmourPenetration { get; set; }
-        public decimal ArmourPenetrationProc { get; set; }
+        public decimal? AdditionalBasicManaRegenPercentage { get; set; }
 
-        public decimal MagicPenetration { get; set; }
-        public decimal MagicPenetrationProc { get; set; }
-        public decimal LifeSteal { get; set; }
+        public decimal? AdditionalBasicHpRegenPercentage { get; set; }
 
-        public decimal ApLifeSteal { get; set; }
-        public decimal Tenacity { get; set; }
-        public decimal CriticalChance { get; set; }
+        public decimal? AdditionalArmour { get; set; }
 
+        public decimal? AdditionalMana { get; set; }
 
-        public decimal AdditionalPotionPower { get; set; }
-        public decimal AdditionalHitPointsPerHit { get; set; }
+        public decimal? AdditionalMagicResist { get; set; }
 
-        public decimal AdditionalGoldPerTenSec { get; set; }
-        public string Description { get; set; }
+        public decimal? AdditionalCooldownReduction { get; set; }
 
+        public decimal? AdditionalAttackSpeed { get; set; }
 
-        public decimal TotalCost { get; set; }
+        public decimal? AdditionalMovementSpeed { get; set; }
+
+        public decimal? AdditionalCriticalChance { get; set; }
+
+        public string Descriptions { get; set; }
+
     }
 }
