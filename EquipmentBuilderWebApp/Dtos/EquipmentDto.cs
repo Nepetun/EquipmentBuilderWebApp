@@ -29,5 +29,7 @@ namespace EquipmentBuilder.API.Dtos
         public int EquipmentId { get; set; }
 
         public string GameName { get; set; }
+
+        public int GameId { get; set; }
     }
 }

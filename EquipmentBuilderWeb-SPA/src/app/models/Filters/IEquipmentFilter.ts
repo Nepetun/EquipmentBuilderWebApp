@@ -4,4 +4,5 @@ export class IEquipmentFilter {
     heroNameLike: string;
     heroLvlFrom: number;
     heroLvlTo: number;
+    gameId: number;
 }

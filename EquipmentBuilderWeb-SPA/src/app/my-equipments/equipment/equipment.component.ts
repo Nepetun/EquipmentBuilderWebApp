@@ -13,6 +13,8 @@ import { IEquipmentToGetStatistics } from '../../models/IEquipmentToGetStatistic
 import { StatisticsService } from '../../_services/statistics.service';
 import { IStatisticEquipment } from '../../models/IStatisticEquipment';
 import { IHeroCalculateGold } from '../../models/IHeroCalculateGold';
+import { GamesService } from 'src/app/_services/games.service';
+import { IGames } from 'src/app/models/IGames';
 
 @Component({
   selector: 'app-equipment',
@@ -74,6 +76,9 @@ export class EquipmentComponent implements OnInit {
       hero: [
         '', [Validators.required]
       ],
+      gameId: [
+        1
+      ],
       heroLvl: [
         1
       ],
@@ -102,6 +107,8 @@ export class EquipmentComponent implements OnInit {
         '' // , Validators.required
       ]
     });
+  wasChangedGame: boolean = false;
+  gameId: number=1;
 
     get equipmentName() {
       return this.eqInformation.get('equipmentName');
@@ -113,6 +120,7 @@ export class EquipmentComponent implements OnInit {
       return this.eqInformation.get('firstItem');
     }
 
+    public gamesArray: IGames[];
 
 
   constructor(
@@ -123,6 +131,7 @@ export class EquipmentComponent implements OnInit {
     private statiscitcsEquipment: StatisticsService,
     private alertify: AlertifyService,
     private fb: FormBuilder,
+    private gameService: GamesService,
     private router: Router
   ) {
     this.lvlArray = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
@@ -140,6 +149,9 @@ export class EquipmentComponent implements OnInit {
       sixthItemId: 0
     };
 
+    this.gameService.getGamesToLookUp().subscribe((games) => {
+      this.gamesArray = games;
+    });
     this.loadHeroes();
     this.loadItems();
     this.loadUserId();
@@ -175,7 +187,8 @@ export class EquipmentComponent implements OnInit {
       thirdItemId: +this.eqInformation.controls.thirdItem.value,
       fourthItemId: +this.eqInformation.controls.forthItem.value,
       fifthItemId: +this.eqInformation.controls.fifthItem.value,
-      sixthItemId: +this.eqInformation.controls.sixthItem.value
+      sixthItemId: +this.eqInformation.controls.sixthItem.value,
+      gameId: +this.eqInformation.controls.gameId.value
     };
 
     console.log(eqToCreate);
@@ -203,6 +216,11 @@ export class EquipmentComponent implements OnInit {
     this.getGold(); /*wyliczenie dostępnego złota na danym poziomie*/
     this.reloadStatistics();
     // po wyborze dac strzal do api z ekwipunkiem
+  }
+
+  gameChange(gameId: number) {
+    this.gameId = gameId;
+    this.wasChangedGame = true;
   }
 
   lvlChange(heroLvl: number) {
@@ -271,6 +289,10 @@ export class EquipmentComponent implements OnInit {
 
 
   filterItemsOfType() {
-    return this.itemsArray.filter(x => x.minHeroLvl <= this.heroPickedWithLvl.heroLvl);
+    return this.itemsArray.filter(x => x.minHeroLvl <= this.heroPickedWithLvl.heroLvl && x.gameName === this.gamesArray.find( x=> x.id === +this.gameId).gameName);
+  }
+
+  filterHeroesOfType() {
+    return this.heroesArray.filter(x => x.gameName === this.gamesArray.find( x=> x.id === +this.gameId).gameName);
   }
 }

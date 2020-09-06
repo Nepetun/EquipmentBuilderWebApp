@@ -18,5 +18,7 @@ namespace EquipmentBuilder.API.Common.Filters
         public int HeroLvlFrom { get; set; } = 1;
 
         public int HeroLvlTo { get; set; } = 18;
+
+        public int GameId { get; set; } = 0;
     }
 }

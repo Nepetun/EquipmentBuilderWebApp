@@ -64,6 +64,7 @@ namespace EquipmentBuilder.API.Controllers
             if (await _repo.ValidateEquipmentName(equipmentDto.EqName, equipmentDto.UserId))
                 return BadRequest("Taka nazwa ekwipunku już istnieje");
 
+  
             var eqToCreate = new Equipments
             {
                 EqName = equipmentDto.EqName,
@@ -74,7 +75,8 @@ namespace EquipmentBuilder.API.Controllers
                 ThirdItemId = equipmentDto.ThirdItemId,
                 FourthItemId = equipmentDto.FourthItemId,
                 FifthItemId = equipmentDto.FifthItemId,
-                SixthItemId = equipmentDto.SixthItemId
+                SixthItemId = equipmentDto.SixthItemId,
+                GameId = equipmentDto.GameId
             };
 
             var createdEquipment = await _repo.AddEquipment(eqToCreate, equipmentDto.HeroLvl);

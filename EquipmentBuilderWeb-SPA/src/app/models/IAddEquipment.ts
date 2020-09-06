@@ -9,4 +9,5 @@ export interface IAddEquipment {
     fourthItemId: number;
     fifthItemId: number;
     sixthItemId: number;
+    gameId: number;
 }

@@ -9,6 +9,8 @@ import { IEquipments } from '../models/IEquipments';
 import { Pagination } from '../models/pagination';
 import { Observable } from 'rxjs';
 import { IEquipmentFilter } from '../models/Filters/IEquipmentFilter';
+import { GamesService } from '../_services/games.service';
+import { IGames } from '../models/IGames';
 
 @Component({
   selector: 'app-myEquipments',
@@ -35,6 +37,9 @@ export class MyEquipmentsComponent implements OnInit {
         '',
         [Validators.maxLength(20)]
       ],
+      gameId: [
+        0
+      ],
       equipmentName: [
         '',
         [Validators.maxLength(20)]
@@ -55,9 +60,11 @@ export class MyEquipmentsComponent implements OnInit {
       userNameLike: '',
       heroNameLike: '',
       heroLvlFrom: 1,
-      heroLvlTo: 18
+      heroLvlTo: 18,
+      gameId: 0
     };
 
+    public gamesArray: IGames[];
 
   constructor(
     private authService: AuthService,
@@ -65,6 +72,7 @@ export class MyEquipmentsComponent implements OnInit {
     private statiscitcsEquipment: StatisticsService,
     private alertify: AlertifyService,
     private fb: FormBuilder,
+    private gameService: GamesService,
     private router: Router
   ) {}
 
@@ -79,15 +87,11 @@ export class MyEquipmentsComponent implements OnInit {
     });
     this.loading$ = this.equipmentService.loading$;
 
-    /*
-    this.equipmentService.loadEquipments(this.userId, this.pagination);
-    this.equipmentService.pagination$.subscribe((value) => (this.pagination = value));
-    this.equipmentService.equipments$.subscribe((eq) => (this.equipments = eq));
-*/
-    /*this.equipmentService.getEquipments(this.userId, this.pagination.currentPage, this.pagination.itemsPerPage).subscribe((eq) => {
-    this.equipments = eq.result;
+    this.gameService.getGamesToLookUp().subscribe((games) => {
+      this.gamesArray = games;
+      this.gamesArray.push({id: 0, gameName: 'Wszystkie'});
     });
-    this.equipmentService.pagination$.subscribe((value) => (this.pagination = value));*/
+
   }
 
   reloadValues() {
@@ -109,6 +113,8 @@ export class MyEquipmentsComponent implements OnInit {
     }
     this.equipmentFilter.heroLvlFrom = this.formFilter.controls.heroLvlFrom.value;
     this.equipmentFilter.heroLvlTo = this.formFilter.controls.heroLvlTo.value;
+
+    this.equipmentFilter.gameId = this.formFilter.controls.gameId.value;
   }
 
   resetFilter() {
@@ -117,7 +123,8 @@ export class MyEquipmentsComponent implements OnInit {
       userNameLike: '',
       heroNameLike: '',
       heroLvlFrom: 1,
-      heroLvlTo: 18
+      heroLvlTo: 18,
+      gameId: 0
     };
     this.setFormFromFilter();
   }
@@ -129,7 +136,8 @@ export class MyEquipmentsComponent implements OnInit {
       equipmentName: this.equipmentFilter.equipmentNameLike,
       heroLvlFrom: this.equipmentFilter.heroLvlFrom,
       heroLvlTo: this.equipmentFilter.heroLvlTo,
-      userName: this.equipmentFilter.userNameLike
+      userName: this.equipmentFilter.userNameLike,
+      gameId: this.equipmentFilter.gameId
       });
 
   }

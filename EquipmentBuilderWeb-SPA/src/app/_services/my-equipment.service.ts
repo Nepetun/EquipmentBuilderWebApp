@@ -142,6 +142,7 @@ getEquipments(userId: number, isAdmin: boolean, page?, itemsPerPage?, filters?):
 
     params = params.append('heroLvlFrom', filtersData.heroLvlFrom.toString());
     params = params.append('heroLvlTo', filtersData.heroLvlTo.toString());
+    params = params.append('gameId', filtersData.gameId.toString());
   }
 
   return this.http.get<IEquipments[]>(this.baseUrl + '/GetEquipments', {
@@ -213,7 +214,8 @@ addEquipment(addedEq: IAddEquipment) {
     thirdItemId: eqCreated.thirdItemId,
     fourthItemId: eqCreated.fourthItemId,
     fifthItemId: eqCreated.fifthItemId,
-    sixthItemId: eqCreated.sixthItemId
+    sixthItemId: eqCreated.sixthItemId,
+    gameId: eqCreated.gameId
   })
   .pipe(
     map((reponse: any) => {

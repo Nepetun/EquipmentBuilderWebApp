@@ -83,23 +83,47 @@
             </div>
           </div>
 
+
+          <div class="containerItemForm">
+            <label for="gameId"
+              >Gra:      
+                <select
+                [disabled]="wasChangedGame"
+                id="gameId"
+                formControlName="gameId"
+                class="form-control"
+                name="gameId"
+                (change)="gameChange($event.target.value)"
+                >
+                  <option
+                    *ngFor="let item of gamesArray"
+                    [value]="item.id"
+                    >{{
+                      item.gameName
+                    }}</option
+                  >
+                </select>
+            
+            </label>
+          </div>
+
           <!-- DO USUNIECIA ngModel - nie korzysta sie juz z tego -->
           <div class="containerItem">
             <label for="hero"
-              >Bohater:
-              <select
+              >Bohater:          
+                <select
                 id="hero"
                 formControlName="hero"
                 class="form-control"
                 [(ngModel)]="heroId"
                 name="hero"
                 (change)="heroChange($event.target.value)"
-              >
-                <option *ngFor="let hero of heroesArray" [value]="hero.id">{{
-                  hero.heroName
-                }}</option>
-              </select>
-              <!-- <p> Wybrany bohater: {{heroId}} </p> -->
+                >
+                  <option *ngFor="let hero of filterHeroesOfType()" [value]="hero.id">{{
+                    hero.heroName
+                  }}</option>
+                </select>
+                 <!-- <p> Wybrany bohater: {{heroId}} </p> -->
               <div *ngIf="hero.invalid">
                 <div class="errorDiv">
                   <span *ngIf="hero.errors?.required">

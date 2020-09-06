@@ -55,7 +55,8 @@ namespace EquipmentBuilder.API.Data
                             HeroLvl = heroLvl != null ? 1 : (int)heroLvl.Lvl,
                             CounterOfLikes = counterOfLikes,
                             UserName = userName.UserName,
-                            GameName = gameName.GameName
+                            GameName = gameName.GameName,
+                            GameId = gameName.Id
                         };
 
                         lstEquipments.Add(eqWithoutShared);
@@ -97,7 +98,8 @@ namespace EquipmentBuilder.API.Data
                                     HeroLvl = (int)heroLvl.Lvl,
                                     CounterOfLikes = counterOfLikes,
                                     UserName = userName.UserName,
-                                    GameName = gameName.GameName
+                                    GameName = gameName.GameName,
+                                    GameId = gameName.Id
                                 };
 
                                 lstEquipments.Add(eqWithoutShared);
@@ -131,7 +133,8 @@ namespace EquipmentBuilder.API.Data
                             HeroLvl = (int)heroLvl.Lvl,
                             CounterOfLikes = counterOfLikes,
                             UserName = userName.UserName,
-                            GameName = gameName.GameName
+                            GameName = gameName.GameName,
+                            GameId = gameName.Id
                         };
 
                         lstEquipments.Add(eqWithoutShared);
@@ -156,6 +159,11 @@ namespace EquipmentBuilder.API.Data
                 if (eqFilters.HeroNameLike != null)
                 {
                     lstEquipments = lstEquipments.Where(x => x.HeroName.ToLower().Contains(eqFilters.HeroNameLike.ToLower())).ToList();
+                }
+
+                if( eqFilters.GameId != 0)
+                {
+                    lstEquipments = lstEquipments.Where(x => x.GameId == eqFilters.GameId).ToList();
                 }
             }
 

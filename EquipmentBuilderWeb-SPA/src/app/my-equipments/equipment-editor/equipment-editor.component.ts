@@ -218,7 +218,8 @@ export class EquipmentEditorComponent implements OnInit {
       thirdItemId: +this.eqInformation.controls.thirdItem.value,
       fourthItemId: +this.eqInformation.controls.forthItem.value,
       fifthItemId: +this.eqInformation.controls.fifthItem.value,
-      sixthItemId: +this.eqInformation.controls.sixthItem.value
+      sixthItemId: +this.eqInformation.controls.sixthItem.value,
+      gameId: 1
     };
 
     console.log(eqToCreate);
