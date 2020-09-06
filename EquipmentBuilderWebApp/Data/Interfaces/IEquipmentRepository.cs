@@ -12,7 +12,7 @@ namespace EquipmentBuilder.API.Data.Interfaces
 {
     public interface IEquipmentRepository
     {
-        //Task<List<EquipmentListDto>> ListMyEquipments(PageParams pageParams ,int userId);
+
         Task<PagedList<EquipmentListDto>> ListMyEquipments(PageParams pageParams, int userId, EquipmentFilter eqFilters, bool isAdmin);
 
         Task<EquipmentDto> GetEquipmentById(int equipmentId);
@@ -33,7 +33,7 @@ namespace EquipmentBuilder.API.Data.Interfaces
         Task<bool> CheckThatUserHaveGroupsAndSharedEquipments(int userId);
 
         Task<Equipments> ShareEquipment(ShareEquipmentDto equipmentToShare);
-        
+
 
         Task<bool> CheckThatEqWasShared(int equipmentId, int groupId);
     }

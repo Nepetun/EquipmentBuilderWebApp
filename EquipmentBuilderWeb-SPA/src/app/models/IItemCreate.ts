@@ -24,4 +24,5 @@ export interface IItemCreate {
   additionalMovementSpeed: number;
   additionalCriticalChance: number;
   descriptions: string;
+  gameId: number;
 }

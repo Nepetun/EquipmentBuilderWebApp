@@ -16,5 +16,7 @@ namespace EquipmentBuilder.API.Dtos
         public string ItemName { get; set; }
         public int MinHeroLvl { get; set; }
 
+        public string GameName { get; set; }
+
     }
 }

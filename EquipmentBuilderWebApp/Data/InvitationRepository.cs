@@ -1,6 +1,7 @@
 ﻿
 using EquipmentBuilder.API.Common;
 using EquipmentBuilder.API.Context;
+// using EquipmentBuilder.API.Context;
 using EquipmentBuilder.API.Data.Interfaces;
 using EquipmentBuilder.API.Dtos;
 using EquipmentBuilder.API.Models;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace EquipmentBuilder.API.Data
 {
-    public class InvitationRepository : IInvitationRepository
+    public class InvitationRepository  : IInvitationRepository
     {
 
         private readonly DataContext _context;
@@ -29,7 +30,7 @@ namespace EquipmentBuilder.API.Data
 
             List<InvitationDto> lstInvitation = new List<InvitationDto>();
 
-            foreach(Invitations inv in sendInvitations)
+            foreach (Invitations inv in sendInvitations)
             {
                 Groups grp = await _context.Groups.FirstOrDefaultAsync(x => x.Id == inv.GroupId);
 
@@ -53,7 +54,7 @@ namespace EquipmentBuilder.API.Data
 
             //return reciveInvitation;
             return new List<InvitationDto>();
-        
+
         }
 
 
@@ -73,7 +74,7 @@ namespace EquipmentBuilder.API.Data
 
         public async Task<bool> InvitationWasSend(int userId, int recipientUserId, int groupId)
         {
-            if (await _context.Invitations.AnyAsync(x => x.UserAdresserId == userId && x.UserRecipientId == recipientUserId && x.GroupId==groupId))
+            if (await _context.Invitations.AnyAsync(x => x.UserAdresserId == userId && x.UserRecipientId == recipientUserId && x.GroupId == groupId))
                 return true;
 
             return false;
@@ -81,7 +82,7 @@ namespace EquipmentBuilder.API.Data
 
         public async Task<bool> UserExistsInGroup(int recipientUserId, int groupId)
         {
-            if (await _context.UserToGroups.AnyAsync(x => x.UserId == recipientUserId && x.GroupId == groupId))             
+            if (await _context.UserToGroups.AnyAsync(x => x.UserId == recipientUserId && x.GroupId == groupId))
                 return true;
 
             return false;
@@ -106,7 +107,7 @@ namespace EquipmentBuilder.API.Data
                 UserId = invitation.UserRecipientId
             };
 
-            
+
             await _context.UserToGroups.AddAsync(usrToGrp);
 
             _context.Invitations.Remove(invitation);

@@ -19,6 +19,7 @@ namespace EquipmentBuilder.API.Context
         public virtual DbSet<Comments> Comments { get; set; }
         public virtual DbSet<Equipments> Equipments { get; set; }
         public virtual DbSet<EquipmentsToGroup> EquipmentsToGroup { get; set; }
+        public virtual DbSet<Games> Games { get; set; }
         public virtual DbSet<Groups> Groups { get; set; }
         public virtual DbSet<HeroeStats> HeroeStats { get; set; }
         public virtual DbSet<Heroes> Heroes { get; set; }
@@ -32,6 +33,10 @@ namespace EquipmentBuilder.API.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=EquipmentBuilderDB;Trusted_Connection=True;");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -71,6 +76,11 @@ namespace EquipmentBuilder.API.Context
                     .WithMany(p => p.EquipmentsFourthItem)
                     .HasForeignKey(d => d.FourthItemId)
                     .HasConstraintName("FK_Equipments_FourthItemId_Id");
+
+                entity.HasOne(d => d.Game)
+                    .WithMany(p => p.Equipments)
+                    .HasForeignKey(d => d.GameId)
+                    .HasConstraintName("FK_Equipments_GameId");
 
                 entity.HasOne(d => d.Hero)
                     .WithMany(p => p.Equipments)
@@ -114,6 +124,11 @@ namespace EquipmentBuilder.API.Context
                     .HasConstraintName("FK_EquipmentsToGroupGroups_Id");
             });
 
+            modelBuilder.Entity<Games>(entity =>
+            {
+                entity.Property(e => e.GameName).IsUnicode(false);
+            });
+
             modelBuilder.Entity<Groups>(entity =>
             {
                 entity.Property(e => e.GroupName).IsUnicode(false);
@@ -141,6 +156,11 @@ namespace EquipmentBuilder.API.Context
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.HeroName).IsUnicode(false);
+
+                entity.HasOne(d => d.Game)
+                    .WithMany(p => p.Heroes)
+                    .HasForeignKey(d => d.GameId)
+                    .HasConstraintName("FK_Heroes_GameId");
             });
 
             modelBuilder.Entity<Invitations>(entity =>
@@ -181,6 +201,11 @@ namespace EquipmentBuilder.API.Context
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.ItemName).IsUnicode(false);
+
+                entity.HasOne(d => d.Game)
+                    .WithMany(p => p.Items)
+                    .HasForeignKey(d => d.GameId)
+                    .HasConstraintName("FK_Items_GameId");
             });
 
             modelBuilder.Entity<Likes>(entity =>
@@ -201,7 +226,10 @@ namespace EquipmentBuilder.API.Context
 
             modelBuilder.Entity<UserHeroesLvl>(entity =>
             {
-               // entity.Property(e => e.Id).ValueGeneratedNever(); //zakomentowanie nie identity
+                entity.HasOne(d => d.Equipment)
+                    .WithMany(p => p.UserHeroesLvl)
+                    .HasForeignKey(d => d.EquipmentId)
+                    .HasConstraintName("FK_UserHeroesLvlEquipment_Id");
 
                 entity.HasOne(d => d.Hero)
                     .WithMany(p => p.UserHeroesLvl)
@@ -214,11 +242,6 @@ namespace EquipmentBuilder.API.Context
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_UserHeroesLvlUsers_Id");
-
-                entity.HasOne(d => d.Equipment)
-                   .WithMany(p => p.UserHeroesLvl)
-                   .HasForeignKey(d => d.EquipmentId)
-                   .HasConstraintName("FK_UserHeroesLvlEquipment_Id");
             });
 
             modelBuilder.Entity<UserToGroups>(entity =>

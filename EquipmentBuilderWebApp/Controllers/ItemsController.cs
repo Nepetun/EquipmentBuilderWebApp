@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EquipmentBuilder.API.Common;
 using EquipmentBuilder.API.Common.Filters;
-using EquipmentBuilder.API.Context;
+// using EquipmentBuilder.API.Context;
 using EquipmentBuilder.API.Data;
 using EquipmentBuilder.API.Data.Interfaces;
 using EquipmentBuilder.API.Dtos;
@@ -65,7 +65,8 @@ namespace EquipmentBuilder.API.Controllers
             var itemToCreate = new Items
             {
                 ItemName = item.ItemName,
-                MinHeroLvl = item.MinHeroLvl
+                MinHeroLvl = item.MinHeroLvl,
+                GameId = item.GameId
             };
 
             var createdItem = await _repo.CreateItem(itemToCreate);
@@ -87,7 +88,7 @@ namespace EquipmentBuilder.API.Controllers
                 AdditionalBasicManaRegenPercentage = item.AdditionalBasicManaRegenPercentage,
                 AdditionalBasicHpRegenPercentage = item.AdditionalBasicHpRegenPercentage,
                 AdditionalArmour = item.AdditionalArmour,
-                AdditionalMana  = item.AdditionalMana,
+                AdditionalMana = item.AdditionalMana,
                 AdditionalMagicResist = item.AdditionalMagicResist,
                 AdditionalCooldownReduction = item.AdditionalCooldownReduction,
                 AdditionalAttackSpeed = item.AdditionalAttackSpeed,
@@ -97,7 +98,7 @@ namespace EquipmentBuilder.API.Controllers
             };
 
 
-        var createdItemStats = await _repo.CreateItemStats(itemStats);
+            var createdItemStats = await _repo.CreateItemStats(itemStats);
             return StatusCode(201);
         }
 

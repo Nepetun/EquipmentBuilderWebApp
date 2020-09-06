@@ -40,7 +40,7 @@ namespace EquipmentBuilder.API.Controllers
 
             var userToCreate = new Users
             {
-                UserName = userForRegisterDto.UserName,      
+                UserName = userForRegisterDto.UserName,
                 Email = userForRegisterDto.Email,
                 FirstName = userForRegisterDto.FirstName,
                 Surname = userForRegisterDto.Surname,
@@ -108,10 +108,10 @@ namespace EquipmentBuilder.API.Controllers
 
             var userToCreate = new Users
             {
-                UserName = userToModifyDto.UserName              
+                UserName = userToModifyDto.UserName
             };
 
-            var createdUser = await _repo.ModifyUserName(userToModifyDto.UserId,userToModifyDto.UserName);
+            var createdUser = await _repo.ModifyUserName(userToModifyDto.UserId, userToModifyDto.UserName);
 
             //zwrotka dla klienta gdzie został stworzony nowy obiekt
             //return CreatedAtRoute();

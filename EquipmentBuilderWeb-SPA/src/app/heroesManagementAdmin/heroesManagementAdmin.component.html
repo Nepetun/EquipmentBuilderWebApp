@@ -119,6 +119,12 @@
               {{ item.heroName }}
             </div>
           </mat-card-content>
+          <mat-card-content>
+            Gra:
+            <div class="fontStyleBold">
+              {{ item.gameName }}
+            </div>
+          </mat-card-content>
           <mat-card-actions>
             <button mat-button class="buttonCard" (click)="editHero(item.id)">Edytuj bohatera</button>
             <!-- <button mat-button class="buttonCard"  (click)="deleteHero(item.id)">Usuń bohatera</button> -->

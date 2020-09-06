@@ -30,6 +30,27 @@
           </div>
 
           <div class="containerItem">
+            <label for="gameId"
+              >Gra:
+              <select
+                id="gameId"
+                formControlName="gameId"
+                class="form-control"
+                name="gameId"
+                (change)="gameChange($event.target.value)"
+              >
+                <option
+                  *ngFor="let item of gamesArray"
+                  [value]="item.id"
+                  >{{
+                    item.gameName
+                  }}</option
+                >
+              </select>
+            </label>
+          </div>
+
+          <div class="containerItem">
             <label
               >Minimalny poziom bohatera:
               <input

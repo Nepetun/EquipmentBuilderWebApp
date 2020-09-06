@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EquipmentBuilder.API.Common;
 using EquipmentBuilder.API.Common.Filters;
-using EquipmentBuilder.API.Context;
+// using EquipmentBuilder.API.Context;
 using EquipmentBuilder.API.Data;
 using EquipmentBuilder.API.Data.Interfaces;
 using EquipmentBuilder.API.Dtos;

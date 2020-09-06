@@ -22,7 +22,11 @@ namespace EquipmentBuilder.API.Models
         [StringLength(200)]
         public string ItemName { get; set; }
         public int? MinHeroLvl { get; set; }
+        public int? GameId { get; set; }
 
+        [ForeignKey(nameof(GameId))]
+        [InverseProperty(nameof(Games.Items))]
+        public virtual Games Game { get; set; }
         [InverseProperty("IdNavigation")]
         public virtual ItemStats ItemStats { get; set; }
         [InverseProperty(nameof(Equipments.FifthItem))]

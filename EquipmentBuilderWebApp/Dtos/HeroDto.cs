@@ -13,5 +13,7 @@ namespace EquipmentBuilder.API.Models
         }
         public int Id { get; set; }
         public string HeroName { get; set; }
+
+        public string GameName { get; set; }
     }
 }

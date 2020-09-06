@@ -1,6 +1,7 @@
 ﻿using EquipmentBuilder.API.Common;
 using EquipmentBuilder.API.Common.Filters;
 using EquipmentBuilder.API.Context;
+// using EquipmentBuilder.API.Context;
 using EquipmentBuilder.API.Data.Interfaces;
 using EquipmentBuilder.API.Dtos;
 using EquipmentBuilder.API.Models;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace EquipmentBuilder.API.Data
 {
-    public class GroupRepository : IGroupRepository
+    public class GroupRepository  : IGroupRepository
     {
 
         private readonly DataContext _context;
@@ -111,7 +112,7 @@ namespace EquipmentBuilder.API.Data
                 {
                     foreach (UserToGroups utg in userGroups)
                     {
-                        if(!userGroupsAdmin.Any(x =>x.GroupAdminId == utg.UserId))                       
+                        if (!userGroupsAdmin.Any(x => x.GroupAdminId == utg.UserId))
                         {
                             if (await _context.Groups.AnyAsync(x => x.Id == utg.GroupId)) //pobranie grup
                             {
@@ -129,11 +130,11 @@ namespace EquipmentBuilder.API.Data
                             }
                         }
                     }
-                       
+
                 }
-            }           
-        
-            
+            }
+
+
             if (groupFilter != null)
             {
                 if (groupFilter.GroupNameLike != null)
@@ -146,7 +147,7 @@ namespace EquipmentBuilder.API.Data
                     lstGroups = lstGroups.Where(x => x.GroupAdminName.ToLower().Contains(groupFilter.GroupAdminNameLike.ToLower())).ToList();
                 }
             }
-            
+
             return await PagedList<GroupListDto>.Create(lstGroups, pageParams.PageNumber, pageParams.PageSize);
         }
 
@@ -206,7 +207,7 @@ namespace EquipmentBuilder.API.Data
                 if (groupUserFilters.UserNameLike != null)
                 {
                     lstUsers = lstUsers.Where(x => x.UserName.ToLower().Contains(groupUserFilters.UserNameLike.ToLower())).ToList();
-                }               
+                }
             }
 
             return await PagedList<UserToModifyNameDto>.Create(lstUsers, pageParams.PageNumber, pageParams.PageSize);
@@ -227,7 +228,7 @@ namespace EquipmentBuilder.API.Data
 
             // pobranie użytkowników grupy
             var groupUsers = await _context.UserToGroups.Where(x => x.GroupId == groupId).ToListAsync();
-                      
+
 
             // lista użytkowników, którzy należą do grupy
             List<UserToModifyNameDto> lstUsers = new List<UserToModifyNameDto>();
@@ -300,30 +301,30 @@ namespace EquipmentBuilder.API.Data
 
             var userToGroupDeleteList = await _context.UserToGroups.Where(x => x.GroupId == groupId && x.UserId == userId).ToListAsync();
 
-            foreach(UserToGroups utg in userToGroupDeleteList)
+            foreach (UserToGroups utg in userToGroupDeleteList)
             {
                 var equipmentToDelete = await _context.Equipments.Where(x => x.UserId == utg.UserId).ToListAsync();
 
-                foreach(Equipments eq in equipmentToDelete)
+                foreach (Equipments eq in equipmentToDelete)
                 {
                     var equipmentsToGroupToDelete = await _context.EquipmentsToGroup.Where(x => x.EquipmentId == eq.Id).ToListAsync();
 
-                    foreach(EquipmentsToGroup etg in equipmentsToGroupToDelete)
+                    foreach (EquipmentsToGroup etg in equipmentsToGroupToDelete)
                     {
                         _context.EquipmentsToGroup.Remove(etg);
                         await _context.SaveChangesAsync();
-                    }                    
-                }                
+                    }
+                }
             }
 
             //2)            
             foreach (UserToGroups utg in userToGroupDeleteList)
             {
-                 _context.UserToGroups.Remove(utg);
-                 await _context.SaveChangesAsync();               
+                _context.UserToGroups.Remove(utg);
+                await _context.SaveChangesAsync();
             }
 
-            
+
             return false;
         }
 
@@ -344,9 +345,9 @@ namespace EquipmentBuilder.API.Data
             //1) 
             var invitationsToDeleteList = await _context.Invitations.Where(x => x.GroupId == groupId).ToListAsync();
 
-            if(invitationsToDeleteList != null)
+            if (invitationsToDeleteList != null)
             {
-                foreach(Invitations inv in invitationsToDeleteList)
+                foreach (Invitations inv in invitationsToDeleteList)
                 {
                     _context.Invitations.Remove(inv);
                     await _context.SaveChangesAsync();
@@ -356,9 +357,9 @@ namespace EquipmentBuilder.API.Data
             //2)
             var userToGroupDeleteList = await _context.UserToGroups.Where(x => x.GroupId == groupId).ToListAsync();
 
-            if(userToGroupDeleteList != null)
+            if (userToGroupDeleteList != null)
             {
-                foreach(UserToGroups utg in userToGroupDeleteList)
+                foreach (UserToGroups utg in userToGroupDeleteList)
                 {
                     _context.UserToGroups.Remove(utg);
                     await _context.SaveChangesAsync();
@@ -368,9 +369,9 @@ namespace EquipmentBuilder.API.Data
             //3)
             var equipmentToDeleteList = await _context.EquipmentsToGroup.Where(x => x.GroupId == groupId).ToListAsync();
 
-            if(equipmentToDeleteList != null)
+            if (equipmentToDeleteList != null)
             {
-                foreach(EquipmentsToGroup etg in equipmentToDeleteList)
+                foreach (EquipmentsToGroup etg in equipmentToDeleteList)
                 {
                     _context.EquipmentsToGroup.Remove(etg);
                     await _context.SaveChangesAsync();
@@ -379,13 +380,13 @@ namespace EquipmentBuilder.API.Data
 
             //4)
             var groupToDelete = await _context.Groups.FirstOrDefaultAsync(x => x.Id == groupId);
-            
+
             if (groupToDelete != null)
             {
                 _context.Groups.Remove(groupToDelete);
                 await _context.SaveChangesAsync();
                 return true;
-            }            
+            }
             return false;
         }
     }

@@ -8,7 +8,6 @@ namespace EquipmentBuilder.API.Data.Interfaces
 {
     public interface IUserRepository
     {
-        Task<IEnumerable<Users>> GetUserList(int userId); //pokazanie wszystkich użytkowników bez akutalnego użytkownika
-
+       Task<IEnumerable<Users>> GetUserList(int userId); //pokazanie wszystkich użytkowników bez akutalnego użytkownika
     }
 }

@@ -18,6 +18,7 @@ export class HeroesService {
     {
       id: 1,
       heroName: '',
+      gameName: ''
     },
   ]);
 
@@ -36,6 +37,7 @@ export class HeroesService {
     {
       id: 1,
       heroName: '',
+      gameName: ''
     },
   ]);
 
@@ -145,6 +147,7 @@ export class HeroesService {
         apLifeSteal: heroCreated.apLifeSteal,
         tenacity: heroCreated.tenacity,
         criticalChance: heroCreated.criticalChance,
+        gameId: heroCreated.gameId
       })
       .pipe(
         map((reponse: any) => {
@@ -217,6 +220,7 @@ export class HeroesService {
       apLifeSteal: 0,
       tenacity: 0,
       criticalChance: 0,
+      gameId:1
     };
 
     let params = new HttpParams();

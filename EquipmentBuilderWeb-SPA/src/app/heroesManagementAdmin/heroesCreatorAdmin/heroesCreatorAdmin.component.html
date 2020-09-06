@@ -30,14 +30,35 @@
           </div>
 
           <div class="containerItem">
+            <label for="gameId"
+              >Gra:
+              <select
+                id="gameId"
+                formControlName="gameId"
+                class="form-control"
+                name="gameId"
+                (change)="gameChange($event.target.value)"
+              >
+                <option
+                  *ngFor="let item of gamesArray"
+                  [value]="item.id"
+                  >{{
+                    item.gameName
+                  }}</option
+                >
+              </select>
+            </label>
+          </div>
+
+          <div class="containerItem">
             <label
-              >Punkty życia:
+              >Punkty życia - regeneracja co 5 sek
               <input
                 (keypress)="numberOnly($event)"
                 type="text"
                 formControlName="hitPointsRegen"
-                max="500"
-                min="200"
+                max="25"
+                min="1"
                 class="form-control"
               />
               <div
@@ -51,9 +72,9 @@
                     Uzupelnij wartosc
                   </span>
                   <span *ngIf="hitPointsRegen.errors?.max">
-                    Przekroczono maksymalna wartość 500
+                    Przekroczono maksymalna wartość 25
                   </span>
-                  <span *ngIf="hitPointsRegen.errors?.min"> Minimum 200 </span>
+                  <span *ngIf="hitPointsRegen.errors?.min"> Minimum 1 </span>
                 </div>
               </div>
             </label>
@@ -61,13 +82,13 @@
 
           <div class="containerItem">
             <label
-              >Punkty życia - regeneracja co 5 sek
+              >Punkty życia:
               <input
                 (keypress)="numberOnly($event)"
                 type="text"
                 formControlName="hitPoints"
-                max="25"
-                min="1"
+                max="500"
+                min="200"
                 class="form-control"
               />
               <div *ngIf="hitPoints.invalid">
@@ -76,9 +97,9 @@
                     Uzupelnij wartosc
                   </span>
                   <span *ngIf="hitPoints.errors?.max">
-                    Przekroczono maksymalna wartość 25
+                    Przekroczono maksymalna wartość 500
                   </span>
-                  <span *ngIf="hitPoints.errors?.min"> Minimum 1 </span>
+                  <span *ngIf="hitPoints.errors?.min"> Minimum 200 </span>
                 </div>
               </div>
             </label>

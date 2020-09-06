@@ -1,6 +1,7 @@
 ﻿using EquipmentBuilder.API.Common;
 using EquipmentBuilder.API.Common.Filters;
 using EquipmentBuilder.API.Context;
+// using EquipmentBuilder.API.Context;
 using EquipmentBuilder.API.Data.Interfaces;
 using EquipmentBuilder.API.Dtos;
 using EquipmentBuilder.API.Models;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace EquipmentBuilder.API.Data
 {
-    public class ItemsRepository : IItemsRepository
+    public class ItemsRepository  : IItemsRepository
     {
         private readonly DataContext _context;
 
@@ -69,17 +70,21 @@ namespace EquipmentBuilder.API.Data
 
             var lstItemsFromApi = new List<ItemsDto>();
 
-            foreach(Items item in lstItems)
+            foreach (Items item in lstItems)
             {
                 var itemToCreate = new ItemsDto();
                 itemToCreate.Id = item.Id;
                 itemToCreate.ItemName = item.ItemName;
                 itemToCreate.MinHeroLvl = (int)item.MinHeroLvl;
 
+                var gameName = await _context.Games.FirstOrDefaultAsync(x => x.Id == item.GameId);
+
+                itemToCreate.GameName = gameName.GameName;
+
                 lstItemsFromApi.Add(itemToCreate);
             }
 
-            return lstItemsFromApi;            
+            return lstItemsFromApi;
         }
 
         public async Task<PagedList<ItemsDto>> GetItemsToManagement(PageParams pageParams, ItemManagementFilter filter)
@@ -92,15 +97,23 @@ namespace EquipmentBuilder.API.Data
             {
                 lstItems = lstItems.Where(x => x.ItemName.ToLower().Contains(filter.ItemNameLike.ToLower())).ToList();
             }
+            if( filter.GameId != 0)
+            {
+                lstItems = lstItems.Where(x => x.GameId == filter.GameId).ToList();
+            }
+            
 
 
             foreach (Items item in lstItems)
             {
+                var gameName = await _context.Games.FirstOrDefaultAsync(x => x.Id == item.GameId);
+
                 ItemsDto itemdto = new ItemsDto()
                 {
                     Id = item.Id,
                     ItemName = item.ItemName,
-                    MinHeroLvl = (int)item.MinHeroLvl
+                    MinHeroLvl = (int)item.MinHeroLvl,
+                    GameName = gameName.GameName
                 };
                 lstItemsListed.Add(itemdto);
             }

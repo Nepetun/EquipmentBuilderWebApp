@@ -52,8 +52,8 @@ namespace EquipmentBuilder.API.Controllers
 
             if (await _repo.InvitationWasSend(invitation.UserId, invitation.RecipientUserId, invitation.InvitationGroupId))
                 return BadRequest("Zaproszenie zostało już wysłane");
-            
-            if(await _repo.UserExistsInGroup(invitation.RecipientUserId, invitation.InvitationGroupId))
+
+            if (await _repo.UserExistsInGroup(invitation.RecipientUserId, invitation.InvitationGroupId))
                 return BadRequest("Użytkownik należy już do grupy");
 
 

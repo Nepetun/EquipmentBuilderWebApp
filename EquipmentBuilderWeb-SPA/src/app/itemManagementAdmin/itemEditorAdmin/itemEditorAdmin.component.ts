@@ -37,6 +37,7 @@ export class ItemEditorAdminComponent implements OnInit {
     additionalMovementSpeed: 0,
     additionalCriticalChance: 0,
     descriptions: '',
+    gameId: 1
   };
 
   public itemCreator = this.fb.group({
@@ -270,7 +271,8 @@ export class ItemEditorAdminComponent implements OnInit {
       additionalAttackSpeed: +this.itemCreator.controls.additionalAttackSpeed.value,
       additionalMovementSpeed: +this.itemCreator.controls.additionalMovementSpeed.value,
       additionalCriticalChance: +this.itemCreator.controls.additionalCriticalChance.value,
-      descriptions: this.itemCreator.controls.descriptions.value
+      descriptions: this.itemCreator.controls.descriptions.value,
+      gameId: 1
     };
 
     this.itemService.modifyItem(itemToCreate).subscribe(

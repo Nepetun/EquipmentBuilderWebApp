@@ -15,7 +15,7 @@ namespace EquipmentBuilder.API.Data.Interfaces
         Task<Items> CreateItem(Items itemToCreate);
         Task<ItemStats> CreateItemStats(ItemStats itemStats);
         Task<bool> DeleteItem(int itemId);
-        Task <PagedList<ItemsDto>> GetItemsToManagement(PageParams pageParams, Common.Filters.ItemManagementFilter filter);
+        Task<PagedList<ItemsDto>> GetItemsToManagement(PageParams pageParams, Common.Filters.ItemManagementFilter filter);
         Task<bool> ModifyItemStats(ItemStats itemStats);
         Task<int> GetItemId(string itemName);
         Task<ItemsManagementDto> GetItemToModify(int itemId);

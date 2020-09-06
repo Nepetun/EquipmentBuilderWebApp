@@ -18,7 +18,11 @@ namespace EquipmentBuilder.API.Models
         public int Id { get; set; }
         [StringLength(100)]
         public string HeroName { get; set; }
+        public int? GameId { get; set; }
 
+        [ForeignKey(nameof(GameId))]
+        [InverseProperty(nameof(Games.Heroes))]
+        public virtual Games Game { get; set; }
         [InverseProperty("Hero")]
         public virtual ICollection<Equipments> Equipments { get; set; }
         [InverseProperty("Hero")]

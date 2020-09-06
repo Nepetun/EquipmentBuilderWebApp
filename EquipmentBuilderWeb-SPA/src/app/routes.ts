@@ -31,8 +31,11 @@ export const appRoutes: Routes = [
             { path: 'manageAdminHeroes', loadChildren: () => import('./heroesManagementAdmin/heroesManagementAdmin.module').then(m => m.HeroesManagementModule) },
             { path: 'heroesEditorAdmin', loadChildren: () => import('./heroesManagementAdmin/heroesEditorAdmin/heroesEditorAdmin.module').then(m => m.HeroesEditorAdminModule) },
             { path: 'heroesCreatorAdmin', loadChildren: () => import('./heroesManagementAdmin/heroesCreatorAdmin/heroesCreatorAdmin.module').then(m => m.HeroesCreatorAdminModule) },
-
-
+            
+            
+            { path: 'manageAdminGames', loadChildren: () => import('./games/games.module').then(m => m.GamesModule) },
+            { path: 'adminGamesCreator', loadChildren: () => import('./games/gameCreator/gameCreator.module').then(m => m.GameCreatorModule) },
+            
             { path: 'profileUser', loadChildren: () => import('./profileUser/profileUser.module').then(m => m.ProfileUserModule) },
 
             { path: 'myEquipments', component: MyEquipmentsComponent },

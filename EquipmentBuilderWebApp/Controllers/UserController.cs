@@ -20,15 +20,15 @@ namespace EquipmentBuilder.API.Controllers
             _repo = repo;
         }
 
-        [AllowAnonymous] //dzieki temu atrybutowi nie  musimy wysyłać tokenu do serwera 
-        [HttpGet("GetAppUsers")]
-        public async Task<IEnumerable<Users>> GetAppUsers([FromQuery]int userId)
-        {
+        //[AllowAnonymous] //dzieki temu atrybutowi nie  musimy wysyłać tokenu do serwera 
+        //[HttpGet("GetAppUsers")]
+        //public async Task<IEnumerable<Users>> GetAppUsers([FromQuery]int userId)
+        //{
 
-            var myEquipments = await _repo.GetUserList(userId);
+        //    var myEquipments = await _repo.GetUserList(userId);
 
-            return myEquipments;
-        }
+        //    return myEquipments;
+        //}
     }
 
   

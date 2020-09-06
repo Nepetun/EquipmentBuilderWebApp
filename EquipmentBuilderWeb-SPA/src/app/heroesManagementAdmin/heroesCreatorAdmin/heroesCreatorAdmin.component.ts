@@ -4,6 +4,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IHeroCreator } from 'src/app/models/IHeroCreator';
 import { AlertifyService } from 'src/app/_services/alertify.service';
+import { GamesService } from 'src/app/_services/games.service';
+import { IGames } from 'src/app/models/IGames';
 
 @Component({
   selector: 'app-heroesCreatorAdmin',
@@ -34,12 +36,16 @@ export class HeroesCreatorAdminComponent implements OnInit {
     apLifeSteal: 0,
     tenacity: 0,
     criticalChance: 0,
+    gameId: 1
   };
-
+  public gamesArray: IGames[];
   public heroCreator = this.fb.group({
     heroName: [
       '',
       [Validators.required, Validators.maxLength(20), Validators.minLength(3)],
+    ],
+    gameId: [
+      1, [Validators.required]
     ],
     hitPoints: [
       200,
@@ -179,10 +185,21 @@ export class HeroesCreatorAdminComponent implements OnInit {
     private heroService: HeroesService,
     private fb: FormBuilder,
     private alertify: AlertifyService,
+    private gameService: GamesService,
     private router: Router
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.gameService.getGamesToLookUp().subscribe((games) => {
+      this.gamesArray = games;
+    });
+
+  }
+
+  gameChange(gameId: number) {
+    console.log(gameId);
+    this.heroCreatorObject.gameId = gameId;
+  }
 
   saveHero() {
     // tutaj dać zapis ekwipunku
@@ -211,6 +228,7 @@ export class HeroesCreatorAdminComponent implements OnInit {
       apLifeSteal: +this.heroCreator.controls.apLifeSteal.value,
       tenacity: +this.heroCreator.controls.tenacity.value,
       criticalChance: +this.heroCreator.controls.criticalChance.value,
+      gameId: +this.heroCreator.controls.gameId.value
     };
 
     this.heroService.addHero(heroToCreate).subscribe(

@@ -28,6 +28,27 @@
           </div>
         </label>
       </div>
+
+      <div class="containerItemForm">
+        <label for="gameId"
+          >Gra:
+          <select
+            id="gameId"
+            formControlName="gameId"
+            class="form-control"
+            name="gameId"
+           
+          >
+            <option
+              *ngFor="let item of gamesArray"
+              [value]="item.id"
+              >{{
+                item.gameName
+              }}</option
+            >
+          </select>
+        </label>
+      </div>
     </div>
     <div class="alignButtonInFilter">
       <button class="btn btn-info" type="button" (click)="reloadValues()">
@@ -72,6 +93,12 @@
             Nazwa przedmiotu:
             <div class="fontStyleBold">
               {{ item.itemName }}
+            </div>
+          </mat-card-content>
+          <mat-card-content>
+            Gra:
+            <div class="fontStyleBold">
+              {{ item.gameName }}
             </div>
           </mat-card-content>
           <mat-card-actions>

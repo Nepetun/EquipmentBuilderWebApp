@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EquipmentBuilder.API.Context;
+// using EquipmentBuilder.API.Context;
 using EquipmentBuilder.API.Data.Interfaces;
 using EquipmentBuilder.API.Dtos;
 using EquipmentBuilder.API.Models;
@@ -8,9 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EquipmentBuilder.API.Data
 {
-    public class AuthRepository : IAuthRepository
+    public class AuthRepository  : IAuthRepository
     {
-        
+
         public readonly DataContext _context;
         public AuthRepository(DataContext context)
         {
@@ -24,7 +25,7 @@ namespace EquipmentBuilder.API.Data
             if (user == null)
                 return false;
 
-            if((bool)user.IsAdmin)
+            if ((bool)user.IsAdmin)
             {
                 return true;
             }
@@ -121,7 +122,7 @@ namespace EquipmentBuilder.API.Data
             await _context.SaveChangesAsync();
 
             return true;
-        
+
         }
 
         public async Task<bool> ChangePassword(UserPasswordModify userPass)

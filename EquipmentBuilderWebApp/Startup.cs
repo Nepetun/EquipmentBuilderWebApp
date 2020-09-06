@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using EquipmentBuilder.API.Context;
+
 using EquipmentBuilder.API.Data;
 using EquipmentBuilder.API.Data.Interfaces;
 using EquipmentBuilderWebApp.Helpers;
@@ -37,7 +38,6 @@ namespace EquipmentBuilderWebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
             services.AddDbContext<DataContext>(x =>
             {
                 x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
@@ -49,7 +49,8 @@ namespace EquipmentBuilderWebApp
 
             services.AddAutoMapper(typeof(EquipmentRepository).Assembly); // dodanie automappera - w konstruktorze określamy, która klasa ma mieć "dane" dla mppera - które assemby ma mieć profile dla mappera
             //services.AddSingleton(); //nie bardzo je�eli chodzi o r�wnoleg�e rz�dania
-            //services.AddTransient();// dla lekkich - ci�gle tworzy nowe obiekty przy rz�daniu          
+            //services.AddTransient();// dla lekkich - ci�gle tworzy nowe obiekty przy rz�daniu       
+
             services.AddScoped<IAuthRepository, AuthRepository>(); //dla kazdego rz�dania tworzy nowy obiekt, ale je�eli z tego samego ip to nie tworzy
             services.AddScoped<IEquipmentRepository, EquipmentRepository>();
             services.AddScoped<IInvitationRepository, InvitationRepository>();
@@ -63,8 +64,9 @@ namespace EquipmentBuilderWebApp
             services.AddScoped<IHeroesRepository, HeroesRepository>();
             services.AddScoped<IStatisticsRepository, StatisticsRepository>();
 
+            services.AddScoped<IGameRepository, GameRepository>();
             //gorny zapis oznacza ze wstrzykujemy interfejs IAuthRepository a po przecinku jego konkretna implementacje
-            
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {

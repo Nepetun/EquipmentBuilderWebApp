@@ -1,6 +1,7 @@
 ﻿using EquipmentBuilder.API.Common;
 using EquipmentBuilder.API.Common.Filters;
 using EquipmentBuilder.API.Context;
+// using EquipmentBuilder.API.Context;
 using EquipmentBuilder.API.Data.Interfaces;
 using EquipmentBuilder.API.Dtos;
 using EquipmentBuilder.API.Models;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace EquipmentBuilder.API.Data
 {
-    public class HeroesRepository : IHeroesRepository
+    public class HeroesRepository  : IHeroesRepository
     {
         private readonly DataContext _context;
 
@@ -70,11 +71,11 @@ namespace EquipmentBuilder.API.Data
             heroToReturn.Range = heroStats.Range;
             heroToReturn.Tenacity = heroStats.Tenacity;
 
-            return heroToReturn;            
+            return heroToReturn;
         }
 
         public async Task<IEnumerable<HeroDto>> GetAllHeroes()
-        {     
+        {
             var lstHeroes = await _context.Heroes.ToListAsync();
 
             var lstItemsFromApi = new List<HeroDto>();
@@ -83,7 +84,11 @@ namespace EquipmentBuilder.API.Data
             {
                 var heroToCreate = new HeroDto();
                 heroToCreate.Id = hero.Id;
-                heroToCreate.HeroName = hero.HeroName;              
+                heroToCreate.HeroName = hero.HeroName;
+
+                var gameName = await _context.Games.FirstOrDefaultAsync(x => x.Id == hero.GameId);
+
+                heroToCreate.GameName = gameName.GameName;
 
                 lstItemsFromApi.Add(heroToCreate);
             }
@@ -105,11 +110,15 @@ namespace EquipmentBuilder.API.Data
 
             foreach (Heroes heroes in lstHeroes)
             {
+                var gameName = await _context.Games.FirstOrDefaultAsync(x => x.Id == heroes.GameId);
+
+               
                 HeroDto heroDto = new HeroDto()
                 {
                     Id = heroes.Id,
-                    HeroName = heroes.HeroName
-                };
+                    HeroName = heroes.HeroName,
+                    GameName = gameName.GameName
+            };
                 lstHeroesListed.Add(heroDto);
             }
 
@@ -144,7 +153,7 @@ namespace EquipmentBuilder.API.Data
             heroStatsToModifyData.AttackSpeed = heroStats.AttackSpeed;
             heroStatsToModifyData.CooldownReduction = heroStats.CooldownReduction;
             heroStatsToModifyData.CriticalChance = heroStats.CriticalChance;
-            heroStatsToModifyData.HitPoints= heroStats.HitPoints;
+            heroStatsToModifyData.HitPoints = heroStats.HitPoints;
             heroStatsToModifyData.HitPointsRegen = heroStats.HitPointsRegen;
             heroStatsToModifyData.LifeSteal = heroStats.LifeSteal;
             heroStatsToModifyData.MagicPenetration = heroStats.MagicPenetration;
@@ -153,7 +162,7 @@ namespace EquipmentBuilder.API.Data
             heroStatsToModifyData.Mana = heroStats.Mana;
             heroStatsToModifyData.ManaRegen = heroStats.ManaRegen;
             heroStatsToModifyData.MovementSpeed = heroStats.MovementSpeed;
-            heroStatsToModifyData.Range= heroStats.Range;
+            heroStatsToModifyData.Range = heroStats.Range;
             heroStatsToModifyData.Tenacity = heroStats.Tenacity;
 
 

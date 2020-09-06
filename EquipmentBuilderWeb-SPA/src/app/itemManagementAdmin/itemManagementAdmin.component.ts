@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { IItemsManagementFilter } from '../models/Filters/IItemsManagementFilter';
 import { IItemManagement } from '../models/IItemManagement';
 import { FormBuilder, Validators } from '@angular/forms';
+import { GamesService } from '../_services/games.service';
+import { IGames } from '../models/IGames';
 
 @Component({
   selector: 'app-itemManagementAdmin',
@@ -26,17 +28,21 @@ export class ItemManagementAdminComponent implements OnInit {
   };
 
   itemsFilter: IItemsManagementFilter = {
-    itemNameLike: ''
+    itemNameLike: '',
+    gameId: 0
   };
 
   items: IItemManagement[];
-
+  public gamesArray: IGames[];
   formFilter = this.fb.group(
     {
       itemNameLikeForm: [
         '',
         [Validators.maxLength(20)]
-      ]
+      ],
+      gameId: [
+        0
+      ],
     });
 
     public selectedItemId: number = 0;
@@ -44,15 +50,24 @@ export class ItemManagementAdminComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private itemService: ItemsService,
+    private gameService: GamesService,
     private router: Router
   ) {}
 
   ngOnInit() {
     this.loading$ = this.itemService.loading$;
+    this.gameService.getGamesToLookUp().subscribe((games) => {
+      this.gamesArray = games;
+      this.gamesArray.push({id: 0, gameName: 'Wszystkie'});
+    });
 
     this.reloadValues();
   }
 
+  // gameChange(gameId: number) {
+  //   console.log(gameId);
+  //   this.itemCreatorObject.gameId = gameId;
+  // }
   reloadValues() {
     this.setFilterFromForm();
 
@@ -68,19 +83,22 @@ export class ItemManagementAdminComponent implements OnInit {
     if (this.formFilter.controls.itemNameLikeForm) {
       this.itemsFilter.itemNameLike = this.formFilter.controls.itemNameLikeForm.value;
     }
+    this.itemsFilter.gameId = this.formFilter.controls.gameId.value;
   }
 
 
   resetFilter() {
     this.itemsFilter = {
-      itemNameLike: ''
+      itemNameLike: '',
+      gameId: 0
     };
     this.setFormFromFilter();
   }
 
   setFormFromFilter() {
     this.formFilter.setValue({
-      itemNameLikeForm: this.itemsFilter.itemNameLike
+      itemNameLikeForm: this.itemsFilter.itemNameLike,
+      gameId: this.itemsFilter.gameId
     });
   }
 
@@ -97,7 +115,8 @@ export class ItemManagementAdminComponent implements OnInit {
     this.itemService
       .getItemsToManagement(
         this.pagination.currentPage,
-        this.pagination.itemsPerPage
+        this.pagination.itemsPerPage,
+        this.itemsFilter
       )
       .subscribe((usrs) => {
         this.items = usrs.result;

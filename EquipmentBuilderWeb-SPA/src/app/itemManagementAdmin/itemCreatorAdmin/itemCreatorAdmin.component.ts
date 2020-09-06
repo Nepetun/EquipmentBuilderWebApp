@@ -4,6 +4,8 @@ import { Validators, FormBuilder } from '@angular/forms';
 import { IItemCreate } from 'src/app/models/IItemCreate';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { Router } from '@angular/router';
+import { IGames } from 'src/app/models/IGames';
+import { GamesService } from 'src/app/_services/games.service';
 
 @Component({
   selector: 'app-itemCreatorAdmin',
@@ -37,12 +39,16 @@ export class ItemCreatorAdminComponent implements OnInit {
     additionalMovementSpeed: 0,
     additionalCriticalChance: 0,
     descriptions: '',
+    gameId: 1
   };
-
+  public gamesArray: IGames[];
   public itemCreator = this.fb.group({
     itemName: [
       '',
       [Validators.required, Validators.maxLength(20), Validators.minLength(3)],
+    ],
+    gameId: [
+      1, [Validators.required]
     ],
     minHeroLvl: [
       1,
@@ -196,10 +202,15 @@ export class ItemCreatorAdminComponent implements OnInit {
     private itemService: ItemsService,
     private fb: FormBuilder,
     private alertify: AlertifyService,
+    private gameService: GamesService,
     private router: Router
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.gameService.getGamesToLookUp().subscribe((games) => {
+      this.gamesArray = games;
+    });
+  }
 
   saveItem() {
     // tutaj dać zapis ekwipunku
@@ -227,7 +238,8 @@ export class ItemCreatorAdminComponent implements OnInit {
       additionalAttackSpeed: +this.itemCreator.controls.additionalAttackSpeed.value,
       additionalMovementSpeed: +this.itemCreator.controls.additionalMovementSpeed.value,
       additionalCriticalChance: +this.itemCreator.controls.additionalCriticalChance.value,
-      descriptions: this.itemCreator.controls.descriptions.value
+      descriptions: this.itemCreator.controls.descriptions.value,
+      gameId: +this.itemCreator.controls.gameId.value
     };
 
     this.itemService.addItem(itemToCreate).subscribe(
@@ -239,6 +251,11 @@ export class ItemCreatorAdminComponent implements OnInit {
         this.alertify.error(errror);
       }
     );
+  }
+
+  gameChange(gameId: number) {
+    console.log(gameId);
+    this.itemCreatorObject.gameId = gameId;
   }
 
   cancel() {

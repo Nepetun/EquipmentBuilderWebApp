@@ -1,4 +1,5 @@
-﻿using EquipmentBuilder.API.Context;
+﻿// using EquipmentBuilder.API.Context;
+using EquipmentBuilder.API.Context;
 using EquipmentBuilder.API.Data.Interfaces;
 using EquipmentBuilder.API.Dtos;
 using EquipmentBuilder.API.Models;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace EquipmentBuilder.API.Data
 {
-    public class CommentRepository : ICommentRepository
+    public class CommentRepository  : ICommentRepository
     {
         private readonly DataContext _context;
 
@@ -24,12 +25,12 @@ namespace EquipmentBuilder.API.Data
         {
             List<CommentToShowDto> lst = new List<CommentToShowDto>();
 
-            var comments = await _context.Comments.Where(x => x.EquipmentId == equipmentId).OrderByDescending(x=> x.Tmstmp).ToListAsync();
+            var comments = await _context.Comments.Where(x => x.EquipmentId == equipmentId).OrderByDescending(x => x.Tmstmp).ToListAsync();
 
 
 
             // uzupełnienie użytkownika
-            foreach(Comments com in comments)
+            foreach (Comments com in comments)
             {
                 CommentToShowDto comToShow = new CommentToShowDto();
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == com.UserId);
@@ -40,7 +41,7 @@ namespace EquipmentBuilder.API.Data
                 comToShow.CommentId = com.Id;
                 lst.Add(comToShow);
             }
-            
+
 
             return lst;
         }
@@ -48,7 +49,7 @@ namespace EquipmentBuilder.API.Data
         public async Task<Comments> AddComment(string comment, int equipmentId, int userId)
         {
             //pobranie ekwipunku do którego chcemy dodać komentarz
-            var equipment = await _context.Equipments.FirstOrDefaultAsync(x=>x.Id == equipmentId);
+            var equipment = await _context.Equipments.FirstOrDefaultAsync(x => x.Id == equipmentId);
 
             var commentToAdd = new Comments()
             {

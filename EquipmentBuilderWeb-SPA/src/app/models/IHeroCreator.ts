@@ -21,4 +21,5 @@ export interface IHeroCreator {
     apLifeSteal: number;
     tenacity: number;
     criticalChance: number;
+    gameId: number;
 }

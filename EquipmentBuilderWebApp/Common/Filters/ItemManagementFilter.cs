@@ -13,5 +13,7 @@ namespace EquipmentBuilder.API.Common.Filters
         }
 
         public string  ItemNameLike { get; set; }
+
+        public int GameId { get; set; }
     }
 }

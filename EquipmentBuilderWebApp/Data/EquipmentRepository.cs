@@ -1,6 +1,7 @@
 ﻿using EquipmentBuilder.API.Common;
 using EquipmentBuilder.API.Common.Filters;
 using EquipmentBuilder.API.Context;
+// using EquipmentBuilder.API.Context;
 using EquipmentBuilder.API.Data.Interfaces;
 using EquipmentBuilder.API.Dtos;
 using EquipmentBuilder.API.Models;
@@ -10,10 +11,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace EquipmentBuilder.API.Data
 {
-    public class EquipmentRepository : IEquipmentRepository
+    public class EquipmentRepository  : IEquipmentRepository
     {
 
         public readonly DataContext _context;
@@ -43,6 +45,8 @@ namespace EquipmentBuilder.API.Data
                         // pobranie nazwy użytkownika
                         var userName = await _context.Users.FirstOrDefaultAsync(x => x.Id == eq.UserId);
 
+                        var gameName = await _context.Games.FirstOrDefaultAsync(x => x.Id == eq.GameId);
+
                         var eqWithoutShared = new EquipmentListDto()
                         {
                             EquipmentId = eq.Id,
@@ -50,7 +54,8 @@ namespace EquipmentBuilder.API.Data
                             HeroName = hero.HeroName,
                             HeroLvl = heroLvl != null ? 1 : (int)heroLvl.Lvl,
                             CounterOfLikes = counterOfLikes,
-                            UserName = userName.UserName
+                            UserName = userName.UserName,
+                            GameName = gameName.GameName
                         };
 
                         lstEquipments.Add(eqWithoutShared);
@@ -82,6 +87,8 @@ namespace EquipmentBuilder.API.Data
                                 // pobranie nazwy użytkownika
                                 var userName = await _context.Users.FirstOrDefaultAsync(x => x.Id == sharedEquipment.UserId);
 
+                                var gameName = await _context.Games.FirstOrDefaultAsync(x => x.Id == sharedEquipment.GameId);
+
                                 var eqWithoutShared = new EquipmentListDto()
                                 {
                                     EquipmentId = sharedEquipment.Id,
@@ -89,7 +96,8 @@ namespace EquipmentBuilder.API.Data
                                     HeroName = hero.HeroName,
                                     HeroLvl = (int)heroLvl.Lvl,
                                     CounterOfLikes = counterOfLikes,
-                                    UserName = userName.UserName
+                                    UserName = userName.UserName,
+                                    GameName = gameName.GameName
                                 };
 
                                 lstEquipments.Add(eqWithoutShared);
@@ -113,6 +121,8 @@ namespace EquipmentBuilder.API.Data
                         // pobranie nazwy użytkownika
                         var userName = await _context.Users.FirstOrDefaultAsync(x => x.Id == eq.UserId);
 
+                        var gameName = await _context.Games.FirstOrDefaultAsync(x => x.Id == eq.GameId);
+
                         var eqWithoutShared = new EquipmentListDto()
                         {
                             EquipmentId = eq.Id,
@@ -120,12 +130,13 @@ namespace EquipmentBuilder.API.Data
                             HeroName = hero.HeroName,
                             HeroLvl = (int)heroLvl.Lvl,
                             CounterOfLikes = counterOfLikes,
-                            UserName = userName.UserName
+                            UserName = userName.UserName,
+                            GameName = gameName.GameName
                         };
 
                         lstEquipments.Add(eqWithoutShared);
                     }
-                }              
+                }
             }
 
             if (eqFilters != null)

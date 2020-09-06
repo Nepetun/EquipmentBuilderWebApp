@@ -34,6 +34,7 @@ export class HeroesEditorAdminComponent implements OnInit {
     apLifeSteal: 0,
     tenacity: 0,
     criticalChance: 0,
+    gameId: 1
   };
 
   public heroCreator = this.fb.group({
@@ -253,6 +254,7 @@ export class HeroesEditorAdminComponent implements OnInit {
       apLifeSteal: +this.heroCreator.controls.apLifeSteal.value,
       tenacity: +this.heroCreator.controls.tenacity.value,
       criticalChance: +this.heroCreator.controls.criticalChance.value,
+      gameId: 1
     };
 
     this.heroService.modifyHero(heroToCreate).subscribe(

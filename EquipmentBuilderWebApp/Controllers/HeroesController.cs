@@ -61,18 +61,19 @@ namespace EquipmentBuilder.API.Controllers
             if (await _repo.ValidateHeroName(hero.HeroName))
                 return BadRequest("Taka nazwa bohatera już istnieje");
 
-            // dodanie bohatera
+           // dodanie bohatera
             var heroToCreate = new Heroes
             {
-                HeroName = hero.HeroName                
+                HeroName = hero.HeroName,
+                GameId = hero.GameId
             };
 
             var createdHero = await _repo.CreateHero(heroToCreate);
 
 
-            // dodanie statystyk bohatera 
-            var heroStats = new HeroeStats
-            {
+           // dodanie statystyk bohatera
+           var heroStats = new HeroeStats
+           {
                AbilityPower = hero.AbilityPower,
                ApLifeSteal = hero.ApLifeSteal,
                Armour = hero.Armour,
@@ -94,7 +95,7 @@ namespace EquipmentBuilder.API.Controllers
                Range = hero.Range,
                Tenacity = hero.Tenacity,
                HeroId = heroToCreate.Id
-            };
+           };
 
             var createdItemStats = await _repo.CreateHeroStats(heroStats);
             return StatusCode(201);
@@ -106,7 +107,7 @@ namespace EquipmentBuilder.API.Controllers
             //nieuwzglenianie case sensitivity 
             hero.HeroName = hero.HeroName.ToLower();
 
-          
+
             var heroIdFromDB = await _repo.GetHeroId(hero.HeroName);
 
 

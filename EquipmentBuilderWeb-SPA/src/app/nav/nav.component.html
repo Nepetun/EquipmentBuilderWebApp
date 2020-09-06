@@ -21,7 +21,8 @@
         <a *ngIf="isAdmin==true" class="dropdown-item" [routerLink]="['/manageAdminUsers']" routerLinkActive="router-link-active">Zarządzaj użytkownikami</a>
         <a *ngIf="isAdmin==true" class="dropdown-item" [routerLink]="['/manageAdminItems']" routerLinkActive="router-link-active">Zarządzaj przedmiotami</a>
         <a *ngIf="isAdmin==true" class="dropdown-item" [routerLink]="['/manageAdminHeroes']" routerLinkActive="router-link-active">Zarządzaj bohaterami</a>
-        
+        <a *ngIf="isAdmin==true" class="dropdown-item" [routerLink]="['/manageAdminGames']" routerLinkActive="router-link-active">Zarządzaj Grami</a>
+
         <a class="dropdown-item" [routerLink]="['/myGroups']" routerLinkActive="router-link-active">Zarządzaj Grupami</a>
         <div class="dropdown-diver"></div>
         <a class="dropdown-item" (click)="logout()">

@@ -27,6 +27,7 @@ namespace EquipmentBuilder.API.Models
         public int? FourthItemId { get; set; }
         public int? FifthItemId { get; set; }
         public int? SixthItemId { get; set; }
+        public int? GameId { get; set; }
 
         [ForeignKey(nameof(FifthItemId))]
         [InverseProperty(nameof(Items.EquipmentsFifthItem))]
@@ -37,6 +38,9 @@ namespace EquipmentBuilder.API.Models
         [ForeignKey(nameof(FourthItemId))]
         [InverseProperty(nameof(Items.EquipmentsFourthItem))]
         public virtual Items FourthItem { get; set; }
+        [ForeignKey(nameof(GameId))]
+        [InverseProperty(nameof(Games.Equipments))]
+        public virtual Games Game { get; set; }
         [ForeignKey(nameof(HeroId))]
         [InverseProperty(nameof(Heroes.Equipments))]
         public virtual Heroes Hero { get; set; }

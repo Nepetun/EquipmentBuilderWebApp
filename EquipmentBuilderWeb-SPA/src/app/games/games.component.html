@@ -1,0 +1,42 @@
+<div class="pageDiv">
+  <nav class="navSpecial">  
+      <a class="navbar-brand" >Zarządzanie grami</a>
+  </nav>
+  <button type="button" class="btn btn-success" (click)="createGame()">Stwórz gre</button>
+
+  <div class="justify-content-center">
+      <pagination 
+      [boundaryLinks]="true" 
+      [itemsPerPage]="pagination.itemsPerPage"
+      [totalItems] ="pagination.totalItems"
+      [maxSize] = "2"       
+      [rotate] = "rotate"
+      [(ngModel)]="pagination.currentPage"
+      (pageChanged)="pageChanged($event)"
+      previousText="&lsaquo;"
+      nextText = "&rsaquo;"
+      firstText = "&laquo;"
+      lastText = "&raquo;"
+  >
+  </pagination>
+  </div>    
+
+      <div class="containerFlex" >
+        <div *ngIf="games && games.length <= 0">
+          <div class="fontStyleBold">         
+             Brak gier
+          </div>          
+        </div>
+          <div class="containerItem" *ngFor="let item of games; let i = index">
+              <mat-card>               
+                <mat-card-content>
+                  Gra: 
+                  <div class="fontStyleBold">
+                      {{item.gameName}}
+                  </div>
+                </mat-card-content>
+              </mat-card>
+          </div>
+      </div>
+
+  </div>

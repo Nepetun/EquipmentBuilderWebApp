@@ -1,4 +1,5 @@
-﻿using EquipmentBuilder.API.Context;
+﻿// using EquipmentBuilder.API.Context;
+using EquipmentBuilder.API.Context;
 using EquipmentBuilder.API.Data.Interfaces;
 using EquipmentBuilder.API.Models;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace EquipmentBuilder.API.Data
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository  : IUserRepository
     {
 
         public readonly DataContext _context;
@@ -25,7 +26,7 @@ namespace EquipmentBuilder.API.Data
         /// <returns></returns>
         public async Task<IEnumerable<Users>> GetUserList(int userId)
         {
-            var userList = await _context.Users.Where(x=>x.Id != userId && x.IsAdmin == false).ToListAsync();
+            var userList = await _context.Users.Where(x => x.Id != userId && x.IsAdmin == false).ToListAsync();
             return userList;
         }
     }

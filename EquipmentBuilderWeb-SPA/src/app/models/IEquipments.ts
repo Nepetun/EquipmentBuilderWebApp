@@ -5,4 +5,5 @@ export interface IEquipments {
     heroLvl: number;
     counterOfLikes: number;
     userName: string;
+    gameName: number;
 }

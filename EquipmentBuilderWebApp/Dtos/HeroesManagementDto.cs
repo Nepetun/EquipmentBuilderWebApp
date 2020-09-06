@@ -35,5 +35,7 @@ namespace EquipmentBuilder.API.Dtos
         public decimal? ApLifeSteal { get; set; }
         public decimal? Tenacity { get; set; }
         public decimal? CriticalChance { get; set; }
+
+        public int GameId { get; set; }
     }
 }

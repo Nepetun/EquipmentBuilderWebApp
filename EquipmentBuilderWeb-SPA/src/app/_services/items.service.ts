@@ -20,6 +20,7 @@ export class ItemsService {
       id: 1,
       itemName: '',
       minHeroLvl: 1,
+      gameName:''
     },
   ]);
 
@@ -39,6 +40,7 @@ export class ItemsService {
       id: 1,
       itemName: '',
       minHeroLvl: 1,
+      gameName: ''
     },
   ]);
 
@@ -112,6 +114,10 @@ export class ItemsService {
       } else {
         params = params.append('itemNameLike', '');
       }
+
+      if (filters.gameId) {
+        params = params.append('gameId', filters.gameId);
+      }
     }
 
     return this.http
@@ -133,8 +139,8 @@ export class ItemsService {
   }
 
 
-  setSelectedItemId(userId: number) {
-    this.selectedItemId.next(userId);
+  setSelectedItemId(itemId: number) {
+    this.selectedItemId.next(itemId);
   }
 
   addItem(itemToCreate: IItemCreate) {
@@ -163,7 +169,8 @@ export class ItemsService {
         additionalAttackSpeed: itemToCreate.additionalAttackSpeed,
         additionalMovementSpeed: itemToCreate.additionalMovementSpeed,
         additionalCriticalChance: itemToCreate.additionalCriticalChance,
-        descriptions: itemToCreate.descriptions
+        descriptions: itemToCreate.descriptions,
+        gameId: itemToCreate.gameId
       })
       .pipe(
         map((reponse: any) => {
@@ -199,7 +206,8 @@ export class ItemsService {
         additionalAttackSpeed: itemToModify.additionalAttackSpeed,
         additionalMovementSpeed: itemToModify.additionalMovementSpeed,
         additionalCriticalChance: itemToModify.additionalCriticalChance,
-        descriptions: itemToModify.descriptions
+        descriptions: itemToModify.descriptions,
+        gameId: 1
       })
       .pipe(
         map((reponse: any) => {
@@ -236,6 +244,7 @@ export class ItemsService {
       additionalMovementSpeed: 0,
       additionalCriticalChance: 0,
       descriptions: '',
+      gameId: 1
     };
 
     let params = new HttpParams();
